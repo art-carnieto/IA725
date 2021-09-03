@@ -24,7 +24,7 @@
     <ProjectGuid>{6c0d59af-fbf6-41a4-a6bb-116980611c0d}</ProjectGuid>
     <RootNamespace>OpenGLApplication</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>IA725</ProjectName>
+    <ProjectName>Hello World</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
