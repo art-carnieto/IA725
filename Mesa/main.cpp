@@ -52,12 +52,14 @@ static void RenderSceneCB()
     Scale += 0.02f;
 #endif
 
-    Matrix4f Rotation(cosf(Scale), 0.0f, -sinf(Scale), 0.0f,
-        0.0f, 1.0f, 0.0f, 0.0f,
-        sinf(Scale), 0.0f, cosf(Scale), 0.0f,
-        0.0f, 0.0f, 0.0f, 1.0f);
+    Matrix4f Rotation(
+        cosf(Scale), 0.0f, -sinf(Scale), 0.0f,
+        0.0f,        1.0f, 0.0f,         0.0f,
+        sinf(Scale), 0.0f, cosf(Scale),  0.0f,
+        0.0f,        0.0f, 0.0f,         1.0f);
 
-    Matrix4f Translation(1.0f, 0.0f, 0.0f, 0.0f,
+    Matrix4f Translation(
+        1.0f, 0.0f, 0.0f, 0.0f,
         0.0f, 1.0f, 0.0f, 0.0f,
         0.0f, 0.0f, 1.0f, 2.0f,
         0.0f, 0.0f, 0.0f, 1.0f);
@@ -69,9 +71,10 @@ static void RenderSceneCB()
     Vector3f V(0.0f, 1.0f, 0.0f);
     Vector3f N(0.0f, 0.0f, 1.0f);
 
-    Matrix4f Camera(U.x, U.y, U.z, -CameraPos.x,
-        V.x, V.y, V.z, -CameraPos.y,
-        N.x, N.y, N.z, -CameraPos.z,
+    Matrix4f Camera(
+        U.x,  U.y,  U.z,  -CameraPos.x,
+        V.x,  V.y,  V.z,  -CameraPos.y,
+        N.x,  N.y,  N.z,  -CameraPos.z,
         0.0f, 0.0f, 0.0f, 1.0f);
 
     float VFOV = 45.0f;
@@ -87,10 +90,11 @@ static void RenderSceneCB()
     float A = (-FarZ - NearZ) / zRange;
     float B = 2.0f * FarZ * NearZ / zRange;
 
-    Matrix4f Projection(d / ar, 0.0f, 0.0f, 0.0f,
-        0.0f, d, 0.0f, 0.0f,
-        0.0f, 0.0f, A, B,
-        0.0f, 0.0f, 1.0f, 0.0f);
+    Matrix4f Projection(
+        d / ar, 0.0f, 0.0f, 0.0f,
+        0.0f,   d,    0.0f, 0.0f,
+        0.0f,   0.0f, A,    B,
+        0.0f,   0.0f, 1.0f, 0.0f);
 
     Matrix4f WVP = Projection * Camera * World;
 
@@ -140,14 +144,14 @@ static void CreateVertexBuffer()
 {
     Vertex Vertices[8];
 
-    Vertices[0] = Vertex(0.5f, 0.5f, 0.5f);
-    Vertices[1] = Vertex(-0.5f, 0.5f, -0.5f);
-    Vertices[2] = Vertex(-0.5f, 0.5f, 0.5f);
-    Vertices[3] = Vertex(0.5f, -0.5f, -0.5f);
+    Vertices[0] = Vertex( 0.5f,  0.5f,  0.5f);
+    Vertices[1] = Vertex(-0.5f,  0.5f, -0.5f);
+    Vertices[2] = Vertex(-0.5f,  0.5f,  0.5f);
+    Vertices[3] = Vertex( 0.5f, -0.5f, -0.5f);
     Vertices[4] = Vertex(-0.5f, -0.5f, -0.5f);
-    Vertices[5] = Vertex(0.5f, 0.5f, -0.5f);
-    Vertices[6] = Vertex(0.5f, -0.5f, 0.5f);
-    Vertices[7] = Vertex(-0.5f, -0.5f, 0.5f);
+    Vertices[5] = Vertex( 0.5f,  0.5f, -0.5f);
+    Vertices[6] = Vertex( 0.5f, -0.5f,  0.5f);
+    Vertices[7] = Vertex(-0.5f, -0.5f,  0.5f);
 
     glGenBuffers(1, &VBO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -278,7 +282,7 @@ int main(int argc, char** argv)
     int x = 200;
     int y = 100;
     glutInitWindowPosition(x, y);
-    int win = glutCreateWindow("Tutorial 13");
+    int win = glutCreateWindow("Mesa");
     printf("window id: %d\n", win);
 
     // Must be done after glut is initialized!
