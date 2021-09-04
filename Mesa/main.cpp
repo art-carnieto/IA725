@@ -61,12 +61,12 @@ static void RenderSceneCB()
     Matrix4f Translation(
         1.0f, 0.0f, 0.0f, 0.0f,
         0.0f, 1.0f, 0.0f, 0.0f,
-        0.0f, 0.0f, 1.0f, 2.0f,
+        0.0f, 0.0f, 1.0f, 0.0f,
         0.0f, 0.0f, 0.0f, 1.0f);
 
     Matrix4f World = Translation * Rotation;
 
-    Vector3f CameraPos(0.0f, 0.0f, -1.5f);
+    Vector3f CameraPos(0.0f, 0.0f, -3.0f);
     Vector3f U(1.0f, 0.0f, 0.0f);
     Vector3f V(0.0f, 1.0f, 0.0f);
     Vector3f N(0.0f, 0.0f, 1.0f);
