@@ -111,7 +111,7 @@ static void RenderSceneCB()
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
 
-    glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, (36 * 5), GL_UNSIGNED_INT, 0); // draw 36 indices times 5 objects (square cuboids)
 
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
@@ -142,16 +142,82 @@ struct Vertex {
 
 static void CreateVertexBuffer()
 {
-    Vertex Vertices[8];
+    Vertex Vertices[8 * 5]; // 8 times 5 square cuboids
 
-    Vertices[0] = Vertex( 0.5f,  0.5f,  0.5f);
-    Vertices[1] = Vertex(-0.5f,  0.5f, -0.5f);
-    Vertices[2] = Vertex(-0.5f,  0.5f,  0.5f);
-    Vertices[3] = Vertex( 0.5f, -0.5f, -0.5f);
-    Vertices[4] = Vertex(-0.5f, -0.5f, -0.5f);
-    Vertices[5] = Vertex( 0.5f,  0.5f, -0.5f);
-    Vertices[6] = Vertex( 0.5f, -0.5f,  0.5f);
-    Vertices[7] = Vertex(-0.5f, -0.5f,  0.5f);
+    // tabletop size
+    const float tabletop_y = 0.03f;
+    const float tabletop_x = 0.8f;
+    const float tabletop_z = 0.8f;
+
+    // table legs size
+    const float table_leg_y = 0.5f;
+    const float table_leg_x = 0.05f;
+    const float table_leg_z = 0.05f;
+
+    const float tabletop_posY = 0.5f; // makes the tabletop go up
+
+    // table legs positions
+    const float table_leg1_posX = -0.8f + table_leg_x;
+    const float table_leg1_posZ = -0.8f + table_leg_z;
+
+    const float table_leg2_posX = 0.8f - table_leg_x;
+    const float table_leg2_posZ = -0.8f + table_leg_z;
+
+    const float table_leg3_posX = -0.8f + table_leg_x;
+    const float table_leg3_posZ = 0.8f - table_leg_z;
+
+    const float table_leg4_posX = 0.8f - table_leg_x;
+    const float table_leg4_posZ = 0.8f - table_leg_z;
+
+    // tabletop
+    Vertices[0] = Vertex(tabletop_x, tabletop_y + tabletop_posY, tabletop_z);
+    Vertices[1] = Vertex(-tabletop_x, tabletop_y + tabletop_posY, -tabletop_z);
+    Vertices[2] = Vertex(-tabletop_x, tabletop_y + tabletop_posY, tabletop_z);
+    Vertices[3] = Vertex(tabletop_x, -tabletop_y + tabletop_posY, -tabletop_z);
+    Vertices[4] = Vertex(-tabletop_x, -tabletop_y + tabletop_posY, -tabletop_z);
+    Vertices[5] = Vertex(tabletop_x, tabletop_y + tabletop_posY, -tabletop_z);
+    Vertices[6] = Vertex(tabletop_x, -tabletop_y + tabletop_posY, tabletop_z);
+    Vertices[7] = Vertex(-tabletop_x, -tabletop_y + tabletop_posY, tabletop_z);
+
+    // table leg 1
+    Vertices[8] = Vertex(table_leg_x + table_leg1_posX, table_leg_y, table_leg_z + table_leg1_posZ);
+    Vertices[9] = Vertex(-table_leg_x + table_leg1_posX, table_leg_y, -table_leg_z + table_leg1_posZ);
+    Vertices[10] = Vertex(-table_leg_x + table_leg1_posX, table_leg_y, table_leg_z + table_leg1_posZ);
+    Vertices[11] = Vertex(table_leg_x + table_leg1_posX, -table_leg_y, -table_leg_z + table_leg1_posZ);
+    Vertices[12] = Vertex(-table_leg_x + table_leg1_posX, -table_leg_y, -table_leg_z + table_leg1_posZ);
+    Vertices[13] = Vertex(table_leg_x + table_leg1_posX, table_leg_y, -table_leg_z + table_leg1_posZ);
+    Vertices[14] = Vertex(table_leg_x + table_leg1_posX, -table_leg_y, table_leg_z + table_leg1_posZ);
+    Vertices[15] = Vertex(-table_leg_x + table_leg1_posX, -table_leg_y, table_leg_z + table_leg1_posZ);
+
+    // table leg 2
+    Vertices[16] = Vertex(table_leg_x + table_leg2_posX, table_leg_y, table_leg_z + table_leg2_posZ);
+    Vertices[17] = Vertex(-table_leg_x + table_leg2_posX, table_leg_y, -table_leg_z + table_leg2_posZ);
+    Vertices[18] = Vertex(-table_leg_x + table_leg2_posX, table_leg_y, table_leg_z + table_leg2_posZ);
+    Vertices[19] = Vertex(table_leg_x + table_leg2_posX, -table_leg_y, -table_leg_z + table_leg2_posZ);
+    Vertices[20] = Vertex(-table_leg_x + table_leg2_posX, -table_leg_y, -table_leg_z + table_leg2_posZ);
+    Vertices[21] = Vertex(table_leg_x + table_leg2_posX, table_leg_y, -table_leg_z + table_leg2_posZ);
+    Vertices[22] = Vertex(table_leg_x + table_leg2_posX, -table_leg_y, table_leg_z + table_leg2_posZ);
+    Vertices[23] = Vertex(-table_leg_x + table_leg2_posX, -table_leg_y, table_leg_z + table_leg2_posZ);
+
+    // table leg 3
+    Vertices[24] = Vertex(table_leg_x + table_leg3_posX, table_leg_y, table_leg_z + table_leg3_posZ);
+    Vertices[25] = Vertex(-table_leg_x + table_leg3_posX, table_leg_y, -table_leg_z + table_leg3_posZ);
+    Vertices[26] = Vertex(-table_leg_x + table_leg3_posX, table_leg_y, table_leg_z + table_leg3_posZ);
+    Vertices[27] = Vertex(table_leg_x + table_leg3_posX, -table_leg_y, -table_leg_z + table_leg3_posZ);
+    Vertices[28] = Vertex(-table_leg_x + table_leg3_posX, -table_leg_y, -table_leg_z + table_leg3_posZ);
+    Vertices[29] = Vertex(table_leg_x + table_leg3_posX, table_leg_y, -table_leg_z + table_leg3_posZ);
+    Vertices[30] = Vertex(table_leg_x + table_leg3_posX, -table_leg_y, table_leg_z + table_leg3_posZ);
+    Vertices[31] = Vertex(-table_leg_x + table_leg3_posX, -table_leg_y, table_leg_z + table_leg3_posZ);
+
+    // table leg 4
+    Vertices[32] = Vertex(table_leg_x + table_leg4_posX, table_leg_y, table_leg_z + table_leg4_posZ);
+    Vertices[33] = Vertex(-table_leg_x + table_leg4_posX, table_leg_y, -table_leg_z + table_leg4_posZ);
+    Vertices[34] = Vertex(-table_leg_x + table_leg4_posX, table_leg_y, table_leg_z + table_leg4_posZ);
+    Vertices[35] = Vertex(table_leg_x + table_leg4_posX, -table_leg_y, -table_leg_z + table_leg4_posZ);
+    Vertices[36] = Vertex(-table_leg_x + table_leg4_posX, -table_leg_y, -table_leg_z + table_leg4_posZ);
+    Vertices[37] = Vertex(table_leg_x + table_leg4_posX, table_leg_y, -table_leg_z + table_leg4_posZ);
+    Vertices[38] = Vertex(table_leg_x + table_leg4_posX, -table_leg_y, table_leg_z + table_leg4_posZ);
+    Vertices[39] = Vertex(-table_leg_x + table_leg4_posX, -table_leg_y, table_leg_z + table_leg4_posZ);
 
     glGenBuffers(1, &VBO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -161,18 +227,75 @@ static void CreateVertexBuffer()
 static void CreateIndexBuffer()
 {
     unsigned int Indices[] = {
-                              0, 1, 2,
-                              1, 3, 4,
-                              5, 6, 3,
-                              7, 3, 6,
-                              2, 4, 7,
-                              0, 7, 6,
-                              0, 5, 1,
-                              1, 5, 3,
-                              5, 0, 6,
-                              7, 4, 3,
-                              2, 1, 4,
-                              0, 2, 7
+        // tabletop
+        0, 1, 2,
+        1, 3, 4,
+        5, 6, 3,
+        7, 3, 6,
+        2, 4, 7,
+        0, 7, 6,
+        0, 5, 1,
+        1, 5, 3,
+        5, 0, 6,
+        7, 4, 3,
+        2, 1, 4,
+        0, 2, 7,
+
+        // table leg 1
+        8, 9, 10,
+        9, 11, 12,
+        13, 14, 11,
+        15, 11, 14,
+        10, 12, 15,
+        8, 15, 14,
+        8, 13, 9,
+        9, 13, 11,
+        13, 8, 14,
+        15, 12, 11,
+        10, 9, 12,
+        8, 10, 15,
+
+        // table leg 2
+        16, 17, 18,
+        17, 19, 20,
+        21, 22, 19,
+        23, 19, 22,
+        18, 20, 23,
+        16, 23, 22,
+        16, 21, 17,
+        17, 21, 19,
+        21, 16, 22,
+        23, 20, 19,
+        18, 17, 20,
+        16, 18, 23,
+
+        // table leg 3
+        24, 25, 26,
+        25, 27, 28,
+        29, 30, 27,
+        31, 27, 30,
+        26, 28, 31,
+        24, 31, 30,
+        24, 29, 25,
+        25, 29, 27,
+        29, 24, 30,
+        31, 28, 27,
+        26, 25, 28,
+        24, 26, 31,
+
+        // table leg 4
+        32, 33, 34,
+        33, 35, 36,
+        37, 38, 35,
+        39, 35, 38,
+        34, 36, 39,
+        32, 39, 38,
+        32, 37, 33,
+        33, 37, 35,
+        37, 32, 38,
+        39, 36, 35,
+        34, 33, 36,
+        32, 34, 39
     };
 
     glGenBuffers(1, &IBO);
