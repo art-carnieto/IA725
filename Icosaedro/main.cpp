@@ -27,8 +27,8 @@
 
 #include "ogldev_math_3d.h"
 
-#define WINDOW_WIDTH  1920
-#define WINDOW_HEIGHT 1080
+#define WINDOW_WIDTH  1280
+#define WINDOW_HEIGHT 720
 
 // to fix 'M_PI' not declared error
 #ifndef M_PI
@@ -52,26 +52,29 @@ static void RenderSceneCB()
     Scale += 0.02f;
 #endif
 
-    Matrix4f Rotation(cosf(Scale), 0.0f, -sinf(Scale), 0.0f,
-        0.0f, 1.0f, 0.0f, 0.0f,
-        sinf(Scale), 0.0f, cosf(Scale), 0.0f,
-        0.0f, 0.0f, 0.0f, 1.0f);
+    Matrix4f Rotation(
+        cosf(Scale), 0.0f, -sinf(Scale), 0.0f,
+        0.0f,        1.0f, 0.0f,         0.0f,
+        sinf(Scale), 0.0f, cosf(Scale),  0.0f,
+        0.0f,        0.0f, 0.0f,         1.0f);
 
-    Matrix4f Translation(1.0f, 0.0f, 0.0f, 0.0f,
+    Matrix4f Translation(
+        1.0f, 0.0f, 0.0f, 0.0f,
         0.0f, 1.0f, 0.0f, 0.0f,
-        0.0f, 0.0f, 1.0f, 2.0f,
+        0.0f, 0.0f, 1.0f, 0.0f,
         0.0f, 0.0f, 0.0f, 1.0f);
 
     Matrix4f World = Translation * Rotation;
 
-    Vector3f CameraPos(1.0f, -1.0f, -1.0f);
+    Vector3f CameraPos(0.0f, 0.0f, -3.0f);
     Vector3f U(1.0f, 0.0f, 0.0f);
     Vector3f V(0.0f, 1.0f, 0.0f);
     Vector3f N(0.0f, 0.0f, 1.0f);
 
-    Matrix4f Camera(U.x, U.y, U.z, -CameraPos.x,
-        V.x, V.y, V.z, -CameraPos.y,
-        N.x, N.y, N.z, -CameraPos.z,
+    Matrix4f Camera(
+        U.x,  U.y,  U.z,  -CameraPos.x,
+        V.x,  V.y,  V.z,  -CameraPos.y,
+        N.x,  N.y,  N.z,  -CameraPos.z,
         0.0f, 0.0f, 0.0f, 1.0f);
 
     float VFOV = 45.0f;
@@ -87,10 +90,11 @@ static void RenderSceneCB()
     float A = (-FarZ - NearZ) / zRange;
     float B = 2.0f * FarZ * NearZ / zRange;
 
-    Matrix4f Projection(d / ar, 0.0f, 0.0f, 0.0f,
-        0.0f, d, 0.0f, 0.0f,
-        0.0f, 0.0f, A, B,
-        0.0f, 0.0f, 1.0f, 0.0f);
+    Matrix4f Projection(
+        d / ar, 0.0f, 0.0f, 0.0f,
+        0.0f,   d,    0.0f, 0.0f,
+        0.0f,   0.0f, A,    B,
+        0.0f,   0.0f, 1.0f, 0.0f);
 
     Matrix4f WVP = Projection * Camera * World;
 
