@@ -111,7 +111,7 @@ static void RenderSceneCB()
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
 
-    glDrawElements(GL_TRIANGLES, (36 * 5), GL_UNSIGNED_INT, 0); // draw 36 indices times 5 objects (square cuboids)
+    glDrawElements(GL_TRIANGLES, (36 * 5), GL_UNSIGNED_INT, 0); // draw 36 indices times 5 objects (rectangular cuboids)
 
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
@@ -142,7 +142,7 @@ struct Vertex {
 
 static void CreateVertexBuffer()
 {
-    Vertex Vertices[8 * 5]; // 8 times 5 square cuboids
+    Vertex Vertices[8 * 5]; // 8 times 5 rectangular cuboids
 
     // tabletop size
     const float tabletop_y = 0.03f;
