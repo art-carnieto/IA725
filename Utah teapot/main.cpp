@@ -100,6 +100,7 @@ static void RenderSceneCB()
 
     glUniformMatrix4fv(gWVPLocation, 1, GL_TRUE, &WVP.m[0][0]);
 
+    /*
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
 
@@ -115,13 +116,16 @@ static void RenderSceneCB()
 
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
+    */
+
+    glutSolidTeapot(1);
 
     glutPostRedisplay();
 
     glutSwapBuffers();
 }
 
-
+/*
 struct Vertex {
     Vector3f pos;
     Vector3f color;
@@ -179,7 +183,7 @@ static void CreateIndexBuffer()
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Indices), Indices, GL_STATIC_DRAW);
 }
-
+*/
 static void AddShader(GLuint ShaderProgram, const char* pShaderText, GLenum ShaderType)
 {
     GLuint ShaderObj = glCreateShader(ShaderType);
@@ -282,7 +286,7 @@ int main(int argc, char** argv)
     int x = 200;
     int y = 100;
     glutInitWindowPosition(x, y);
-    int win = glutCreateWindow("Tutorial 13");
+    int win = glutCreateWindow("Utah Teapot");
     printf("window id: %d\n", win);
 
     // Must be done after glut is initialized!
@@ -299,8 +303,10 @@ int main(int argc, char** argv)
     glFrontFace(GL_CW);
     glCullFace(GL_BACK);
 
+    /*
     CreateVertexBuffer();
     CreateIndexBuffer();
+    */
 
     CompileShaders();
 
