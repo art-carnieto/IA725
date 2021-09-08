@@ -10,5 +10,5 @@ out vec4 Color;
 void main()
 {
     gl_Position = gWVP * vec4(Position, 1.0);
-    Color = vec4(inColor, 1.0);
+    Color = vec4(0, 0, 1, 1.0); // blue color
 }
