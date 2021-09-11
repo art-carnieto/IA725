@@ -11,6 +11,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Icosaedro", "Icosaedro\Icos
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Utah teapot", "Utah teapot\Utah teapot.vcxproj", "{A7967BC4-1E5D-4E84-B031-F227997D65D1}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Scene1", "Scene1\Scene1.vcxproj", "{F3B8CD95-D786-436E-B385-FD6A3B9CA727}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -51,6 +53,14 @@ Global
 		{A7967BC4-1E5D-4E84-B031-F227997D65D1}.Release|x64.Build.0 = Release|x64
 		{A7967BC4-1E5D-4E84-B031-F227997D65D1}.Release|x86.ActiveCfg = Release|Win32
 		{A7967BC4-1E5D-4E84-B031-F227997D65D1}.Release|x86.Build.0 = Release|Win32
+		{F3B8CD95-D786-436E-B385-FD6A3B9CA727}.Debug|x64.ActiveCfg = Debug|x64
+		{F3B8CD95-D786-436E-B385-FD6A3B9CA727}.Debug|x64.Build.0 = Debug|x64
+		{F3B8CD95-D786-436E-B385-FD6A3B9CA727}.Debug|x86.ActiveCfg = Debug|Win32
+		{F3B8CD95-D786-436E-B385-FD6A3B9CA727}.Debug|x86.Build.0 = Debug|Win32
+		{F3B8CD95-D786-436E-B385-FD6A3B9CA727}.Release|x64.ActiveCfg = Release|x64
+		{F3B8CD95-D786-436E-B385-FD6A3B9CA727}.Release|x64.Build.0 = Release|x64
+		{F3B8CD95-D786-436E-B385-FD6A3B9CA727}.Release|x86.ActiveCfg = Release|Win32
+		{F3B8CD95-D786-436E-B385-FD6A3B9CA727}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
