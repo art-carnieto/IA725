@@ -48,7 +48,7 @@ GLuint gWVPLocation;
 
 // These are the 12 vertices for the icosahedron
 static GLfloat vdata[NVERTEX][3] = {
-   {-X, 0.0, Z}, {X, 0.0, Z}, {-X, 0.0, -Z}, {X, 0.0, -Z},
+   {-X, 0.0, Z},{X, 0.0, Z}, {-X, 0.0, -Z}, {X, 0.0, -Z},
    {0.0, Z, X}, {0.0, Z, -X}, {0.0, -Z, X}, {0.0, -Z, -X},
    {Z, X, 0.0}, {-Z, X, 0.0}, {Z, -X, 0.0}, {-Z, -X, 0.0}
 };
@@ -130,6 +130,8 @@ static void RenderSceneCB()
 {
     glClear(GL_COLOR_BUFFER_BIT);
 
+    //glutSolidTeapot(1);
+
     static float Scale = 0.0f;
 
 #ifdef _WIN64
@@ -152,7 +154,7 @@ static void RenderSceneCB()
 
     Matrix4f World = Translation * Rotation;
 
-    Vector3f CameraPos(0.0f, 0.0f, -3.0f);
+    Vector3f CameraPos(0.0f, 0.0f, -4.0f);
     Vector3f U(1.0f, 0.0f, 0.0f);
     Vector3f V(0.0f, 1.0f, 0.0f);
     Vector3f N(0.0f, 0.0f, 1.0f);
@@ -232,6 +234,8 @@ static void CreateVertexBuffer()
 {
     Vertex Vertices[8 * 5]; // 8 times 5 rectangular cuboids
 
+    const float table_posY = -1.5f; // table object position
+
     // tabletop size
     const float tabletop_y = 0.03f;
     const float tabletop_x = 0.8f;
@@ -258,54 +262,54 @@ static void CreateVertexBuffer()
     const float table_leg4_posZ = 0.8f - table_leg_z;
 
     // tabletop
-    Vertices[0] = Vertex(tabletop_x, tabletop_y + tabletop_posY, tabletop_z);
-    Vertices[1] = Vertex(-tabletop_x, tabletop_y + tabletop_posY, -tabletop_z);
-    Vertices[2] = Vertex(-tabletop_x, tabletop_y + tabletop_posY, tabletop_z);
-    Vertices[3] = Vertex(tabletop_x, -tabletop_y + tabletop_posY, -tabletop_z);
-    Vertices[4] = Vertex(-tabletop_x, -tabletop_y + tabletop_posY, -tabletop_z);
-    Vertices[5] = Vertex(tabletop_x, tabletop_y + tabletop_posY, -tabletop_z);
-    Vertices[6] = Vertex(tabletop_x, -tabletop_y + tabletop_posY, tabletop_z);
-    Vertices[7] = Vertex(-tabletop_x, -tabletop_y + tabletop_posY, tabletop_z);
+    Vertices[0] = Vertex(tabletop_x, table_posY + tabletop_y + tabletop_posY, tabletop_z);
+    Vertices[1] = Vertex(-tabletop_x, table_posY + tabletop_y + tabletop_posY, -tabletop_z);
+    Vertices[2] = Vertex(-tabletop_x, table_posY + tabletop_y + tabletop_posY, tabletop_z);
+    Vertices[3] = Vertex(tabletop_x, table_posY + -tabletop_y + tabletop_posY, -tabletop_z);
+    Vertices[4] = Vertex(-tabletop_x, table_posY + -tabletop_y + tabletop_posY, -tabletop_z);
+    Vertices[5] = Vertex(tabletop_x, table_posY + tabletop_y + tabletop_posY, -tabletop_z);
+    Vertices[6] = Vertex(tabletop_x, table_posY + -tabletop_y + tabletop_posY, tabletop_z);
+    Vertices[7] = Vertex(-tabletop_x, table_posY + -tabletop_y + tabletop_posY, tabletop_z);
 
     // table leg 1
-    Vertices[8] = Vertex(table_leg_x + table_leg1_posX, table_leg_y, table_leg_z + table_leg1_posZ);
-    Vertices[9] = Vertex(-table_leg_x + table_leg1_posX, table_leg_y, -table_leg_z + table_leg1_posZ);
-    Vertices[10] = Vertex(-table_leg_x + table_leg1_posX, table_leg_y, table_leg_z + table_leg1_posZ);
-    Vertices[11] = Vertex(table_leg_x + table_leg1_posX, -table_leg_y, -table_leg_z + table_leg1_posZ);
-    Vertices[12] = Vertex(-table_leg_x + table_leg1_posX, -table_leg_y, -table_leg_z + table_leg1_posZ);
-    Vertices[13] = Vertex(table_leg_x + table_leg1_posX, table_leg_y, -table_leg_z + table_leg1_posZ);
-    Vertices[14] = Vertex(table_leg_x + table_leg1_posX, -table_leg_y, table_leg_z + table_leg1_posZ);
-    Vertices[15] = Vertex(-table_leg_x + table_leg1_posX, -table_leg_y, table_leg_z + table_leg1_posZ);
+    Vertices[8] = Vertex(table_leg_x + table_leg1_posX, table_posY + table_leg_y, table_leg_z + table_leg1_posZ);
+    Vertices[9] = Vertex(-table_leg_x + table_leg1_posX, table_posY + table_leg_y, -table_leg_z + table_leg1_posZ);
+    Vertices[10] = Vertex(-table_leg_x + table_leg1_posX, table_posY + table_leg_y, table_leg_z + table_leg1_posZ);
+    Vertices[11] = Vertex(table_leg_x + table_leg1_posX, table_posY + -table_leg_y, -table_leg_z + table_leg1_posZ);
+    Vertices[12] = Vertex(-table_leg_x + table_leg1_posX, table_posY + -table_leg_y, -table_leg_z + table_leg1_posZ);
+    Vertices[13] = Vertex(table_leg_x + table_leg1_posX, table_posY + table_leg_y, -table_leg_z + table_leg1_posZ);
+    Vertices[14] = Vertex(table_leg_x + table_leg1_posX, table_posY + -table_leg_y, table_leg_z + table_leg1_posZ);
+    Vertices[15] = Vertex(-table_leg_x + table_leg1_posX, table_posY + -table_leg_y, table_leg_z + table_leg1_posZ);
 
     // table leg 2
-    Vertices[16] = Vertex(table_leg_x + table_leg2_posX, table_leg_y, table_leg_z + table_leg2_posZ);
-    Vertices[17] = Vertex(-table_leg_x + table_leg2_posX, table_leg_y, -table_leg_z + table_leg2_posZ);
-    Vertices[18] = Vertex(-table_leg_x + table_leg2_posX, table_leg_y, table_leg_z + table_leg2_posZ);
-    Vertices[19] = Vertex(table_leg_x + table_leg2_posX, -table_leg_y, -table_leg_z + table_leg2_posZ);
-    Vertices[20] = Vertex(-table_leg_x + table_leg2_posX, -table_leg_y, -table_leg_z + table_leg2_posZ);
-    Vertices[21] = Vertex(table_leg_x + table_leg2_posX, table_leg_y, -table_leg_z + table_leg2_posZ);
-    Vertices[22] = Vertex(table_leg_x + table_leg2_posX, -table_leg_y, table_leg_z + table_leg2_posZ);
-    Vertices[23] = Vertex(-table_leg_x + table_leg2_posX, -table_leg_y, table_leg_z + table_leg2_posZ);
+    Vertices[16] = Vertex(table_leg_x + table_leg2_posX, table_posY + table_leg_y, table_leg_z + table_leg2_posZ);
+    Vertices[17] = Vertex(-table_leg_x + table_leg2_posX, table_posY + table_leg_y, -table_leg_z + table_leg2_posZ);
+    Vertices[18] = Vertex(-table_leg_x + table_leg2_posX, table_posY + table_leg_y, table_leg_z + table_leg2_posZ);
+    Vertices[19] = Vertex(table_leg_x + table_leg2_posX, table_posY + -table_leg_y, -table_leg_z + table_leg2_posZ);
+    Vertices[20] = Vertex(-table_leg_x + table_leg2_posX, table_posY + -table_leg_y, -table_leg_z + table_leg2_posZ);
+    Vertices[21] = Vertex(table_leg_x + table_leg2_posX, table_posY + table_leg_y, -table_leg_z + table_leg2_posZ);
+    Vertices[22] = Vertex(table_leg_x + table_leg2_posX, table_posY + -table_leg_y, table_leg_z + table_leg2_posZ);
+    Vertices[23] = Vertex(-table_leg_x + table_leg2_posX, table_posY + -table_leg_y, table_leg_z + table_leg2_posZ);
 
     // table leg 3
-    Vertices[24] = Vertex(table_leg_x + table_leg3_posX, table_leg_y, table_leg_z + table_leg3_posZ);
-    Vertices[25] = Vertex(-table_leg_x + table_leg3_posX, table_leg_y, -table_leg_z + table_leg3_posZ);
-    Vertices[26] = Vertex(-table_leg_x + table_leg3_posX, table_leg_y, table_leg_z + table_leg3_posZ);
-    Vertices[27] = Vertex(table_leg_x + table_leg3_posX, -table_leg_y, -table_leg_z + table_leg3_posZ);
-    Vertices[28] = Vertex(-table_leg_x + table_leg3_posX, -table_leg_y, -table_leg_z + table_leg3_posZ);
-    Vertices[29] = Vertex(table_leg_x + table_leg3_posX, table_leg_y, -table_leg_z + table_leg3_posZ);
-    Vertices[30] = Vertex(table_leg_x + table_leg3_posX, -table_leg_y, table_leg_z + table_leg3_posZ);
-    Vertices[31] = Vertex(-table_leg_x + table_leg3_posX, -table_leg_y, table_leg_z + table_leg3_posZ);
+    Vertices[24] = Vertex(table_leg_x + table_leg3_posX, table_posY + table_leg_y, table_leg_z + table_leg3_posZ);
+    Vertices[25] = Vertex(-table_leg_x + table_leg3_posX, table_posY + table_leg_y, -table_leg_z + table_leg3_posZ);
+    Vertices[26] = Vertex(-table_leg_x + table_leg3_posX, table_posY + table_leg_y, table_leg_z + table_leg3_posZ);
+    Vertices[27] = Vertex(table_leg_x + table_leg3_posX, table_posY + -table_leg_y, -table_leg_z + table_leg3_posZ);
+    Vertices[28] = Vertex(-table_leg_x + table_leg3_posX, table_posY + -table_leg_y, -table_leg_z + table_leg3_posZ);
+    Vertices[29] = Vertex(table_leg_x + table_leg3_posX, table_posY + table_leg_y, -table_leg_z + table_leg3_posZ);
+    Vertices[30] = Vertex(table_leg_x + table_leg3_posX, table_posY + -table_leg_y, table_leg_z + table_leg3_posZ);
+    Vertices[31] = Vertex(-table_leg_x + table_leg3_posX, table_posY + -table_leg_y, table_leg_z + table_leg3_posZ);
 
     // table leg 4
-    Vertices[32] = Vertex(table_leg_x + table_leg4_posX, table_leg_y, table_leg_z + table_leg4_posZ);
-    Vertices[33] = Vertex(-table_leg_x + table_leg4_posX, table_leg_y, -table_leg_z + table_leg4_posZ);
-    Vertices[34] = Vertex(-table_leg_x + table_leg4_posX, table_leg_y, table_leg_z + table_leg4_posZ);
-    Vertices[35] = Vertex(table_leg_x + table_leg4_posX, -table_leg_y, -table_leg_z + table_leg4_posZ);
-    Vertices[36] = Vertex(-table_leg_x + table_leg4_posX, -table_leg_y, -table_leg_z + table_leg4_posZ);
-    Vertices[37] = Vertex(table_leg_x + table_leg4_posX, table_leg_y, -table_leg_z + table_leg4_posZ);
-    Vertices[38] = Vertex(table_leg_x + table_leg4_posX, -table_leg_y, table_leg_z + table_leg4_posZ);
-    Vertices[39] = Vertex(-table_leg_x + table_leg4_posX, -table_leg_y, table_leg_z + table_leg4_posZ);
+    Vertices[32] = Vertex(table_leg_x + table_leg4_posX, table_posY + table_leg_y, table_leg_z + table_leg4_posZ);
+    Vertices[33] = Vertex(-table_leg_x + table_leg4_posX, table_posY + table_leg_y, -table_leg_z + table_leg4_posZ);
+    Vertices[34] = Vertex(-table_leg_x + table_leg4_posX, table_posY + table_leg_y, table_leg_z + table_leg4_posZ);
+    Vertices[35] = Vertex(table_leg_x + table_leg4_posX, table_posY + -table_leg_y, -table_leg_z + table_leg4_posZ);
+    Vertices[36] = Vertex(-table_leg_x + table_leg4_posX, table_posY + -table_leg_y, -table_leg_z + table_leg4_posZ);
+    Vertices[37] = Vertex(table_leg_x + table_leg4_posX, table_posY + table_leg_y, -table_leg_z + table_leg4_posZ);
+    Vertices[38] = Vertex(table_leg_x + table_leg4_posX, table_posY + -table_leg_y, table_leg_z + table_leg4_posZ);
+    Vertices[39] = Vertex(-table_leg_x + table_leg4_posX, table_posY + -table_leg_y, table_leg_z + table_leg4_posZ);
 
     glGenBuffers(1, &VBO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -509,6 +513,8 @@ int main(int argc, char** argv)
     glEnable(GL_CULL_FACE);
     glFrontFace(GL_CW);
     glCullFace(GL_BACK);
+
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // wireframe mode
 
     CreateVertexBuffer();
     CreateIndexBuffer();
