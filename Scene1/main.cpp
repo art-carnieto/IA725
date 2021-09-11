@@ -154,7 +154,7 @@ static void RenderSceneCB()
 
     Matrix4f World = Translation * Rotation;
 
-    Vector3f CameraPos(0.0f, 0.0f, -4.0f);
+    Vector3f CameraPos(0.0f, 0.0f, -6.0f);
     Vector3f U(1.0f, 0.0f, 0.0f);
     Vector3f V(0.0f, 1.0f, 0.0f);
     Vector3f N(0.0f, 0.0f, 1.0f);
@@ -238,8 +238,8 @@ static void CreateVertexBuffer()
 
     // tabletop size
     const float tabletop_y = 0.03f;
-    const float tabletop_x = 0.8f;
-    const float tabletop_z = 0.8f;
+    const float tabletop_x = 2.0f;
+    const float tabletop_z = 2.0f;
 
     // table legs size
     const float table_leg_y = 0.5f;
@@ -249,17 +249,17 @@ static void CreateVertexBuffer()
     const float tabletop_posY = 0.5f; // makes the tabletop go up
 
     // table legs positions
-    const float table_leg1_posX = -0.8f + table_leg_x;
-    const float table_leg1_posZ = -0.8f + table_leg_z;
+    const float table_leg1_posX = -2.0f + table_leg_x;
+    const float table_leg1_posZ = -2.0f + table_leg_z;
 
-    const float table_leg2_posX = 0.8f - table_leg_x;
-    const float table_leg2_posZ = -0.8f + table_leg_z;
+    const float table_leg2_posX = 2.0f - table_leg_x;
+    const float table_leg2_posZ = -2.0f + table_leg_z;
 
-    const float table_leg3_posX = -0.8f + table_leg_x;
-    const float table_leg3_posZ = 0.8f - table_leg_z;
+    const float table_leg3_posX = -2.0f + table_leg_x;
+    const float table_leg3_posZ = 2.0f - table_leg_z;
 
-    const float table_leg4_posX = 0.8f - table_leg_x;
-    const float table_leg4_posZ = 0.8f - table_leg_z;
+    const float table_leg4_posX = 2.0f - table_leg_x;
+    const float table_leg4_posZ = 2.0f - table_leg_z;
 
     // tabletop
     Vertices[0] = Vertex(tabletop_x, table_posY + tabletop_y + tabletop_posY, tabletop_z);
@@ -497,7 +497,7 @@ int main(int argc, char** argv)
     int x = 200;
     int y = 100;
     glutInitWindowPosition(x, y);
-    int win = glutCreateWindow("Mesa");
+    int win = glutCreateWindow("Scene1");
     printf("window id: %d\n", win);
 
     // Must be done after glut is initialized!
