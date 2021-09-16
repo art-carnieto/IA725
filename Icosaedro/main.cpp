@@ -36,6 +36,9 @@
 #define M_PI 3.14159265358979323846
 #endif
 
+//Ting: eh recomendavel criar um VAO
+GLuint VAO;
+
 GLuint VBO;  // VBO = Vertex Buffer Object
 GLuint IBO;  // VBO = Vertex Buffer Object
 GLuint gWVPLocation;
@@ -70,6 +73,7 @@ void normalize(float v[3]) {
     v[2] /= d;
 }
 
+//Ting: Arthur, voce esta usando tecnica antiga de desenhar uma mesa.
 void drawTriangle(GLfloat* v1, GLfloat* v2, GLfloat* v3)
 {
     // Draw a triangle with specified vertices 
@@ -218,6 +222,10 @@ struct Vertex {
 
 static void CreateVertexBuffer()
 {
+    //Ting: eh uma boa pratica criar um vertex array object para "conter" todos os estados de vertices
+    glGenVertexArrays(1, &VAO);
+    glBindVertexArray(VAO);
+
     const float posX = 0.525731112119133606f;
     const float posY = 0.0f;
     const float posZ = 0.850650808352039932f;
@@ -381,8 +389,12 @@ int main(int argc, char** argv)
     int x = 200;
     int y = 100;
     glutInitWindowPosition(x, y);
+    
+    //Ting: setar profile de OpenGL explicitamente eh uma boa pratica ... 
+    glutInitContextVersion(3, 3);// Major version and minor version
+    glutInitContextProfile(GLUT_CORE_PROFILE);
+
     int win = glutCreateWindow("Icosaedro");
-    printf("window id: %d\n", win);
 
     // Must be done after glut is initialized!
     GLenum res = glewInit();
