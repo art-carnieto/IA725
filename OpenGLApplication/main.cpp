@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include <glew.h>
-#include <glut.h>
+#include <GL/glew.h>
+#include <GL/freeglut.h>
 
 int main(int argc, char* argv[])
 {

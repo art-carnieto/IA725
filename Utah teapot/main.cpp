@@ -22,9 +22,10 @@
 #include <string.h>
 
 #include <math.h>
-#include <glew.h>
-#include <freeglut.h>
+#include <GL/glew.h>
+#include <GL/freeglut.h>
 
+#include "ogldev_util.h"
 #include "ogldev_math_3d.h"
 
 #define WINDOW_WIDTH  1280
