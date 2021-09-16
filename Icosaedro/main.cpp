@@ -36,8 +36,8 @@
 #define M_PI 3.14159265358979323846
 #endif
 
-GLuint VBO;
-GLuint IBO;
+GLuint VBO;  // VBO = Vertex Buffer Object
+GLuint IBO;  // VBO = Vertex Buffer Object
 GLuint gWVPLocation;
 
 #define NFACE 20
@@ -130,7 +130,7 @@ static void RenderSceneCB()
 {
     glClear(GL_COLOR_BUFFER_BIT);
 
-    static float Scale = 0.0f;
+    static float Scale = 0.0f;    // scale is used to rotate the world
 
 #ifdef _WIN64
     Scale += 0.001f;
@@ -138,12 +138,14 @@ static void RenderSceneCB()
     Scale += 0.02f;
 #endif
 
+    // rotation around Y axis
     Matrix4f Rotation(
         cosf(Scale), 0.0f, -sinf(Scale), 0.0f,
         0.0f,        1.0f, 0.0f,         0.0f,
         sinf(Scale), 0.0f, cosf(Scale),  0.0f,
         0.0f,        0.0f, 0.0f,         1.0f);
 
+    // doesn't translate
     Matrix4f Translation(
         1.0f, 0.0f, 0.0f, 0.0f,
         0.0f, 1.0f, 0.0f, 0.0f,
@@ -152,10 +154,11 @@ static void RenderSceneCB()
 
     Matrix4f World = Translation * Rotation;
 
+    // camera is positioned on X = -3
     Vector3f CameraPos(0.0f, 0.0f, -3.0f);
-    Vector3f U(1.0f, 0.0f, 0.0f);
-    Vector3f V(0.0f, 1.0f, 0.0f);
-    Vector3f N(0.0f, 0.0f, 1.0f);
+    Vector3f U(1.0f, 0.0f, 0.0f);   // U
+    Vector3f V(0.0f, 1.0f, 0.0f);   // V
+    Vector3f N(0.0f, 0.0f, 1.0f);   // W
 
     Matrix4f Camera(
         U.x,  U.y,  U.z,  -CameraPos.x,
@@ -163,25 +166,27 @@ static void RenderSceneCB()
         N.x,  N.y,  N.z,  -CameraPos.z,
         0.0f, 0.0f, 0.0f, 1.0f);
 
-    float VFOV = 45.0f;
-    float tanHalfVFOV = tanf(ToRadian(VFOV / 2.0f));
+    float VFOV = 45.0f; // FOV = Field of View
+    float tanHalfVFOV = tanf(ToRadian(VFOV / 2.0f));    // AB
     float d = 1 / tanHalfVFOV;
-    float ar = (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT;
+    float ar = (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT; // aspect ratio
 
-    float NearZ = 1.0f;
-    float FarZ = 10.0f;
+    float NearZ = 1.0f;     // near plane distance
+    float FarZ = 10.0f;     // far plane distance
 
-    float zRange = NearZ - FarZ;
+    float zRange = NearZ - FarZ;    // Frustum
 
     float A = (-FarZ - NearZ) / zRange;
     float B = 2.0f * FarZ * NearZ / zRange;
 
+    // Mpp = Matrix of Parallel Projection
     Matrix4f Projection(
         d / ar, 0.0f, 0.0f, 0.0f,
         0.0f,   d,    0.0f, 0.0f,
         0.0f,   0.0f, A,    B,
         0.0f,   0.0f, 1.0f, 0.0f);
 
+    // World View Projection
     Matrix4f WVP = Projection * Camera * World;
 
     glUniformMatrix4fv(gWVPLocation, 1, GL_TRUE, &WVP.m[0][0]);
