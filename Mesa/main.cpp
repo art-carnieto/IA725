@@ -36,6 +36,9 @@
 #define M_PI 3.14159265358979323846
 #endif
 
+//Ting: eh recomendavel criar um VAO
+GLuint VAO; // VAO = Vertex Array Object
+
 GLuint VBO; // VBO = Vertex Buffer Object
 GLuint IBO; // IBO = Index Buffer Object
 GLuint gWVPLocation;
@@ -227,6 +230,10 @@ static void CreateVertexBuffer()
     Vertices[38] = Vertex(table_leg_x + table_leg4_posX, -table_leg_y, table_leg_z + table_leg4_posZ);
     Vertices[39] = Vertex(-table_leg_x + table_leg4_posX, -table_leg_y, table_leg_z + table_leg4_posZ);
 
+    //Ting: eh uma boa pratica criar um vertex array object para "conter" todos os estados de vertices
+    glGenVertexArrays(1, &VAO);
+    glBindVertexArray(VAO);
+
     glGenBuffers(1, &VBO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(Vertices), Vertices, GL_STATIC_DRAW);
@@ -414,7 +421,10 @@ int main(int argc, char** argv)
     int y = 100;
     glutInitWindowPosition(x, y);
     int win = glutCreateWindow("Mesa");
-    printf("window id: %d\n", win);
+    
+    //Ting: setar profile de OpenGL explicitamente eh uma boa pratica ... 
+    glutInitContextVersion(3, 3);// Major version and minor version
+    glutInitContextProfile(GLUT_CORE_PROFILE);
 
     // Must be done after glut is initialized!
     GLenum res = glewInit();
