@@ -418,11 +418,12 @@ int main(int argc, char** argv)
     int x = 200;
     int y = 100;
     glutInitWindowPosition(x, y);
-    int win = glutCreateWindow("Mesa");
     
     //Ting: setar profile de OpenGL explicitamente eh uma boa pratica ... 
     glutInitContextVersion(3, 3);// Major version and minor version
     glutInitContextProfile(GLUT_CORE_PROFILE);
+
+    int win = glutCreateWindow("Mesa");
 
     // Must be done after glut is initialized!
     GLenum res = glewInit();
