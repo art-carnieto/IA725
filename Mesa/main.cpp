@@ -97,8 +97,6 @@ static void RenderSceneCB()
     float A = (-FarZ - NearZ) / zRange;
     float B = 2.0f * FarZ * NearZ / zRange;
 
-    printf("%f %f\n", A, B);
-
     // Mpp = Matrix of Parallel Projection
     Matrix4f Projection(
         d / ar, 0.0f, 0.0f, 0.0f,
