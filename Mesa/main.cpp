@@ -104,7 +104,7 @@ static void RenderSceneCB()
         0.0f,   0.0f, A,    B,
         0.0f,   0.0f, 1.0f, 0.0f);
 
-    // World View Perspective
+    // World View Projection
     Matrix4f WVP = Projection * Camera * World;
 
     glUniformMatrix4fv(gWVPLocation, 1, GL_TRUE, &WVP.m[0][0]);
