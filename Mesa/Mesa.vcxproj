@@ -142,6 +142,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Geometry.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ogldev_util.cpp" />
   </ItemGroup>
@@ -153,6 +154,9 @@
   <ItemGroup>
     <None Include="shader.fs" />
     <None Include="shader.vs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Geometry.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
