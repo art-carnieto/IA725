@@ -117,3 +117,49 @@ void createTable(Vector3f position,
         table_height - tabletop_thickness, -table_height,
         (table_width / 2), (table_width / 2) - tableleg_width);
 }
+
+void createRegularIcosahedron(Vector3f position, Vector3f scale) {
+    float x = 0.525731112119133606f;
+    float z = 0.850650808352039932f;
+
+    pushVertex(-x, 0.0f,  z);
+    pushVertex( x, 0.0f,  z);
+    pushVertex(-x, 0.0f, -z);
+    pushVertex( x, 0.0f, -z);
+
+    pushVertex(0.0f,  z,  x);
+    pushVertex(0.0f,  z, -x);
+    pushVertex(0.0f, -z,  x);
+    pushVertex(0.0f, -z, -x);
+
+    pushVertex( z, x, 0.0f);
+    pushVertex(-z, x, 0.0f);
+    pushVertex( z,-x, 0.0f);
+    pushVertex(-z,-x, 0.0f);
+
+    pushIndices(0, 4, 1);
+    pushIndices(0, 9, 4);
+    pushIndices(9, 5, 4);
+    pushIndices(4, 5, 8);
+    pushIndices(4, 8, 1);
+
+    pushIndices(8, 10, 1);
+    pushIndices(8, 3, 10);
+    pushIndices(5, 3, 8);
+    pushIndices(5, 2, 3);
+    pushIndices(2, 7, 3);
+
+    pushIndices(7, 10, 3);
+    pushIndices(7, 6, 10);
+    pushIndices(7, 11, 6);
+    pushIndices(11, 0, 6);
+    pushIndices(0, 1, 6);
+
+    pushIndices(6, 1, 10);
+    pushIndices(9, 0, 11);
+    pushIndices(9, 11, 2);
+    pushIndices(9, 2, 5);
+    pushIndices(7, 2, 11);
+
+    indices_offset += 20;
+}

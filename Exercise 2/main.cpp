@@ -315,8 +315,12 @@ int main(int argc, char** argv)
     createCubeWithBoundaries({ 0.7,  0, 0 }, -0.3f, 0.3f, 0.3f, -0.3f, 0.3f, -0.3f);
     */
 
+    /*
     //       pos   x     y     z     length  heigth  width  top_thickness  leg_length  leg_width
     createTable({ 0.0f, 0.0f, 0.0f }, 2.0f,   0.5f,   1.0f,      0.1f,        0.05f,     0.2f);
+    */
+
+    createRegularIcosahedron({}, {});
 
     CreateVertexBuffer();
     CreateIndexBuffer();
