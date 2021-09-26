@@ -62,7 +62,7 @@ void createCube(Vector3f position, Vector3f scale) {
     indices_offset += 8;
 }
 
-void createCubeWithBoundaries(Vector3f position,
+void createCubeUsingBoundaries(Vector3f position,
                               float x_left_boundary, float x_right_boundary, 
                               float y_up_boundary, float y_down_boundary,
                               float z_front_boundary, float z_back_boundary) {
@@ -100,25 +100,25 @@ void createTable(Vector3f position,
 
     // table legs
     // left back
-    createCubeWithBoundaries({position[0], position[1], position[2]}, 
+    createCubeUsingBoundaries({position[0], position[1], position[2]}, 
         -(table_length / 2), -(table_length / 2) + tableleg_length,
         table_height - tabletop_thickness, -table_height,
         -(table_width / 2) + tableleg_width, -(table_width / 2));
     
     // left front
-    createCubeWithBoundaries({ position[0], position[1], position[2] },
+    createCubeUsingBoundaries({ position[0], position[1], position[2] },
         -(table_length / 2), -(table_length / 2) + tableleg_length,
         table_height - tabletop_thickness, -table_height,
         (table_width / 2), (table_width / 2) - tableleg_width);
     
     // right back
-    createCubeWithBoundaries({ position[0], position[1], position[2] },
+    createCubeUsingBoundaries({ position[0], position[1], position[2] },
         (table_length / 2) - tableleg_length, (table_length / 2),
         table_height - tabletop_thickness, -table_height,
         -(table_width / 2) + tableleg_width, -(table_width / 2));
 
     // right front
-    createCubeWithBoundaries({ position[0], position[1], position[2] },
+    createCubeUsingBoundaries({ position[0], position[1], position[2] },
         (table_length / 2) - tableleg_length, (table_length / 2),
         table_height - tabletop_thickness, -table_height,
         (table_width / 2), (table_width / 2) - tableleg_width);
