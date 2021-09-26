@@ -30,6 +30,12 @@ void pushIndices(unsigned int a, unsigned int b, unsigned int c) {
     Indices.emplace_back(c + indices_offset);
 }
 
+void pushIndicesInverted(unsigned int a, unsigned int b, unsigned int c) {
+    Indices.emplace_back(b + indices_offset);
+    Indices.emplace_back(a + indices_offset);
+    Indices.emplace_back(c + indices_offset);
+}
+
 void createCube(Vector3f position, Vector3f scale) {
     pushVertex((1 * (scale[0]/2)) + position[0], (1 * (scale[1]/2)) + position[1], (1 * (scale[2]/2)) + position[2]);    // +x, +y, +z
     pushVertex((1 * (-scale[0]/2)) + position[0], (1 * (scale[1]/2)) + position[1], (1 * (-scale[2]/2)) + position[2]);  // -x, +y, -z
@@ -137,29 +143,29 @@ void createRegularIcosahedron(Vector3f position, Vector3f scale) {
     pushVertex( z,-x, 0.0f);
     pushVertex(-z,-x, 0.0f);
 
-    pushIndices(0, 4, 1);
-    pushIndices(0, 9, 4);
-    pushIndices(9, 5, 4);
-    pushIndices(4, 5, 8);
-    pushIndices(4, 8, 1);
+    pushIndicesInverted(0, 4, 1);
+    pushIndicesInverted(0, 9, 4);
+    pushIndicesInverted(9, 5, 4);
+    pushIndicesInverted(4, 5, 8);
+    pushIndicesInverted(4, 8, 1);
 
-    pushIndices(8, 10, 1);
-    pushIndices(8, 3, 10);
-    pushIndices(5, 3, 8);
-    pushIndices(5, 2, 3);
-    pushIndices(2, 7, 3);
+    pushIndicesInverted(8, 10, 1);
+    pushIndicesInverted(8, 3, 10);
+    pushIndicesInverted(5, 3, 8);
+    pushIndicesInverted(5, 2, 3);
+    pushIndicesInverted(2, 7, 3);
 
-    pushIndices(7, 10, 3);
-    pushIndices(7, 6, 10);
-    pushIndices(7, 11, 6);
-    pushIndices(11, 0, 6);
-    pushIndices(0, 1, 6);
+    pushIndicesInverted(7, 10, 3);
+    pushIndicesInverted(7, 6, 10);
+    pushIndicesInverted(7, 11, 6);
+    pushIndicesInverted(11, 0, 6);
+    pushIndicesInverted(0, 1, 6);
 
-    pushIndices(6, 1, 10);
-    pushIndices(9, 0, 11);
-    pushIndices(9, 11, 2);
-    pushIndices(9, 2, 5);
-    pushIndices(7, 2, 11);
+    pushIndicesInverted(6, 1, 10);
+    pushIndicesInverted(9, 0, 11);
+    pushIndicesInverted(9, 11, 2);
+    pushIndicesInverted(9, 2, 5);
+    pushIndicesInverted(7, 2, 11);
 
     indices_offset += 20;
 }
