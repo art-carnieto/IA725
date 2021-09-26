@@ -129,6 +129,7 @@ static void RenderSceneCB()
 
 static void CreateVertexBuffer()
 {
+    if (Vertices.size() == 0) return;   // in case Vertices is empty
     //Ting: eh uma boa pratica criar um vertex array object para "conter" todos os estados de vertices
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
@@ -149,6 +150,7 @@ static void CreateVertexBuffer()
 
 static void CreateIndexBuffer()
 {
+    if (Indices.size() == 0) return;    // in case Indices is empty
     unsigned int* Indices_final = &Indices[0];
 
     cout << "\n==========================\n";
