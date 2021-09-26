@@ -48,7 +48,7 @@ static void RenderSceneCB()
     static float Scale = 0.0f;  // scale is used to rotate the world
 
 #ifdef _WIN64
-    Scale += 0.001f;
+    Scale += 0.007f;
 #else
     Scale += 0.02f;
 #endif
@@ -294,9 +294,26 @@ int main(int argc, char** argv)
     glFrontFace(GL_CW);
     glCullFace(GL_BACK);
 
-    //      pos:  x     y     z  scale: x      y    z
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // wireframe mode
+
+    /*
+    //    pos:    x     y     z  scale: x      y     z
     createCube({ 0.0f, 0.0f, 0.5f }, { 1.0f, 0.5f, 0.25f });
     createCube({ 0.0f, 0.0f, 0.0f }, { 0.1f, 1.0f, 0.1f });
+
+    createCube({ 0.0f, 0.0f, 0.7f }, { 0.6f, 0.6f, 0.6f });
+    createCube({ 0.0f, 0.0f, 0.0f }, { 0.6f, 0.6f, 0.6f });
+    createCube({ 0.0f, 0.0f, -0.7f }, { 0.6f, 0.6f, 0.6f });
+    */
+
+    /*
+    //                   pos:   x    y  z     left  right  up    down  front  back
+    createCubeWithBoundaries({ -0.7, 0, 0 }, -0.3f, 0.3f, 0.3f, -0.3f, 0.3f, -0.3f);
+    createCubeWithBoundaries({ 0,    0, 0 }, -0.3f, 0.3f, 0.3f, -0.3f, 0.3f, -0.3f);
+    createCubeWithBoundaries({ 0.7,  0, 0 }, -0.3f, 0.3f, 0.3f, -0.3f, 0.3f, -0.3f);
+    */
+
+    createTable({ 0.0f, 0.0f, 0.0f }, 2, 0.5, 1.0, 0.1, 0.05, 0.2);
 
     CreateVertexBuffer();
     CreateIndexBuffer();

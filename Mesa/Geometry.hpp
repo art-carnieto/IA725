@@ -24,3 +24,5 @@ extern int indices_offset;
 void pushVertex(float x, float y, float z);
 void pushIndices(unsigned int a, unsigned int b, unsigned int c);
 void createCube(Vector3f position, Vector3f scale);
+void createCubeWithBoundaries(Vector3f position, float x_left_boundary, float x_right_boundary, float y_up_boundary, float y_down_boundary, float z_front_boundary, float z_back_boundary);
+void createTable(Vector3f position, float table_length, float table_height, float table_width, float tabletop_thickness, float tableleg_length, float tableleg_width);
