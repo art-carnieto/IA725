@@ -20,78 +20,88 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <iostream> // just to use cout to print on terminal
 
 #include <math.h>
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 
+#include "ogldev_util.h"
 #include "ogldev_math_3d.h"
 
-#define WINDOW_WIDTH  1920
-#define WINDOW_HEIGHT 1080
+#include "Geometry.hpp"
 
-// to fix 'M_PI' not declared error
-#ifndef M_PI
-#define M_PI 3.14159265358979323846
-#endif
+#define WINDOW_WIDTH  1280
+#define WINDOW_HEIGHT 720
 
-GLuint VBO;
-GLuint IBO;
+//Ting: eh recomendavel criar um VAO
+GLuint VAO; // VAO = Vertex Array Object
+
+GLuint VBO; // VBO = Vertex Buffer Object
+GLuint IBO; // IBO = Index Buffer Object
 GLuint gWVPLocation;
-
 
 static void RenderSceneCB()
 {
     glClear(GL_COLOR_BUFFER_BIT);
 
-    static float Scale = 0.0f;
+    static float Scale = 0.0f;  // scale is used to rotate the world
 
 #ifdef _WIN64
-    Scale += 0.001f;
+    Scale += 0.007f;
 #else
     Scale += 0.02f;
 #endif
 
-    Matrix4f Rotation(cosf(Scale), 0.0f, -sinf(Scale), 0.0f,
+    // rotation around Y axis
+    Matrix4f Rotation(
+        cosf(Scale), 0.0f, -sinf(Scale), 0.0f,
         0.0f, 1.0f, 0.0f, 0.0f,
         sinf(Scale), 0.0f, cosf(Scale), 0.0f,
         0.0f, 0.0f, 0.0f, 1.0f);
 
-    Matrix4f Translation(1.0f, 0.0f, 0.0f, 0.0f,
+    // doesn't translate
+    Matrix4f Translation(
+        1.0f, 0.0f, 0.0f, 0.0f,
         0.0f, 1.0f, 0.0f, 0.0f,
-        0.0f, 0.0f, 1.0f, 2.0f,
+        0.0f, 0.0f, 1.0f, 0.0f,
         0.0f, 0.0f, 0.0f, 1.0f);
 
     Matrix4f World = Translation * Rotation;
 
-    Vector3f CameraPos(1.0f, -1.0f, -1.0f);
-    Vector3f U(1.0f, 0.0f, 0.0f);
-    Vector3f V(0.0f, 1.0f, 0.0f);
-    Vector3f N(0.0f, 0.0f, 1.0f);
+    // camera is positioned on X = -3
+    Vector3f CameraPos(0.0f, 0.0f, -3.0f);
+    Vector3f U(1.0f, 0.0f, 0.0f);   // U
+    Vector3f V(0.0f, 1.0f, 0.0f);   // V
+    Vector3f N(0.0f, 0.0f, 1.0f);   // W
 
-    Matrix4f Camera(U.x, U.y, U.z, -CameraPos.x,
+    Matrix4f Camera(
+        U.x, U.y, U.z, -CameraPos.x,
         V.x, V.y, V.z, -CameraPos.y,
         N.x, N.y, N.z, -CameraPos.z,
         0.0f, 0.0f, 0.0f, 1.0f);
 
-    float VFOV = 45.0f;
-    float tanHalfVFOV = tanf(ToRadian(VFOV / 2.0f));
+    float VFOV = 45.0f; // FOV = Field of View
+    float tanHalfVFOV = tanf(ToRadian(VFOV / 2.0f));    // AB
     float d = 1 / tanHalfVFOV;
-    float ar = (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT;
+    float ar = (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT;  // aspect ratio
 
-    float NearZ = 1.0f;
-    float FarZ = 10.0f;
+    float NearZ = 1.0f;         // near plane distance
+    float FarZ = 10.0f;         // far plane distance
 
-    float zRange = NearZ - FarZ;
+    float zRange = NearZ - FarZ;    // Frustum
 
     float A = (-FarZ - NearZ) / zRange;
     float B = 2.0f * FarZ * NearZ / zRange;
 
-    Matrix4f Projection(d / ar, 0.0f, 0.0f, 0.0f,
+    // Mpp = Matrix of Parallel Projection
+    Matrix4f Projection(
+        d / ar, 0.0f, 0.0f, 0.0f,
         0.0f, d, 0.0f, 0.0f,
         0.0f, 0.0f, A, B,
         0.0f, 0.0f, 1.0f, 0.0f);
 
+    // World View Projection
     Matrix4f WVP = Projection * Camera * World;
 
     glUniformMatrix4fv(gWVPLocation, 1, GL_TRUE, &WVP.m[0][0]);
@@ -107,7 +117,7 @@ static void RenderSceneCB()
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
 
-    glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, (GLsizei)Indices.size(), GL_UNSIGNED_INT, 0);
 
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
@@ -117,63 +127,48 @@ static void RenderSceneCB()
     glutSwapBuffers();
 }
 
-
-struct Vertex {
-    Vector3f pos;
-    Vector3f color;
-
-    Vertex() {}
-
-    Vertex(float x, float y, float z)
-    {
-        pos = Vector3f(x, y, z);
-
-        float red = (float)rand() / (float)RAND_MAX;
-        float green = (float)rand() / (float)RAND_MAX;
-        float blue = (float)rand() / (float)RAND_MAX;
-        color = Vector3f(red, green, blue);
-    }
-};
-
-
 static void CreateVertexBuffer()
 {
-    Vertex Vertices[8];
+    //Ting: eh uma boa pratica criar um vertex array object para "conter" todos os estados de vertices
+    glGenVertexArrays(1, &VAO);
+    glBindVertexArray(VAO);
 
-    Vertices[0] = Vertex(0.5f, 0.5f, 0.5f);
-    Vertices[1] = Vertex(-0.5f, 0.5f, -0.5f);
-    Vertices[2] = Vertex(-0.5f, 0.5f, 0.5f);
-    Vertices[3] = Vertex(0.5f, -0.5f, -0.5f);
-    Vertices[4] = Vertex(-0.5f, -0.5f, -0.5f);
-    Vertices[5] = Vertex(0.5f, 0.5f, -0.5f);
-    Vertices[6] = Vertex(0.5f, -0.5f, 0.5f);
-    Vertices[7] = Vertex(-0.5f, -0.5f, 0.5f);
+    Vertex* Vertices_final = &Vertices[0];
+
+    cout << "Vertices.size() = " << Vertices.size() << "\n";
+    cout << "sizeof(Vertices_final[0]) = " << sizeof(Vertices_final[0]) << "\n";
+    cout << "Vertices.size() * sizeof(Vertices_final[0]) = " << Vertices.size() * sizeof(Vertices_final[0]) << "\n";
+    for (int i = 0; i < Vertices.size(); i++) {
+        cout << "{ " << Vertices_final[i].pos[0] << " " << Vertices_final[i].pos[1] << " " << Vertices_final[i].pos[2] << " }\n";
+    }
 
     glGenBuffers(1, &VBO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(Vertices), Vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, Vertices.size() * sizeof(Vertices_final[0]), Vertices_final, GL_STATIC_DRAW);
 }
 
 static void CreateIndexBuffer()
 {
-    unsigned int Indices[] = {
-                              0, 1, 2,
-                              1, 3, 4,
-                              5, 6, 3,
-                              7, 3, 6,
-                              2, 4, 7,
-                              0, 7, 6,
-                              0, 5, 1,
-                              1, 5, 3,
-                              5, 0, 6,
-                              7, 4, 3,
-                              2, 1, 4,
-                              0, 2, 7
-    };
+    unsigned int* Indices_final = &Indices[0];
+
+    cout << "\n==========================\n";
+    cout << "Indices.size() = " << Indices.size() << "\n";
+    cout << "sizeof(Indices_final[0]) = " << sizeof(Indices_final[0]) << "\n";
+    cout << "Indices.size() * sizeof(Indices_final[0]) = " << Indices.size() * sizeof(Indices_final[0]) << "\n";
+
+    int j = 0;
+    for (int i = 0; i < Indices.size(); i++) {
+        cout << Indices_final[i] << "  ";
+        j++;
+        if (j > 2) {
+            cout << "\n";
+            j = 0;
+        }
+    }
 
     glGenBuffers(1, &IBO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Indices), Indices, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, Indices.size() * sizeof(Indices_final[0]), Indices_final, GL_STATIC_DRAW);
 }
 
 static void AddShader(GLuint ShaderProgram, const char* pShaderText, GLenum ShaderType)
@@ -278,8 +273,12 @@ int main(int argc, char** argv)
     int x = 200;
     int y = 100;
     glutInitWindowPosition(x, y);
-    int win = glutCreateWindow("Tutorial 13");
-    printf("window id: %d\n", win);
+
+    //Ting: setar profile de OpenGL explicitamente eh uma boa pratica ... 
+    glutInitContextVersion(3, 3);// Major version and minor version
+    glutInitContextProfile(GLUT_CORE_PROFILE);
+
+    int win = glutCreateWindow("Mesa");
 
     // Must be done after glut is initialized!
     GLenum res = glewInit();
@@ -294,6 +293,28 @@ int main(int argc, char** argv)
     glEnable(GL_CULL_FACE);
     glFrontFace(GL_CW);
     glCullFace(GL_BACK);
+
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // wireframe mode
+
+    /*
+    //    pos:    x     y     z  scale: x      y     z
+    createCube({ 0.0f, 0.0f, 0.5f }, { 1.0f, 0.5f, 0.25f });
+    createCube({ 0.0f, 0.0f, 0.0f }, { 0.1f, 1.0f, 0.1f });
+
+    createCube({ 0.0f, 0.0f, 0.7f }, { 0.6f, 0.6f, 0.6f });
+    createCube({ 0.0f, 0.0f, 0.0f }, { 0.6f, 0.6f, 0.6f });
+    createCube({ 0.0f, 0.0f, -0.7f }, { 0.6f, 0.6f, 0.6f });
+    */
+
+    /*
+    //                   pos:   x    y  z     left  right  up    down  front  back
+    createCubeWithBoundaries({ -0.7, 0, 0 }, -0.3f, 0.3f, 0.3f, -0.3f, 0.3f, -0.3f);
+    createCubeWithBoundaries({ 0,    0, 0 }, -0.3f, 0.3f, 0.3f, -0.3f, 0.3f, -0.3f);
+    createCubeWithBoundaries({ 0.7,  0, 0 }, -0.3f, 0.3f, 0.3f, -0.3f, 0.3f, -0.3f);
+    */
+
+    //       pos   x     y     z   length heigth width top_thickness leg_length leg_width
+    createTable({ 0.0f, 0.0f, 0.0f }, 2,   0.5,   1.0,      0.1,        0.05,     0.2);
 
     CreateVertexBuffer();
     CreateIndexBuffer();
