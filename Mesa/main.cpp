@@ -313,7 +313,8 @@ int main(int argc, char** argv)
     createCubeWithBoundaries({ 0.7,  0, 0 }, -0.3f, 0.3f, 0.3f, -0.3f, 0.3f, -0.3f);
     */
 
-    createTable({ 0.0f, 0.0f, 0.0f }, 2, 0.5, 1.0, 0.1, 0.05, 0.2);
+    //       pos   x     y     z   length heigth width top_thickness leg_length leg_width
+    createTable({ 0.0f, 0.0f, 0.0f }, 2,    0.5,  1.0,     0.1,        0.05,       0.2);
 
     CreateVertexBuffer();
     CreateIndexBuffer();
