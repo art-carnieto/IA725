@@ -43,7 +43,7 @@ GLuint gWVPLocation;
 
 static void RenderSceneCB()
 {
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     static float Scale = 0.0f;  // scale is used to rotate the world
 
@@ -269,7 +269,7 @@ int main(int argc, char** argv)
 #endif
 
     glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
     glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 
     int x = 200;
@@ -292,6 +292,7 @@ int main(int argc, char** argv)
     GLclampf Red = 0.0f, Green = 0.0f, Blue = 0.0f, Alpha = 0.0f;
     glClearColor(Red, Green, Blue, Alpha);
 
+    glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glFrontFace(GL_CW);
     glCullFace(GL_BACK);
