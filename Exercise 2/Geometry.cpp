@@ -125,23 +125,25 @@ void createTable(Vector3f position,
 }
 
 void createRegularIcosahedron(Vector3f position, Vector3f scale) {
+    // those coordinates are pre-calculated
     float x = 0.525731112119133606f;
     float z = 0.850650808352039932f;
+    float y = 0.0f;
 
-    pushVertex(-x, 0.0f,  z);
-    pushVertex( x, 0.0f,  z);
-    pushVertex(-x, 0.0f, -z);
-    pushVertex( x, 0.0f, -z);
+    pushVertex(position[0] - x, position[1] + y, position[2] + z);
+    pushVertex(position[0] + x, position[1] + y, position[2] + z);
+    pushVertex(position[0] - x, position[1] + y, position[2] - z);
+    pushVertex(position[0] + x, position[1] + y, position[2] - z);
 
-    pushVertex(0.0f,  z,  x);
-    pushVertex(0.0f,  z, -x);
-    pushVertex(0.0f, -z,  x);
-    pushVertex(0.0f, -z, -x);
+    pushVertex(position[0] + y, position[1] + z, position[2] + x);
+    pushVertex(position[0] + y, position[1] + z, position[2] - x);
+    pushVertex(position[0] + y, position[1] - z, position[2] + x);
+    pushVertex(position[0] + y, position[1] - z, position[2] - x);
 
-    pushVertex( z, x, 0.0f);
-    pushVertex(-z, x, 0.0f);
-    pushVertex( z,-x, 0.0f);
-    pushVertex(-z,-x, 0.0f);
+    pushVertex(position[0] + z, position[1] + x, position[2] + y);
+    pushVertex(position[0] - z, position[1] + x, position[2] + y);
+    pushVertex(position[0] + z, position[1] - x, position[2] + y);
+    pushVertex(position[0] - z, position[1] - x, position[2] + y);
 
     pushIndicesInverted(0, 4, 1);
     pushIndicesInverted(0, 9, 4);

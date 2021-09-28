@@ -297,7 +297,7 @@ int main(int argc, char** argv)
     glFrontFace(GL_CW);
     glCullFace(GL_BACK);
 
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // wireframe mode
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // wireframe mode
 
     /*
     //    pos:    x     y     z  scale: x      y     z
@@ -317,10 +317,10 @@ int main(int argc, char** argv)
     */
 
     //       pos   x     y     z     length  heigth  width  top_thickness  leg_length  leg_width
-    createTable({ 0.0f, 0.0f, 0.0f }, 2.0f,   0.5f,   1.0f,      0.1f,        0.05f,     0.2f);
+    //createTable({ 0.0f, 0.0f, 0.0f }, 2.0f,   0.5f,   1.0f,      0.1f,        0.05f,     0.2f);
 
-
-    //createRegularIcosahedron({}, {});
+    //                   pos:   x     y     z
+    createRegularIcosahedron({ 1.0f, 0.0f, 0.0f }, {});
 
     CreateVertexBuffer();
     CreateIndexBuffer();
