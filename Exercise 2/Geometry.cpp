@@ -130,20 +130,20 @@ void createRegularIcosahedron(Vector3f position, Vector3f scale) {
     float z = 0.850650808352039932f;
     float y = 0.0f;
 
-    pushVertex(position[0] - x, position[1] + y, position[2] + z);
-    pushVertex(position[0] + x, position[1] + y, position[2] + z);
-    pushVertex(position[0] - x, position[1] + y, position[2] - z);
-    pushVertex(position[0] + x, position[1] + y, position[2] - z);
+    pushVertex(position[0] - (x * scale[0]), position[1] + (y * scale[1]), position[2] + (z * scale[2]));
+    pushVertex(position[0] + (x * scale[0]), position[1] + (y * scale[1]), position[2] + (z * scale[2]));
+    pushVertex(position[0] - (x * scale[0]), position[1] + (y * scale[1]), position[2] - (z * scale[2]));
+    pushVertex(position[0] + (x * scale[0]), position[1] + (y * scale[1]), position[2] - (z * scale[2]));
 
-    pushVertex(position[0] + y, position[1] + z, position[2] + x);
-    pushVertex(position[0] + y, position[1] + z, position[2] - x);
-    pushVertex(position[0] + y, position[1] - z, position[2] + x);
-    pushVertex(position[0] + y, position[1] - z, position[2] - x);
+    pushVertex(position[0] + (y * scale[0]), position[1] + (z * scale[1]), position[2] + (x * scale[2]));
+    pushVertex(position[0] + (y * scale[0]), position[1] + (z * scale[1]), position[2] - (x * scale[2]));
+    pushVertex(position[0] + (y * scale[0]), position[1] - (z * scale[1]), position[2] + (x * scale[2]));
+    pushVertex(position[0] + (y * scale[0]), position[1] - (z * scale[1]), position[2] - (x * scale[2]));
 
-    pushVertex(position[0] + z, position[1] + x, position[2] + y);
-    pushVertex(position[0] - z, position[1] + x, position[2] + y);
-    pushVertex(position[0] + z, position[1] - x, position[2] + y);
-    pushVertex(position[0] - z, position[1] - x, position[2] + y);
+    pushVertex(position[0] + (z * scale[0]), position[1] + (x * scale[1]), position[2] + (y * scale[2]));
+    pushVertex(position[0] - (z * scale[0]), position[1] + (x * scale[1]), position[2] + (y * scale[2]));
+    pushVertex(position[0] + (z * scale[0]), position[1] - (x * scale[1]), position[2] + (y * scale[2]));
+    pushVertex(position[0] - (z * scale[0]), position[1] - (x * scale[1]), position[2] + (y * scale[2]));
 
     pushIndicesInverted(0, 4, 1);
     pushIndicesInverted(0, 9, 4);
@@ -169,5 +169,5 @@ void createRegularIcosahedron(Vector3f position, Vector3f scale) {
     pushIndicesInverted(9, 2, 5);
     pushIndicesInverted(7, 2, 11);
 
-    indices_offset += 20;
+    indices_offset += 12;
 }
