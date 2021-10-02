@@ -303,7 +303,8 @@ int main(int argc, char** argv)
     //    pos:    x     y     z  scale: x      y     z
     createCube({ 0.0f, 0.0f, 0.5f }, { 1.0f, 0.5f, 0.25f });
     createCube({ 0.0f, 0.0f, 0.0f }, { 0.1f, 1.0f, 0.1f });
-
+    */
+    /*
     createCube({ 0.0f, 0.0f, 0.7f }, { 0.6f, 0.6f, 0.6f });
     createCube({ 0.0f, 0.0f, 0.0f }, { 0.6f, 0.6f, 0.6f });
     createCube({ 0.0f, 0.0f, -0.7f }, { 0.6f, 0.6f, 0.6f });
@@ -318,7 +319,7 @@ int main(int argc, char** argv)
 
     //       pos   x     y     z     length  heigth  width  top_thickness  leg_length  leg_width
     //createTable({ 0.0f, 0.0f, 0.0f }, 2.0f,   0.5f,   1.0f,      0.1f,        0.05f,     0.2f);
-
+    /*
     //                   pos:   x     y     z  scale:  x      y      z
     createRegularIcosahedron({ 0.0f, 0.0f, 0.0f }, { 0.25f, 0.25f, 0.25f });
     createRegularIcosahedron({ 0.5f, 0.0f, 0.0f }, { 0.25f, 0.25f, 0.25f });
@@ -331,6 +332,9 @@ int main(int argc, char** argv)
     createRegularIcosahedron({ 0.0f, -0.5f, 0.0f }, { 0.25f, 0.25f, 0.25f });
     createRegularIcosahedron({ 0.5f, -0.5f, 0.0f }, { 0.25f, 0.25f, 0.25f });
     createRegularIcosahedron({ -0.5f, -0.5f, 0.0f }, { 0.25f, 0.25f, 0.25f });
+    */
+    
+    createSubdividedIcosahedron(3);
 
     CreateVertexBuffer();
     CreateIndexBuffer();

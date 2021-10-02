@@ -275,3 +275,16 @@ void createRegularIcosahedron(Vector3f position, Vector3f scale) {
 
     indices_offset += 12;
 }
+
+void createSubdividedIcosahedron(int subdiv) {
+    // only works if the regular icosahedron is positioned at origin and is scaled at 1.0
+    createRegularIcosahedron({ 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f });
+
+    auto indices_size = Indices.size();
+    for (int i = 0; i < subdiv; i++) {
+        indices_size = Indices.size();
+        for (int triangle = 0; triangle < indices_size; triangle+=3) {
+            subdivideTriangle(0);
+        }
+    }
+}

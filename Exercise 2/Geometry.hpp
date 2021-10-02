@@ -36,6 +36,7 @@ void deleteVertex(int index);
 void subdivideTriangle(int num_triangle, vector<Vertex>& ver, vector<unsigned int>& ind);
 void subdivideTriangle(int num_triangle);
 void normalizeVertexPositions(float v[3]);
+void createSubdividedIcosahedron(int subdiv);
 
 // Object creation
 void createCube(Vector3f position, Vector3f scale);
