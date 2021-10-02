@@ -22,18 +22,12 @@ int indices_offset = 0;
 
 // Auxiliaries
 
-void pushVertex(float x, float y, float z) {
-    Vertices.emplace_back(Vertex(x, y, z));
-}
-
 void pushVertex(float x, float y, float z, vector<Vertex> &ver) {
     ver.emplace_back(Vertex(x, y, z));
 }
 
-void pushIndices(unsigned int a, unsigned int b, unsigned int c) {
-    Indices.emplace_back(a + indices_offset);
-    Indices.emplace_back(b + indices_offset);
-    Indices.emplace_back(c + indices_offset);
+void pushVertex(float x, float y, float z) {
+    pushVertex(x, y, z, Vertices);
 }
 
 void pushIndices(unsigned int a, unsigned int b, unsigned int c, vector<unsigned int> &ind) {
@@ -42,10 +36,12 @@ void pushIndices(unsigned int a, unsigned int b, unsigned int c, vector<unsigned
     ind.emplace_back(c + indices_offset);
 }
 
+void pushIndices(unsigned int a, unsigned int b, unsigned int c) {
+    pushIndices(a, b, c, Indices);
+}
+
 void pushIndicesInverted(unsigned int a, unsigned int b, unsigned int c) {
-    Indices.emplace_back(b + indices_offset);
-    Indices.emplace_back(a + indices_offset);
-    Indices.emplace_back(c + indices_offset);
+    pushIndices(b, a, c, Indices);
 }
 
 void deleteTriangle(int num_triangle) {
