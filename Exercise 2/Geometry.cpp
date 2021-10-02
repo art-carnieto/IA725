@@ -44,6 +44,16 @@ void pushIndicesInverted(unsigned int a, unsigned int b, unsigned int c) {
     pushIndices(b, a, c, Indices);
 }
 
+void pushIndicesWithoutOffset(unsigned int a, unsigned int b, unsigned int c, vector<unsigned int> &ind) {
+    Indices.emplace_back(a);
+    Indices.emplace_back(b);
+    Indices.emplace_back(c);
+}
+
+void pushIndicesWithoutOffset(unsigned int a, unsigned int b, unsigned int c) {
+    pushIndicesWithoutOffset(a, b, c, Indices);
+}
+
 void deleteTriangle(int num_triangle, vector<unsigned int> &ind) {
     int index = num_triangle * 3;
     if (index > ind.size() - 1) return; // avoid index overflow on Indices 
@@ -62,6 +72,70 @@ void deleteVertex(int index, vector<Vertex> &ver) {
 
 void deleteVertex(int index) {
     deleteVertex(index, Vertices);
+}
+
+void normalizeVertexPositions(float v[3]) {
+    float d = sqrt((v[0] * v[0]) + (v[1] * v[1]) + (v[2] * v[2]));
+    if (d == 0.0) return;
+    v[0] /= d;
+    v[1] /= d;
+    v[2] /= d;
+}
+
+void subdivideTriangle(int num_triangle, vector<Vertex> &ver, vector<unsigned int> &ind) {
+    int index = num_triangle * 3;
+    if (index > ind.size() - 1) return; // avoid index overflow on ind
+
+    unsigned int ind_a = ind.at(index);
+    unsigned int ind_b = ind.at(index + 1);
+    unsigned int ind_c = ind.at(index + 2);
+
+    Vertex ver_1 = ver.at(ind_a);
+    Vertex ver_2 = ver.at(ind_b);
+    Vertex ver_3 = ver.at(ind_c);
+
+    float new_vertex_12[3] = { 
+        ver_1.pos[0] + ver_2.pos[0],
+        ver_1.pos[1] + ver_2.pos[1],
+        ver_1.pos[2] + ver_2.pos[2]
+    };
+
+    float new_vertex_23[3] = {
+        ver_2.pos[0] + ver_3.pos[0],
+        ver_2.pos[1] + ver_3.pos[1],
+        ver_2.pos[2] + ver_3.pos[2]
+    };
+
+    float new_vertex_31[3] = {
+        ver_3.pos[0] + ver_1.pos[0],
+        ver_3.pos[1] + ver_1.pos[1],
+        ver_3.pos[2] + ver_1.pos[2]
+    };
+
+    normalizeVertexPositions(new_vertex_12);
+    normalizeVertexPositions(new_vertex_23);
+    normalizeVertexPositions(new_vertex_31);
+
+    unsigned int new_index_12 = (unsigned int) ver.size();
+    unsigned int new_index_23 = (unsigned int) ver.size() + 1;
+    unsigned int new_index_31 = (unsigned int) ver.size() + 2;
+
+    pushVertex(new_vertex_12[0], new_vertex_12[1], new_vertex_12[2], ver);
+    pushVertex(new_vertex_23[0], new_vertex_23[1], new_vertex_23[2], ver);
+    pushVertex(new_vertex_31[0], new_vertex_31[1], new_vertex_31[2], ver);
+
+    pushIndicesWithoutOffset(ind_a, new_index_12, new_index_31, ind);
+    pushIndicesWithoutOffset(ind_b, new_index_23, new_index_12, ind);
+    pushIndicesWithoutOffset(ind_c, new_index_31, new_index_23, ind);
+    pushIndicesWithoutOffset(new_index_12, new_index_23, new_index_31, ind);
+
+    deleteTriangle(num_triangle, ind);
+
+    indices_offset += 3;
+}
+
+void subdivideTriangle(int num_triangle) {
+    subdivideTriangle(num_triangle, Vertices, Indices);
 }
 
 // Object creation
