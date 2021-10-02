@@ -20,8 +20,14 @@ vector<Vertex> Vertices;
 vector<unsigned int> Indices;
 int indices_offset = 0;
 
+// Auxiliaries
+
 void pushVertex(float x, float y, float z) {
     Vertices.emplace_back(Vertex(x, y, z));
+}
+
+void pushVertex(float x, float y, float z, vector<Vertex> &ver) {
+    ver.emplace_back(Vertex(x, y, z));
 }
 
 void pushIndices(unsigned int a, unsigned int b, unsigned int c) {
@@ -30,11 +36,19 @@ void pushIndices(unsigned int a, unsigned int b, unsigned int c) {
     Indices.emplace_back(c + indices_offset);
 }
 
+void pushIndices(unsigned int a, unsigned int b, unsigned int c, vector<unsigned int> &ind) {
+    ind.emplace_back(a + indices_offset);
+    ind.emplace_back(b + indices_offset);
+    ind.emplace_back(c + indices_offset);
+}
+
 void pushIndicesInverted(unsigned int a, unsigned int b, unsigned int c) {
     Indices.emplace_back(b + indices_offset);
     Indices.emplace_back(a + indices_offset);
     Indices.emplace_back(c + indices_offset);
 }
+
+// Object creation
 
 void createCube(Vector3f position, Vector3f scale) {
     pushVertex((1 * (scale[0]/2)) + position[0], (1 * (scale[1]/2)) + position[1], (1 * (scale[2]/2)) + position[2]);    // +x, +y, +z
