@@ -44,16 +44,24 @@ void pushIndicesInverted(unsigned int a, unsigned int b, unsigned int c) {
     pushIndices(b, a, c, Indices);
 }
 
-void deleteTriangle(int num_triangle) {
+void deleteTriangle(int num_triangle, vector<unsigned int> &ind) {
     int index = num_triangle * 3;
-    if (index > Indices.size() - 1) return; // avoid index overflow on Indices 
-    Indices.erase(Indices.begin() + index, Indices.begin() + index + 3);
+    if (index > ind.size() - 1) return; // avoid index overflow on Indices 
+    ind.erase(ind.begin() + index, ind.begin() + index + 3);
+}
+
+void deleteTriangle(int num_triangle) {
+    deleteTriangle(num_triangle, Indices);
+}
+
+void deleteVertex(int index, vector<Vertex> &ver) {
+    if (index > ver.size() - 1) return; // avoid index overflow on Indices
+    ver.erase(ver.begin() + index);
+    // FIXME: it needs to erase all the triangles related to that vertex and fix indices list!
 }
 
 void deleteVertex(int index) {
-    if (index > Vertices.size() - 1) return; // avoid index overflow on Indices
-    Vertices.erase(Vertices.begin() + index);
-    // FIXME: it needs to erase all the triangles related to that vertex and fix indices list!
+    deleteVertex(index, Vertices);
 }
 
 // Object creation
