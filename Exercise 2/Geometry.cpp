@@ -48,6 +48,18 @@ void pushIndicesInverted(unsigned int a, unsigned int b, unsigned int c) {
     Indices.emplace_back(c + indices_offset);
 }
 
+void deleteTriangle(int num_triangle) {
+    int index = num_triangle * 3;
+    if (index > Indices.size() - 1) return; // avoid index overflow on Indices 
+    Indices.erase(Indices.begin() + index, Indices.begin() + index + 3);
+}
+
+void deleteVertex(int index) {
+    if (index > Vertices.size() - 1) return; // avoid index overflow on Indices
+    Vertices.erase(Vertices.begin() + index);
+    // FIXME: it needs to erase all the triangles related to that vertex and fix indices list!
+}
+
 // Object creation
 
 void createCube(Vector3f position, Vector3f scale) {

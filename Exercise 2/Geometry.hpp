@@ -29,8 +29,8 @@ void pushIndices(unsigned int a, unsigned int b, unsigned int c, vector<unsigned
 void pushIndicesInverted(unsigned int a, unsigned int b, unsigned int c);
 //void pushIndicesWithoutOffset(unsigned int a, unsigned int b, unsigned int c);
 //int findTriangleUsingIndices(unsigned int a, unsigned int b, unsigned int c);
-//void deleteTriangle(int num_triangle);
-//void deleteVertex(int index);
+void deleteTriangle(int num_triangle);
+void deleteVertex(int index);
 //void subdivideTriangle(int num_triangle,
 //    vector<Vertex> old_obj_vertices, vector<unsigned int> old_obj_indices,
 //    vector<Vertex> new_obj_vertices, vector<unsigned int> new_obj_indices);
