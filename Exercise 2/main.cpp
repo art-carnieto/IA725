@@ -140,7 +140,8 @@ static void CreateVertexBuffer()
     cout << "sizeof(Vertices_final[0]) = " << sizeof(Vertices_final[0]) << "\n";
     cout << "Vertices.size() * sizeof(Vertices_final[0]) = " << Vertices.size() * sizeof(Vertices_final[0]) << "\n";
     for (int i = 0; i < Vertices.size(); i++) {
-        cout << "{ " << Vertices_final[i].pos[0] << " " << Vertices_final[i].pos[1] << " " << Vertices_final[i].pos[2] << " }\n";
+        cout << "pos: { " << Vertices_final[i].pos[0] << " " << Vertices_final[i].pos[1] << " " << Vertices_final[i].pos[2] << " }\n";
+        cout << "color: { " << Vertices_final[i].color[0] << " " << Vertices_final[i].color[1] << " " << Vertices_final[i].color[2] << " }\n";
     }
 
     glGenBuffers(1, &VBO);
@@ -337,12 +338,6 @@ int main(int argc, char** argv)
     //                 subdivision number
     createSubdividedIcosahedron(3);
     */
-
-    pushVertex(-1.0, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f);
-    pushVertex(1.0, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
-    pushVertex(0.0, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f);
-
-    pushIndices(1, 0, 2);
 
     CreateVertexBuffer();
     CreateIndexBuffer();
