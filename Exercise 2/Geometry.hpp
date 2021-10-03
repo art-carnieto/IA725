@@ -15,6 +15,7 @@ struct Vertex {
 
     Vertex();
     Vertex(float x, float y, float z);
+    Vertex(float x, float y, float z, float r, float g, float b);
 };
 
 extern vector<Vertex> Vertices;
@@ -22,10 +23,12 @@ extern vector<unsigned int> Indices;
 extern int indices_offset;
 
 // Auxiliaries
-void pushVertex(float x, float y, float z);
 void pushVertex(float x, float y, float z, vector<Vertex>& ver);
-void pushIndices(unsigned int a, unsigned int b, unsigned int c);
+void pushVertex(float x, float y, float z);
+void pushVertex(float x, float y, float z, float r, float b, float g, vector<Vertex>& ver);
+void pushVertex(float x, float y, float z, float r, float b, float g);
 void pushIndices(unsigned int a, unsigned int b, unsigned int c, vector<unsigned int> &ind);
+void pushIndices(unsigned int a, unsigned int b, unsigned int c);
 void pushIndicesInverted(unsigned int a, unsigned int b, unsigned int c);
 //void pushIndicesWithoutOffset(unsigned int a, unsigned int b, unsigned int c);
 //int findTriangleUsingIndices(unsigned int a, unsigned int b, unsigned int c);

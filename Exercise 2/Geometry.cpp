@@ -16,6 +16,12 @@ Vertex::Vertex(float x, float y, float z)
     color = Vector3f(red, green, blue);
 }
 
+Vertex::Vertex(float x, float y, float z, float r, float g, float b)
+{
+    pos = Vector3f(x, y, z);
+    color = Vector3f(r, g, b);
+}
+
 vector<Vertex> Vertices;
 vector<unsigned int> Indices;
 int indices_offset = 0;
@@ -28,6 +34,14 @@ void pushVertex(float x, float y, float z, vector<Vertex> &ver) {
 
 void pushVertex(float x, float y, float z) {
     pushVertex(x, y, z, Vertices);
+}
+
+void pushVertex(float x, float y, float z, float r, float b, float g, vector<Vertex>& ver) {
+    ver.emplace_back(Vertex(x, y, z, r, g, b));
+}
+
+void pushVertex(float x, float y, float z, float r, float b, float g) {
+    pushVertex(x, y, z, r, g, b, Vertices);
 }
 
 void pushIndices(unsigned int a, unsigned int b, unsigned int c, vector<unsigned int> &ind) {

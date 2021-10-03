@@ -297,7 +297,7 @@ int main(int argc, char** argv)
     glFrontFace(GL_CW);
     glCullFace(GL_BACK);
 
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // wireframe mode
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // wireframe mode
 
     /*
     //    pos:    x     y     z  scale: x      y     z
@@ -333,8 +333,16 @@ int main(int argc, char** argv)
     createRegularIcosahedron({ 0.5f, -0.5f, 0.0f }, { 0.25f, 0.25f, 0.25f });
     createRegularIcosahedron({ -0.5f, -0.5f, 0.0f }, { 0.25f, 0.25f, 0.25f });
     */
-    
+    /*
+    //                 subdivision number
     createSubdividedIcosahedron(3);
+    */
+
+    pushVertex(-1.0, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f);
+    pushVertex(1.0, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+    pushVertex(0.0, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f);
+
+    pushIndices(1, 0, 2);
 
     CreateVertexBuffer();
     CreateIndexBuffer();
