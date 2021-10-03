@@ -1,6 +1,7 @@
 #include "Geometry.hpp"
 #include <vector>
 #include "ogldev_math_3d.h"
+#include <iostream> // just to use cout to print on terminal
 
 using std::vector;
 
@@ -418,4 +419,34 @@ void createSubdividedIcosahedron(int subdiv, Vector3f color) {
 
 void createSubdividedIcosahedron(int subdiv) {
     createSubdividedIcosahedron(subdiv, { -1.0f, -1.0f, -1.0f });
+}
+
+// Debug
+
+void debug_print_vertices(vector<Vertex> &ver) {
+    cout << "\n*** DEBUG VERTICES ***\n";
+    cout << "ver.size() = " << ver.size() << "\n";
+    cout << "sizeof(ver[0]) = " << sizeof(ver[0]) << "\n";
+    cout << "ver.size() * sizeof(ver[0]) = " << ver.size() * sizeof(ver[0]) << "\n";
+    for (int i = 0; i < ver.size(); i++) {
+        cout << "pos: { " << ver[i].pos[0] << " " << ver[i].pos[1] << " " << ver[i].pos[2] << " }\n";
+        cout << "color: { " << ver[i].color[0] << " " << ver[i].color[1] << " " << ver[i].color[2] << " }\n";
+    }
+}
+
+void debug_print_indices(vector<unsigned int> &ind) {
+    cout << "\n*** DEBUG INDICES ***\n";
+    cout << "ind.size() = " << ind.size() << "\n";
+    cout << "sizeof(ind[0]) = " << sizeof(ind[0]) << "\n";
+    cout << "ind.size() * sizeof(ind[0]) = " << ind.size() * sizeof(ind[0]) << "\n";
+
+    int j = 0;
+    for (int i = 0; i < ind.size(); i++) {
+        cout << ind[i] << "  ";
+        j++;
+        if (j > 2) {
+            cout << "\n";
+            j = 0;
+        }
+    }
 }

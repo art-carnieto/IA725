@@ -20,7 +20,6 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <iostream> // just to use cout to print on terminal
 
 #include <math.h>
 #include <GL/glew.h>
@@ -136,14 +135,6 @@ static void CreateVertexBuffer()
 
     Vertex* Vertices_final = &Vertices[0];
 
-    cout << "Vertices.size() = " << Vertices.size() << "\n";
-    cout << "sizeof(Vertices_final[0]) = " << sizeof(Vertices_final[0]) << "\n";
-    cout << "Vertices.size() * sizeof(Vertices_final[0]) = " << Vertices.size() * sizeof(Vertices_final[0]) << "\n";
-    for (int i = 0; i < Vertices.size(); i++) {
-        cout << "pos: { " << Vertices_final[i].pos[0] << " " << Vertices_final[i].pos[1] << " " << Vertices_final[i].pos[2] << " }\n";
-        cout << "color: { " << Vertices_final[i].color[0] << " " << Vertices_final[i].color[1] << " " << Vertices_final[i].color[2] << " }\n";
-    }
-
     glGenBuffers(1, &VBO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, Vertices.size() * sizeof(Vertices_final[0]), Vertices_final, GL_STATIC_DRAW);
@@ -153,21 +144,6 @@ static void CreateIndexBuffer()
 {
     if (Indices.size() == 0) return;    // in case Indices is empty
     unsigned int* Indices_final = &Indices[0];
-
-    cout << "\n==========================\n";
-    cout << "Indices.size() = " << Indices.size() << "\n";
-    cout << "sizeof(Indices_final[0]) = " << sizeof(Indices_final[0]) << "\n";
-    cout << "Indices.size() * sizeof(Indices_final[0]) = " << Indices.size() * sizeof(Indices_final[0]) << "\n";
-
-    int j = 0;
-    for (int i = 0; i < Indices.size(); i++) {
-        cout << Indices_final[i] << "  ";
-        j++;
-        if (j > 2) {
-            cout << "\n";
-            j = 0;
-        }
-    }
 
     glGenBuffers(1, &IBO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
@@ -338,6 +314,9 @@ int main(int argc, char** argv)
     //                 subdivision number
     createSubdividedIcosahedron(3);
     */
+    // Debug:
+    //debug_print_vertices(Vertices);
+    //debug_print_indices(Indices);
 
     CreateVertexBuffer();
     CreateIndexBuffer();

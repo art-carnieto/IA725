@@ -30,8 +30,8 @@ void pushVertex(float x, float y, float z, float r, float g, float b);
 void pushIndices(unsigned int a, unsigned int b, unsigned int c, vector<unsigned int> &ind);
 void pushIndices(unsigned int a, unsigned int b, unsigned int c);
 void pushIndicesInverted(unsigned int a, unsigned int b, unsigned int c);
-//void pushIndicesWithoutOffset(unsigned int a, unsigned int b, unsigned int c);
-//int findTriangleUsingIndices(unsigned int a, unsigned int b, unsigned int c);
+void pushIndicesWithoutOffset(unsigned int a, unsigned int b, unsigned int c, vector<unsigned int>& ind);
+void pushIndicesWithoutOffset(unsigned int a, unsigned int b, unsigned int c);
 void deleteTriangle(int num_triangle, vector<unsigned int>& ind);
 void deleteTriangle(int num_triangle);
 void deleteVertex(int index, vector<Vertex>& ver);
@@ -63,3 +63,7 @@ void createRegularIcosahedron(Vector3f position, Vector3f scale, Vector3f color)
 void createRegularIcosahedron(Vector3f position, Vector3f scale);
 void createSubdividedIcosahedron(int subdiv, Vector3f color);
 void createSubdividedIcosahedron(int subdiv);
+
+// Debug
+void debug_print_vertices(vector<Vertex>& ver);
+void debug_print_indices(vector<unsigned int>& ind);
