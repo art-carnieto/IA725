@@ -28,7 +28,13 @@
 #include "ogldev_util.h"
 #include "ogldev_math_3d.h"
 
-#include "Geometry.hpp"
+#include "Mesh.hpp"
+
+#include <iostream> // for tests using cout
+
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
 
 #define WINDOW_WIDTH  1280
 #define WINDOW_HEIGHT 720
@@ -39,6 +45,10 @@ GLuint VAO; // VAO = Vertex Array Object
 GLuint VBO; // VBO = Vertex Buffer Object
 GLuint IBO; // IBO = Index Buffer Object
 GLuint gWVPLocation;
+
+vector<Vertex> Vertices;
+vector<unsigned int> Indices;
+int indices_offset = 0;
 
 static void RenderSceneCB()
 {
@@ -317,6 +327,25 @@ int main(int argc, char** argv)
     // Debug:
     //debug_print_vertices(Vertices);
     //debug_print_indices(Indices);
+
+    Mesh m = Mesh();
+    m.pushVertex({ -1.0f, 0.0f, 0.0f });
+    m.pushVertex({ 1.0f, 0.0f, 0.0f });
+    m.pushVertex({ -1.0f, 1.0f, 0.0f });
+    m.pushVertex({ 1.0f, 1.0f, 0.0f });
+
+    m.pushTriangleIndices(1, 0, 2);
+    m.pushTriangleIndices(2, 3, 1);
+
+    Vertices = m.getVertices();
+    Indices = m.getIndices();
+
+    cout << "number of triangles = " << m.getNumberTriangles() << endl;
+    cout << "get first triangle = " << m.getFirstTriangleIndexPos() << endl;
+    cout << "get last triangle = " << m.getLastTriangleIndexPos() << endl;
+
+    m.debug_print_vertices();
+    m.debug_print_indices();
 
     CreateVertexBuffer();
     CreateIndexBuffer();

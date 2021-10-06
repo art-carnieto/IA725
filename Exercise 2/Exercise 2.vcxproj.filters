@@ -21,7 +21,16 @@
     <ClCompile Include="..\Mesa\ogldev_util.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
-    <ClCompile Include="Geometry.cpp">
+    <ClCompile Include="Camera.cpp">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
+    <ClCompile Include="Vertex.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
   </ItemGroup>
@@ -34,10 +43,19 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Geometry.hpp">
+    <ClInclude Include="TeapotData.hpp">
       <Filter>Arquivos de Origem</Filter>
     </ClInclude>
-    <ClInclude Include="TeapotData.hpp">
+    <ClInclude Include="Mesh.hpp">
+      <Filter>Arquivos de Origem</Filter>
+    </ClInclude>
+    <ClInclude Include="Vertex.hpp">
+      <Filter>Arquivos de Origem</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.hpp">
+      <Filter>Arquivos de Origem</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.hpp">
       <Filter>Arquivos de Origem</Filter>
     </ClInclude>
   </ItemGroup>
