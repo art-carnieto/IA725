@@ -15,6 +15,7 @@ public:
     void pushVertex(Vertex v);
     void pushVertex(float pos[3]);
     void pushVertex(float pos[3], float color[3]);
+    void pushVertex(Vector3f pos, Vector3f color);
     void deleteVertex(int index);
     int getNumberVertices();
 

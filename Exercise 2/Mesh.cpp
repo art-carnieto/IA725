@@ -25,8 +25,12 @@ void Mesh::pushVertex(float pos[3], float color[3]) {
     this->mesh_vertices.emplace_back(Vertex(pos[0], pos[1], pos[2], color[0], color[1], color[2]));
 }
 
+void Mesh::pushVertex(Vector3f pos, Vector3f color) {
+    this->mesh_vertices.emplace_back(Vertex(pos[0], pos[1], pos[2], color[0], color[1], color[2]));
+}
+
 void Mesh::deleteVertex(int index) {
-    assert(index > Mesh::getNumberVertices() - 1); // avoid index overflow on Vertices
+    assert(index < Mesh::getNumberVertices() - 1); // avoid index overflow on Vertices
     this->mesh_vertices.erase(this->mesh_vertices.begin() + index);
     // FIXME: it needs to erase all the triangles related to that vertex 
     // in the indices list and correct indices list!
@@ -49,7 +53,7 @@ void Mesh::pushTriangleIndices(unsigned int a, unsigned int b, unsigned int c) {
 
 void Mesh::deleteTriangleIndices(int num_triangle) {
     int index = num_triangle * 3;
-    assert(index > this->mesh_indices.size() - 1); // avoid index overflow on Indices 
+    assert(index < this->mesh_indices.size() - 1); // avoid index overflow on Indices 
     this->mesh_indices.erase(this->mesh_indices.begin() + index, this->mesh_indices.begin() + index + 3);
 }
 

@@ -28,13 +28,9 @@
 #include "ogldev_util.h"
 #include "ogldev_math_3d.h"
 
-#include "Mesh.hpp"
+#include "Scene.hpp"
 
 #include <iostream> // for tests using cout
-
-#ifndef M_PI
-#define M_PI 3.14159265358979323846
-#endif
 
 #define WINDOW_WIDTH  1280
 #define WINDOW_HEIGHT 720
@@ -284,7 +280,7 @@ int main(int argc, char** argv)
     glFrontFace(GL_CW);
     glCullFace(GL_BACK);
 
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // wireframe mode
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // wireframe mode
 
     /*
     //    pos:    x     y     z  scale: x      y     z
@@ -328,14 +324,7 @@ int main(int argc, char** argv)
     //debug_print_vertices(Vertices);
     //debug_print_indices(Indices);
 
-    Mesh m = Mesh();
-    m.pushVertex({ -1.0f, 0.0f, 0.0f });
-    m.pushVertex({ 1.0f, 0.0f, 0.0f });
-    m.pushVertex({ -1.0f, 1.0f, 0.0f });
-    m.pushVertex({ 1.0f, 1.0f, 0.0f });
-
-    m.pushTriangleIndices(1, 0, 2);
-    m.pushTriangleIndices(2, 3, 1);
+    Mesh m = createSubdividedIcosahedron(3, { 1.0f, 0.0f, 0.0f });
 
     Vertices = m.getVertices();
     Indices = m.getIndices();
