@@ -26,7 +26,10 @@
 #endif
 #include <stdio.h>
 
-
+// to fix 'M_PI' not declared error
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
 
 #include <assimp/vector3.h>
 #include <assimp/matrix3x3.h>
