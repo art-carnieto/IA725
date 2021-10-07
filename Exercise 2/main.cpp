@@ -29,6 +29,7 @@
 #include "ogldev_math_3d.h"
 
 #include "Scene.hpp"
+#include "Colors.hpp"
 
 #include <iostream> // for tests using cout
 
@@ -324,7 +325,7 @@ int main(int argc, char** argv)
     //debug_print_vertices(Vertices);
     //debug_print_indices(Indices);
 
-    Mesh m = createSubdividedIcosahedron(3, { 1.0f, 0.0f, 0.0f });
+    Mesh m = createSubdividedIcosahedron(3, color_red);
 
     Vertices = m.getVertices();
     Indices = m.getIndices();
@@ -335,7 +336,7 @@ int main(int argc, char** argv)
 
     m.debug_print_vertices();
     m.debug_print_indices();
-
+    
     CreateVertexBuffer();
     CreateIndexBuffer();
 
