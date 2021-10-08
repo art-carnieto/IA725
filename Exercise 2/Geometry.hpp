@@ -1,5 +1,6 @@
 #pragma once
 #include "Mesh.hpp"
+#include "Transformation.hpp"
 
 // to fix 'M_PI' not declared error
 #ifndef M_PI

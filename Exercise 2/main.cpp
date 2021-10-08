@@ -330,13 +330,25 @@ int main(int argc, char** argv)
     Vertices = m.getVertices();
     Indices = m.getIndices();
 
+    Transformation t;
+    t.setTranslation({ 2.0f, 0.0f, 0.0f });
+    t.setRotation({ 0.0f, 1.0f, 0.0f });
+    t.setScale({ 1.0f, 1.0f, 2.0f });
+    t.calcFinalTransformation();
+
+    cout << "t = \n";
+    t.getFinalTransformation().Print();
+    cout << endl;
+
+    /*
     cout << "number of triangles = " << m.getNumberTriangles() << endl;
     cout << "get first triangle = " << m.getFirstTriangleIndexPos() << endl;
     cout << "get last triangle = " << m.getLastTriangleIndexPos() << endl;
 
     m.debug_print_vertices();
     m.debug_print_indices();
-    
+    */
+
     CreateVertexBuffer();
     CreateIndexBuffer();
 

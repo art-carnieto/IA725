@@ -142,12 +142,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\Mesa\ogldev_util.cpp" />
+    <ClCompile Include="..\Common\math_3d.cpp" />
+    <ClCompile Include="..\Common\ogldev_util.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Geometry.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="Transformation.cpp" />
     <ClCompile Include="Vertex.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -161,6 +163,7 @@
     <ClInclude Include="Mesh.hpp" />
     <ClInclude Include="Scene.hpp" />
     <ClInclude Include="TeapotData.hpp" />
+    <ClInclude Include="Transformation.hpp" />
     <ClInclude Include="Vertex.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
