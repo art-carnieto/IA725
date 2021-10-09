@@ -75,19 +75,9 @@ static void RenderSceneCB()
 
     Matrix4f World = Translation * Rotation;
 
-    // camera is positioned on X = -3
-    Vector3f CameraPos(0.0f, 0.0f, -3.0f);
-    Vector3f U(1.0f, 0.0f, 0.0f);   // U
-    Vector3f V(0.0f, 1.0f, 0.0f);   // V
-    Vector3f N(0.0f, 0.0f, 1.0f);   // W
+    Camera cam = Camera({ 0.0f, 0.0f, -3.0f }, 45.0f);
+    float VFOV = cam.getFOV();
 
-    Matrix4f Camera(
-        U.x, U.y, U.z, -CameraPos.x,
-        V.x, V.y, V.z, -CameraPos.y,
-        N.x, N.y, N.z, -CameraPos.z,
-        0.0f, 0.0f, 0.0f, 1.0f);
-
-    float VFOV = 45.0f; // FOV = Field of View
     float tanHalfVFOV = tanf(ToRadian(VFOV / 2.0f));    // AB
     float d = 1 / tanHalfVFOV;
     float ar = (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT;  // aspect ratio
@@ -108,7 +98,7 @@ static void RenderSceneCB()
         0.0f, 0.0f, 1.0f, 0.0f);
 
     // World View Projection
-    Matrix4f WVP = Projection * Camera * World;
+    Matrix4f WVP = Projection * cam.getFinalTransformation() * World;
 
     glUniformMatrix4fv(gWVPLocation, 1, GL_TRUE, &WVP.m[0][0]);
 
