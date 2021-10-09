@@ -283,48 +283,6 @@ int main(int argc, char** argv)
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // wireframe mode
 
-    /*
-    //    pos:    x     y     z  scale: x      y     z
-    createCube({ 0.0f, 0.0f, 0.5f }, { 1.0f, 0.5f, 0.25f });
-    createCube({ 0.0f, 0.0f, 0.0f }, { 0.1f, 1.0f, 0.1f });
-    */
-    /*
-    createCube({ 0.0f, 0.0f, 0.7f }, { 0.6f, 0.6f, 0.6f });
-    createCube({ 0.0f, 0.0f, 0.0f }, { 0.6f, 0.6f, 0.6f });
-    createCube({ 0.0f, 0.0f, -0.7f }, { 0.6f, 0.6f, 0.6f });
-    */
-
-    /*
-    //                   pos:   x    y  z     left  right  up    down  front  back
-    createCubeUsingBoundaries({ -0.7, 0, 0 }, -0.3f, 0.3f, 0.3f, -0.3f, 0.3f, -0.3f);
-    createCubeUsingBoundaries({ 0,    0, 0 }, -0.3f, 0.3f, 0.3f, -0.3f, 0.3f, -0.3f);
-    createCubeUsingBoundaries({ 0.7,  0, 0 }, -0.3f, 0.3f, 0.3f, -0.3f, 0.3f, -0.3f);
-    */
-
-    //       pos   x     y     z     length  heigth  width  top_thickness  leg_length  leg_width
-    //createTable({ 0.0f, 0.0f, 0.0f }, 2.0f,   0.5f,   1.0f,      0.1f,        0.05f,     0.2f);
-    /*
-    //                   pos:   x     y     z  scale:  x      y      z
-    createRegularIcosahedron({ 0.0f, 0.0f, 0.0f }, { 0.25f, 0.25f, 0.25f });
-    createRegularIcosahedron({ 0.5f, 0.0f, 0.0f }, { 0.25f, 0.25f, 0.25f });
-    createRegularIcosahedron({ -0.5f, 0.0f, 0.0f }, { 0.25f, 0.25f, 0.25f });
-
-    createRegularIcosahedron({ 0.0f, 0.5f, 0.0f }, { 0.25f, 0.25f, 0.25f });
-    createRegularIcosahedron({ 0.5f, 0.5f, 0.0f }, { 0.25f, 0.25f, 0.25f });
-    createRegularIcosahedron({ -0.5f, 0.5f, 0.0f }, { 0.25f, 0.25f, 0.25f });
-
-    createRegularIcosahedron({ 0.0f, -0.5f, 0.0f }, { 0.25f, 0.25f, 0.25f });
-    createRegularIcosahedron({ 0.5f, -0.5f, 0.0f }, { 0.25f, 0.25f, 0.25f });
-    createRegularIcosahedron({ -0.5f, -0.5f, 0.0f }, { 0.25f, 0.25f, 0.25f });
-    */
-    /*
-    //                 subdivision number
-    createSubdividedIcosahedron(3);
-    */
-    // Debug:
-    //debug_print_vertices(Vertices);
-    //debug_print_indices(Indices);
-
     Mesh m = createSubdividedIcosahedron(3, color_red);
 
     Vertices = m.getVertices();
