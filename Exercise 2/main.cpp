@@ -298,6 +298,14 @@ int main(int argc, char** argv)
     t.getFinalTransformation().Print();
     cout << endl;
 
+    Camera c = Camera({ 0.0f, 0.0f, -3.0f }, 45.0f);
+
+    cout << "camera pos = " << c.getCameraPos()[0] << "  " << c.getCameraPos()[1] << "  " << c.getCameraPos()[2] << "  " << endl;
+    cout << "camera fov = " << c.getFOV() << endl;
+    cout << "camera = \n";
+    c.getFinalTransformation().Print();
+    cout << endl;
+
     /*
     cout << "number of triangles = " << m.getNumberTriangles() << endl;
     cout << "get first triangle = " << m.getFirstTriangleIndexPos() << endl;
