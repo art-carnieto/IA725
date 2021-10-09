@@ -8,6 +8,7 @@ class Camera {
 	float fov;  // FOV = Field of View
 
 public:
+	Camera();
 	Camera(Vector3f pos, float fov);
 
 	void setCameraPos(Vector3f new_pos);

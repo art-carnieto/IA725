@@ -37,5 +37,6 @@ void Transformation::calcFinalTransformation() {
 }
 
 Matrix4f Transformation::getFinalTransformation() {
+	calcFinalTransformation();
 	return this->final_transformation;
 }

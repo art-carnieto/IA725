@@ -47,6 +47,8 @@ vector<Vertex> Vertices;
 vector<unsigned int> Indices;
 int indices_offset = 0;
 
+Scene scene;
+
 static void RenderSceneCB()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -54,36 +56,23 @@ static void RenderSceneCB()
     static float Scale = 0.0f;  // scale is used to rotate the world
 
 #ifdef _WIN64
-    Scale += 0.007f;
+    Scale += 0.5f;
 #else
     Scale += 0.02f;
 #endif
+    Transformation world_transformation = Transformation();
+    world_transformation.setRotation({ 0.0f, Scale, 0.0f });
+    scene.setWorldTransformation(world_transformation);
+    Matrix4f World = scene.getWorldTransformation().getFinalTransformation();
 
-    // rotation around Y axis
-    Matrix4f Rotation(
-        cosf(Scale), 0.0f, -sinf(Scale), 0.0f,
-        0.0f, 1.0f, 0.0f, 0.0f,
-        sinf(Scale), 0.0f, cosf(Scale), 0.0f,
-        0.0f, 0.0f, 0.0f, 1.0f);
-
-    // doesn't translate
-    Matrix4f Translation(
-        1.0f, 0.0f, 0.0f, 0.0f,
-        0.0f, 1.0f, 0.0f, 0.0f,
-        0.0f, 0.0f, 1.0f, 0.0f,
-        0.0f, 0.0f, 0.0f, 1.0f);
-
-    Matrix4f World = Translation * Rotation;
-
-    Camera cam = Camera({ 0.0f, 0.0f, -3.0f }, 45.0f);
-    float VFOV = cam.getFOV();
+    float VFOV = scene.getCamera().getFOV();
 
     float tanHalfVFOV = tanf(ToRadian(VFOV / 2.0f));    // AB
     float d = 1 / tanHalfVFOV;
     float ar = (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT;  // aspect ratio
 
-    float NearZ = 1.0f;         // near plane distance
-    float FarZ = 10.0f;         // far plane distance
+    float NearZ = scene.getClippingPlanes()[0];         // near plane distance
+    float FarZ = scene.getClippingPlanes()[1];         // far plane distance
 
     float zRange = NearZ - FarZ;    // Frustum
 
@@ -98,7 +87,7 @@ static void RenderSceneCB()
         0.0f, 0.0f, 1.0f, 0.0f);
 
     // World View Projection
-    Matrix4f WVP = Projection * cam.getFinalTransformation() * World;
+    Matrix4f WVP = Projection * scene.getCamera().getFinalTransformation() * World;
 
     glUniformMatrix4fv(gWVPLocation, 1, GL_TRUE, &WVP.m[0][0]);
 
@@ -295,6 +284,8 @@ int main(int argc, char** argv)
     cout << "camera = \n";
     c.getFinalTransformation().Print();
     cout << endl;
+
+    scene = Scene({ 0.0f, 0.0f, -3.0f }, 45, ((float)WINDOW_WIDTH / (float)WINDOW_HEIGHT), 1.0f, 10.0f, true);
 
     /*
     cout << "number of triangles = " << m.getNumberTriangles() << endl;

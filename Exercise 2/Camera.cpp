@@ -1,5 +1,7 @@
 #include "Camera.hpp"
 
+Camera::Camera() { }
+
 Camera::Camera(Vector3f pos, float fov) {
 	this->t_cam;
 	this->cameraPos = pos;
