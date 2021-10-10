@@ -38,14 +38,9 @@
 
 //Ting: eh recomendavel criar um VAO
 GLuint VAO; // VAO = Vertex Array Object
-
 GLuint VBO; // VBO = Vertex Buffer Object
 GLuint IBO; // IBO = Index Buffer Object
 GLuint gWVPLocation;
-
-vector<Vertex> Vertices;
-vector<unsigned int> Indices;
-int indices_offset = 0;
 
 Scene scene;
 
@@ -78,7 +73,7 @@ static void RenderSceneCB()
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(3 * sizeof(float)));
 
-    glDrawElements(GL_TRIANGLES, (GLsizei)Indices.size(), GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, scene.getMesh(0).getIndices().size(), GL_UNSIGNED_INT, 0);
 
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
@@ -86,30 +81,6 @@ static void RenderSceneCB()
     glutPostRedisplay();
 
     glutSwapBuffers();
-}
-
-static void CreateVertexBuffer()
-{
-    if (Vertices.size() == 0) return;   // in case Vertices is empty
-    //Ting: eh uma boa pratica criar um vertex array object para "conter" todos os estados de vertices
-    glGenVertexArrays(1, &VAO);
-    glBindVertexArray(VAO);
-
-    Vertex* Vertices_final = &Vertices[0];
-
-    glGenBuffers(1, &VBO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, Vertices.size() * sizeof(Vertices_final[0]), Vertices_final, GL_STATIC_DRAW);
-}
-
-static void CreateIndexBuffer()
-{
-    if (Indices.size() == 0) return;    // in case Indices is empty
-    unsigned int* Indices_final = &Indices[0];
-
-    glGenBuffers(1, &IBO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, Indices.size() * sizeof(Indices_final[0]), Indices_final, GL_STATIC_DRAW);
 }
 
 static void AddShader(GLuint ShaderProgram, const char* pShaderText, GLenum ShaderType)
@@ -238,18 +209,20 @@ int main(int argc, char** argv)
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // wireframe mode
 
-    Mesh m = createSubdividedIcosahedron(3, color_red);
-
-    Vertices = m.getVertices();
-    Indices = m.getIndices();
+    //Ting: eh uma boa pratica criar um vertex array object para "conter" todos os estados de vertices
+    glGenVertexArrays(1, &VAO);
+    glBindVertexArray(VAO);
 
     PersProjInfo pers_info = { 45, WINDOW_WIDTH, WINDOW_HEIGHT, 1.0f, 10.0f };
     OrthoProjInfo ortho_info = { 2.0f, -2.0f, -2.0f, 2.0f, 1.0f, 10.0f };
 
-    scene = Scene({ 0.0f, 0.0f, -3.0f }, pers_info, ortho_info, false);
+    scene = Scene({ 0.0f, 0.0f, -3.0f }, pers_info, ortho_info, true);
 
-    CreateVertexBuffer();
-    CreateIndexBuffer();
+    Mesh m = createRegularIcosahedron(color_red);
+    scene.pushMesh(m);
+    
+    scene.genVBO(0, &VBO);
+    scene.genIBO(0, &IBO);
 
     CompileShaders();
 

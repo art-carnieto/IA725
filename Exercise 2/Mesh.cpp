@@ -56,6 +56,32 @@ int Mesh::getNumberTriangles() {
     return static_cast<int>(this->mesh_indices.size() / 3);
 }
 
+// VBO, IBO
+void Mesh::genVBO(GLuint* VBO) {
+    this->Vertices = &mesh_vertices[0];
+
+    glGenBuffers(1, VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, *VBO);
+    glBufferData(GL_ARRAY_BUFFER, getNumberVertices() * sizeof(this->Vertices[0]), this->Vertices, GL_STATIC_DRAW);
+}
+
+void Mesh::genIBO(GLuint* IBO) {
+    this->Indices = &mesh_indices[0];
+
+    glGenBuffers(1, IBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *IBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, getIndices().size() * sizeof(this->Indices[0]), this->Indices, GL_STATIC_DRAW);
+}
+
+// Transformation
+Transformation Mesh::getTransformation() {
+    return this->mesh_t;
+}
+
+void Mesh::setTransformation(Transformation t) {
+    this->mesh_t = t;
+}
+
 // Debug
 void Mesh::debug_print_vertices() {
     cout << "\n*** DEBUG VERTICES ***\n";

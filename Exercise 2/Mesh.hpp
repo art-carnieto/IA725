@@ -1,12 +1,16 @@
 #pragma once
 #include "Vertex.hpp"
+#include "Transformation.hpp"
+#include "GL/glew.h"
 
 class Mesh {
     vector<Vertex> mesh_vertices;
     vector<unsigned int> mesh_indices;
+    Transformation mesh_t;
+    Vertex* Vertices;
+    unsigned int* Indices;
 
 public:
-    
     Mesh();
 
     vector<Vertex> getVertices();
@@ -21,6 +25,12 @@ public:
     void pushTriangleIndices(unsigned int a, unsigned int b, unsigned int c);
     void deleteTriangleIndices(int num_triangle);
     int getNumberTriangles();
+
+    Transformation getTransformation();
+    void setTransformation(Transformation t);
+
+    void genVBO(GLuint* VBO);
+    void genIBO(GLuint* IBO);
 
     void debug_print_vertices();
     void debug_print_indices();

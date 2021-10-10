@@ -76,3 +76,11 @@ void Scene::setOrthogonal() {
 bool Scene::isPerspective() {
 	return this->perspective;
 }
+
+void Scene::genVBO(int index, GLuint* VBO) {
+	getMesh(index).genVBO(VBO);
+}
+
+void Scene::genIBO(int index, GLuint* IBO) {
+	getMesh(index).genIBO(IBO);
+}

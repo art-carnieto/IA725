@@ -2,6 +2,7 @@
 #include "Geometry.hpp"
 #include "Mesh.hpp"
 #include "Camera.hpp"
+#include <GL/glew.h>
 
 class Scene {
 	vector<Mesh> meshes;
@@ -39,4 +40,12 @@ public:
 	void setPerspecive();
 	void setOrthogonal();
 	bool isPerspective();
+
+	void genVBO(int index, GLuint* VBO);
+	void genIBO(int index, GLuint* IBO);
+	void drawMesh(int index, GLuint* VBO, GLuint* IBO);
+
+	void genAllVBOs(GLuint* VBO);
+	void genAllIBOs(GLuint* IBO);
+	void drawAllMeshes(GLuint* VBO, GLuint* IBO);
 };
