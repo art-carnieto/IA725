@@ -285,7 +285,10 @@ int main(int argc, char** argv)
     c.getFinalTransformation().Print();
     cout << endl;
 
-    scene = Scene({ 0.0f, 0.0f, -3.0f }, 45, ((float)WINDOW_WIDTH / (float)WINDOW_HEIGHT), 1.0f, 10.0f, true);
+    PersProjInfo pers_info = { 45, WINDOW_WIDTH, WINDOW_HEIGHT, 1.0f, 10.0f };
+    OrthoProjInfo ortho_info = { 2.0f, -2.0f, -2.0f, 2.0f, 1.0f, 10.0f };
+
+    scene = Scene({ 0.0f, 0.0f, -3.0f }, pers_info, ortho_info, true);
 
     /*
     cout << "number of triangles = " << m.getNumberTriangles() << endl;

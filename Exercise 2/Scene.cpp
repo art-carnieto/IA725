@@ -2,14 +2,14 @@
 
 Scene::Scene() { }
 
-Scene::Scene(Vector3f camera_pos, float fov, float ar, float nearZ, float farZ, bool perspective) {
-	this->camera = Camera(camera_pos, fov);
-	this->ar = ar;
-	this->nearZ = nearZ;
-	this->farZ = farZ;
+Scene::Scene(Vector3f camera_pos, PersProjInfo pers_info, OrthoProjInfo ortho_info, bool perspective) {
+	this->camera = Camera(camera_pos, pers_info.FOV);
 	this->perspective = perspective;
 	this->World;
 	this->WVP;
+	this->pers_info = pers_info;
+	this->ortho_info = ortho_info;
+	this->Projection.SetZero();
 }
 
 void Scene::pushMesh(Mesh m) {
@@ -48,25 +48,13 @@ void Scene::setWVPTransformation(Transformation t) {
 	this->WVP = t;
 }
 
-void Scene::setAR(float ar) {
-	this->ar = ar;
-}
-
-void Scene::setAR(float width, float height) {
-	this->ar = width / height;
-}
-
-float Scene::getAR() {
-	return this->ar;
-}
-
 void Scene::setClippingPlanes(float nearZ, float farZ) {
-	this->nearZ = nearZ;
-	this->farZ = farZ;
+	this->pers_info.zNear = nearZ;
+	this->pers_info.zFar = farZ;
 }
 
 float* Scene::getClippingPlanes() {
-	float clipping_planes[] = { this->nearZ, this->farZ };
+	float clipping_planes[] = { this->pers_info.zNear, this->pers_info.zFar };
 	return clipping_planes;
 }
 
