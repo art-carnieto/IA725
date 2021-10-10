@@ -40,12 +40,19 @@ void Scene::setWorldTransformation(Transformation t) {
 	this->World = t;
 }
 
-Transformation Scene::getWVPTransformation() {
+Matrix4f Scene::getWVP() {
+	calcWVPTransformation();
 	return this->WVP;
 }
 
-void Scene::setWVPTransformation(Transformation t) {
-	this->WVP = t;
+void Scene::calcWVPTransformation() {
+	if (this->perspective == true) {
+		this->Projection.InitPersProjTransform(this->pers_info);
+	}
+	else {
+		this->Projection.InitOrthoProjTransform(this->ortho_info);
+	}
+	this->WVP = this->Projection * this->getCamera().getFinalTransformation() * this->World.getFinalTransformation();
 }
 
 void Scene::setClippingPlanes(float nearZ, float farZ) {

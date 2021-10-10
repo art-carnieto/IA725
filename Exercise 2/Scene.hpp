@@ -7,7 +7,7 @@ class Scene {
 	vector<Mesh> meshes;
 	Camera camera;
 	Transformation World;
-	Transformation WVP;
+	Matrix4f WVP;
 
 	PersProjInfo pers_info;
 	OrthoProjInfo ortho_info;
@@ -30,8 +30,8 @@ public:
 	Transformation getWorldTransformation();
 	void setWorldTransformation(Transformation t);
 
-	Transformation getWVPTransformation();
-	void setWVPTransformation(Transformation t);
+	Matrix4f getWVP();
+	void calcWVPTransformation();
 
 	void setClippingPlanes(float nearZ, float farZ);
 	float* getClippingPlanes();

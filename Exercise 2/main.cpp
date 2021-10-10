@@ -63,32 +63,8 @@ static void RenderSceneCB()
     Transformation world_transformation = Transformation();
     world_transformation.setRotation({ 0.0f, Scale, 0.0f });
     scene.setWorldTransformation(world_transformation);
-    Matrix4f World = scene.getWorldTransformation().getFinalTransformation();
 
-    float VFOV = scene.getCamera().getFOV();
-
-    float tanHalfVFOV = tanf(ToRadian(VFOV / 2.0f));    // AB
-    float d = 1 / tanHalfVFOV;
-    float ar = (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT;  // aspect ratio
-
-    float NearZ = scene.getClippingPlanes()[0];         // near plane distance
-    float FarZ = scene.getClippingPlanes()[1];         // far plane distance
-
-    float zRange = NearZ - FarZ;    // Frustum
-
-    float A = (-FarZ - NearZ) / zRange;
-    float B = 2.0f * FarZ * NearZ / zRange;
-
-    // Mpp = Matrix of Parallel Projection
-    Matrix4f Projection(
-        d / ar, 0.0f, 0.0f, 0.0f,
-        0.0f, d, 0.0f, 0.0f,
-        0.0f, 0.0f, A, B,
-        0.0f, 0.0f, 1.0f, 0.0f);
-
-    // World View Projection
-    Matrix4f WVP = Projection * scene.getCamera().getFinalTransformation() * World;
-
+    Matrix4f WVP = scene.getWVP();
     glUniformMatrix4fv(gWVPLocation, 1, GL_TRUE, &WVP.m[0][0]);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -288,7 +264,7 @@ int main(int argc, char** argv)
     PersProjInfo pers_info = { 45, WINDOW_WIDTH, WINDOW_HEIGHT, 1.0f, 10.0f };
     OrthoProjInfo ortho_info = { 2.0f, -2.0f, -2.0f, 2.0f, 1.0f, 10.0f };
 
-    scene = Scene({ 0.0f, 0.0f, -3.0f }, pers_info, ortho_info, true);
+    scene = Scene({ 0.0f, 0.0f, -3.0f }, pers_info, ortho_info, false);
 
     /*
     cout << "number of triangles = " << m.getNumberTriangles() << endl;
