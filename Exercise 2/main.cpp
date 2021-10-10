@@ -243,37 +243,10 @@ int main(int argc, char** argv)
     Vertices = m.getVertices();
     Indices = m.getIndices();
 
-    Transformation t;
-    t.setTranslation({ 2.0f, 0.0f, 0.0f });
-    t.setRotation({ 0.0f, 1.0f, 0.0f });
-    t.setScale({ 1.0f, 1.0f, 2.0f });
-    t.calcFinalTransformation();
-
-    cout << "t = \n";
-    t.getFinalTransformation().Print();
-    cout << endl;
-
-    Camera c = Camera({ 0.0f, 0.0f, -3.0f }, 45.0f);
-
-    cout << "camera pos = " << c.getCameraPos()[0] << "  " << c.getCameraPos()[1] << "  " << c.getCameraPos()[2] << "  " << endl;
-    cout << "camera fov = " << c.getFOV() << endl;
-    cout << "camera = \n";
-    c.getFinalTransformation().Print();
-    cout << endl;
-
     PersProjInfo pers_info = { 45, WINDOW_WIDTH, WINDOW_HEIGHT, 1.0f, 10.0f };
     OrthoProjInfo ortho_info = { 2.0f, -2.0f, -2.0f, 2.0f, 1.0f, 10.0f };
 
     scene = Scene({ 0.0f, 0.0f, -3.0f }, pers_info, ortho_info, false);
-
-    /*
-    cout << "number of triangles = " << m.getNumberTriangles() << endl;
-    cout << "get first triangle = " << m.getFirstTriangleIndexPos() << endl;
-    cout << "get last triangle = " << m.getLastTriangleIndexPos() << endl;
-
-    m.debug_print_vertices();
-    m.debug_print_indices();
-    */
 
     CreateVertexBuffer();
     CreateIndexBuffer();
