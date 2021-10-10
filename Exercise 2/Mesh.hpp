@@ -4,8 +4,6 @@
 class Mesh {
     vector<Vertex> mesh_vertices;
     vector<unsigned int> mesh_indices;
-    int first_triangle_index_position;
-    int last_triangle_index_position;
 
 public:
     
@@ -23,12 +21,6 @@ public:
     void pushTriangleIndices(unsigned int a, unsigned int b, unsigned int c);
     void deleteTriangleIndices(int num_triangle);
     int getNumberTriangles();
-
-    int getFirstTriangleIndexPos();
-    void setFirstTriangleIndexPos(int pos);
-
-    int getLastTriangleIndexPos();
-    void setLastTriangleIndexPos(int pos);
 
     void debug_print_vertices();
     void debug_print_indices();

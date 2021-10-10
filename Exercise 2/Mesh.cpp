@@ -1,12 +1,7 @@
 #include "Mesh.hpp"
 #include <iostream>
 
-Mesh::Mesh() {
-    // fist and last positions start as -1 (invalid)
-    // that means this mesh is not in a scene yet
-	setFirstTriangleIndexPos(-1);
-	setLastTriangleIndexPos(-1);
-}
+Mesh::Mesh() { }
 
 // Vertices
 vector<Vertex> Mesh::getVertices() {
@@ -59,23 +54,6 @@ void Mesh::deleteTriangleIndices(int num_triangle) {
 
 int Mesh::getNumberTriangles() {
     return static_cast<int>(this->mesh_indices.size() / 3);
-}
-
-// Indices positions in scene
-int Mesh::getFirstTriangleIndexPos() {
-    return first_triangle_index_position;
-}
-
-void Mesh::setFirstTriangleIndexPos(int pos) {
-    first_triangle_index_position = pos;
-}
-
-int Mesh::getLastTriangleIndexPos() {
-    return last_triangle_index_position;
-}
-
-void Mesh::setLastTriangleIndexPos(int pos) {
-    last_triangle_index_position = pos;
 }
 
 // Debug
