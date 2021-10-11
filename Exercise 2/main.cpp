@@ -38,8 +38,8 @@
 
 //Ting: eh recomendavel criar um VAO
 GLuint VAO; // VAO = Vertex Array Object
-GLuint VBO; // VBO = Vertex Buffer Object
-GLuint IBO; // IBO = Index Buffer Object
+GLuint VBO[2]; // VBO = Vertex Buffer Object
+GLuint IBO[2]; // IBO = Index Buffer Object
 GLuint gWVPLocation;
 
 Scene scene;
@@ -59,7 +59,8 @@ static void RenderSceneCB()
     world_transformation.setRotation({ 0.0f, Scale, 0.0f });
     scene.setWorldTransformation(world_transformation);
 
-    scene.drawMesh(0, &VBO, &IBO, &gWVPLocation);
+    scene.drawMesh(0, &VBO[0], &IBO[0], &gWVPLocation);
+    scene.drawMesh(1, &VBO[1], &IBO[1], &gWVPLocation);
 
     glutPostRedisplay();
 
@@ -208,9 +209,20 @@ int main(int argc, char** argv)
     t.setScale({ 0.5f, 0.5f, 0.5f });
     m.setTransformation(t);
     scene.pushMesh(m);
+
+    Mesh m2 = createCube(color_blue);
+    Transformation t2 = Transformation();
+    t2.setTranslation({ 0.0f, 1.0f, 1.0f });
+    t2.setRotation({ 10.0f, 0.0f, 0.0f });
+    t2.setScale({ 0.7f, 0.1f, 2.0f });
+    m2.setTransformation(t2);
+    scene.pushMesh(m2);
     
-    scene.genVBO(0, &VBO);
-    scene.genIBO(0, &IBO);
+    scene.genVBO(0, &VBO[0]);
+    scene.genIBO(0, &IBO[0]);
+
+    scene.genVBO(1, &VBO[1]);
+    scene.genIBO(1, &IBO[1]);
 
     CompileShaders();
 
