@@ -88,12 +88,6 @@ Mesh createCube(Vector3f color) {
     return m;
 }
 
-void createTable(Vector3f position,
-                 float table_length, float table_height, float table_width,
-                 float tabletop_thickness, float tableleg_length, float tableleg_width,
-                 Vector3f color) {
-}
-
 Mesh createRegularIcosahedron(Vector3f color) {
     Mesh m;
     // those coordinates are pre-calculated

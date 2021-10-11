@@ -60,11 +60,6 @@ static void RenderSceneCB()
     world_transformation.setRotation({ 0.0f, Scale, 0.0f });
     scene.setWorldTransformation(world_transformation);
 
-    /*
-    scene.drawMesh(0, &VBO[0], &IBO[0], &gWVPLocation);
-    scene.drawMesh(1, &VBO[1], &IBO[1], &gWVPLocation);
-    */
-
     scene.drawAllMeshes(&VBO[0], &IBO[0], &gWVPLocation);
 
     glutPostRedisplay();
@@ -231,14 +226,6 @@ int main(int argc, char** argv)
     m3.setTransformation(t3);
     scene.pushMesh(m3);
     
-    /*
-    scene.genVBO(0, &VBO[0]);
-    scene.genIBO(0, &IBO[0]);
-
-    scene.genVBO(1, &VBO[1]);
-    scene.genIBO(1, &IBO[1]);
-    */
-
     scene.genAllVBOs(&VBO[0]);
     scene.genAllIBOs(&IBO[0]);
 
