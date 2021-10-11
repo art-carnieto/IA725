@@ -47,5 +47,5 @@ public:
 
 	void genAllVBOs(GLuint* VBO);
 	void genAllIBOs(GLuint* IBO);
-	void drawAllMeshes(GLuint* VBO, GLuint* IBO);
+	void drawAllMeshes(GLuint* VBO, GLuint* IBO, GLuint* gWVPLocation);
 };

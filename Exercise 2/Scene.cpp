@@ -119,3 +119,11 @@ void Scene::genAllIBOs(GLuint* IBO) {
 		IBO++;  // advances pointer position
 	}
 }
+
+void Scene::drawAllMeshes(GLuint* VBO, GLuint* IBO, GLuint* gWVPLocation) {
+	for (int index_mesh = 0; index_mesh < this->meshes.size(); index_mesh++) {
+		drawMesh(index_mesh, VBO, IBO, gWVPLocation);
+		VBO++;  // advances pointer position
+		IBO++;  // advances pointer position
+	}
+}

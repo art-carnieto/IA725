@@ -35,11 +35,12 @@
 
 #define WINDOW_WIDTH  1280
 #define WINDOW_HEIGHT 720
+#define NUMBER_MESHES 3
 
 //Ting: eh recomendavel criar um VAO
 GLuint VAO; // VAO = Vertex Array Object
-GLuint VBO[2]; // VBO = Vertex Buffer Object
-GLuint IBO[2]; // IBO = Index Buffer Object
+GLuint VBO[NUMBER_MESHES]; // VBO = Vertex Buffer Object
+GLuint IBO[NUMBER_MESHES]; // IBO = Index Buffer Object
 GLuint gWVPLocation;
 
 Scene scene;
@@ -59,8 +60,12 @@ static void RenderSceneCB()
     world_transformation.setRotation({ 0.0f, Scale, 0.0f });
     scene.setWorldTransformation(world_transformation);
 
+    /*
     scene.drawMesh(0, &VBO[0], &IBO[0], &gWVPLocation);
     scene.drawMesh(1, &VBO[1], &IBO[1], &gWVPLocation);
+    */
+
+    scene.drawAllMeshes(&VBO[0], &IBO[0], &gWVPLocation);
 
     glutPostRedisplay();
 
@@ -217,6 +222,14 @@ int main(int argc, char** argv)
     t2.setScale({ 0.7f, 0.1f, 2.0f });
     m2.setTransformation(t2);
     scene.pushMesh(m2);
+
+    Mesh m3 = createSubdividedIcosahedron(3, color_green);
+    Transformation t3 = Transformation();
+    t3.setTranslation({ 1.0f, 0.0f, 0.0f });
+    t3.setRotation({ 0.0f, 0.0f, 0.0f });
+    t3.setScale({ 0.5f, 0.1f, 0.3f });
+    m3.setTransformation(t3);
+    scene.pushMesh(m3);
     
     /*
     scene.genVBO(0, &VBO[0]);
