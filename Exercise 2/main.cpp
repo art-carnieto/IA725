@@ -218,11 +218,16 @@ int main(int argc, char** argv)
     m2.setTransformation(t2);
     scene.pushMesh(m2);
     
+    /*
     scene.genVBO(0, &VBO[0]);
     scene.genIBO(0, &IBO[0]);
 
     scene.genVBO(1, &VBO[1]);
     scene.genIBO(1, &IBO[1]);
+    */
+
+    scene.genAllVBOs(&VBO[0]);
+    scene.genAllIBOs(&IBO[0]);
 
     CompileShaders();
 

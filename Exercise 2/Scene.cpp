@@ -105,3 +105,17 @@ void Scene::drawMesh(int index, GLuint* VBO, GLuint* IBO, GLuint* gWVPLocation) 
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
 }
+
+void Scene::genAllVBOs(GLuint* VBO) {
+	for (int index_mesh = 0; index_mesh < this->meshes.size(); index_mesh++) {
+		getMesh(index_mesh).genVBO(VBO);
+		VBO++;  // advances pointer position
+	}
+}
+
+void Scene::genAllIBOs(GLuint* IBO) {
+	for (int index_mesh = 0; index_mesh < this->meshes.size(); index_mesh++) {
+		getMesh(index_mesh).genIBO(IBO);
+		IBO++;  // advances pointer position
+	}
+}
