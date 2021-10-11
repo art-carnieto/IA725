@@ -59,24 +59,7 @@ static void RenderSceneCB()
     world_transformation.setRotation({ 0.0f, Scale, 0.0f });
     scene.setWorldTransformation(world_transformation);
 
-    Matrix4f WVP = scene.getWVP();
-    glUniformMatrix4fv(gWVPLocation, 1, GL_TRUE, &WVP.m[0][0]);
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
-
-    // position
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
-
-    // color
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(3 * sizeof(float)));
-
-    glDrawElements(GL_TRIANGLES, scene.getMesh(0).getIndices().size(), GL_UNSIGNED_INT, 0);
-
-    glDisableVertexAttribArray(0);
-    glDisableVertexAttribArray(1);
+    scene.drawMesh(0, &VBO, &IBO, &gWVPLocation);
 
     glutPostRedisplay();
 
@@ -219,6 +202,11 @@ int main(int argc, char** argv)
     scene = Scene({ 0.0f, 0.0f, -3.0f }, pers_info, ortho_info, true);
 
     Mesh m = createRegularIcosahedron(color_red);
+    Transformation t = Transformation();
+    t.setTranslation({ 0.0f, 0.0f, 1.0f });
+    t.setRotation({ 40.0f, 0.0f, 0.0f });
+    t.setScale({ 0.5f, 0.5f, 0.5f });
+    m.setTransformation(t);
     scene.pushMesh(m);
     
     scene.genVBO(0, &VBO);

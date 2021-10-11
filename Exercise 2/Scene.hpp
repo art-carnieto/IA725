@@ -43,7 +43,7 @@ public:
 
 	void genVBO(int index, GLuint* VBO);
 	void genIBO(int index, GLuint* IBO);
-	void drawMesh(int index, GLuint* VBO, GLuint* IBO);
+	void drawMesh(int index, GLuint* VBO, GLuint* IBO, GLuint* gWVPLocation);
 
 	void genAllVBOs(GLuint* VBO);
 	void genAllIBOs(GLuint* IBO);
