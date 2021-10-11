@@ -35,7 +35,7 @@
 
 #define WINDOW_WIDTH  1280
 #define WINDOW_HEIGHT 720
-#define NUMBER_MESHES 3
+#define NUMBER_MESHES 5
 
 //Ting: eh recomendavel criar um VAO
 GLuint VAO; // VAO = Vertex Array Object
@@ -154,6 +154,53 @@ static void CompileShaders()
     glUseProgram(ShaderProgram);
 }
 
+void createTable(Vector3f position,
+        float table_length, float table_height, float table_width,
+        float tabletop_thickness, float tableleg_length, float tableleg_width,
+        Vector3f color) {
+    
+    // tabletop
+    Mesh tabletop = createCube(color);
+    Transformation t_tabletop = Transformation();
+    t_tabletop.setTranslation({ 0.0f + position[0], table_height + position[1], 0.0f + position[2] });
+    t_tabletop.setScale({ table_length, tabletop_thickness, table_width });
+    tabletop.setTransformation(t_tabletop);
+    scene.pushMesh(tabletop);
+
+    // table leg 1: left back
+    Mesh table_leg_1 = createCube(color);
+    Transformation t_table_leg_1 = Transformation();
+    t_table_leg_1.setTranslation({ (-table_length / 2) + (tableleg_length / 2) + position[0], 0.0f + position[1], (-table_width / 2) + (tableleg_width / 2) + position[2] });
+    t_table_leg_1.setScale({ tableleg_length, (table_height * 2) - (tabletop_thickness), tableleg_width });
+    table_leg_1.setTransformation(t_table_leg_1);
+    scene.pushMesh(table_leg_1);
+
+
+    // table leg 2: left front
+    Mesh table_leg_2 = createCube(color);
+    Transformation t_table_leg_2 = Transformation();
+    t_table_leg_2.setTranslation({ (-table_length / 2) + (tableleg_length / 2) + position[0], 0.0f + position[1], (+table_width / 2) - (tableleg_width / 2) + position[2] });
+    t_table_leg_2.setScale({ tableleg_length, (table_height * 2) - (tabletop_thickness), tableleg_width });
+    table_leg_2.setTransformation(t_table_leg_2);
+    scene.pushMesh(table_leg_2);
+
+    // table leg 3: right back
+    Mesh table_leg_3 = createCube(color);
+    Transformation t_table_leg_3 = Transformation();
+    t_table_leg_3.setTranslation({ (+table_length / 2) - (tableleg_length / 2) + position[0], 0.0f + position[1], (-table_width / 2) + (tableleg_width / 2) + position[2] });
+    t_table_leg_3.setScale({ tableleg_length, (table_height * 2) - (tabletop_thickness), tableleg_width });
+    table_leg_3.setTransformation(t_table_leg_3);
+    scene.pushMesh(table_leg_3);
+
+    // table leg 4: right front
+    Mesh table_leg_4 = createCube(color);
+    Transformation t_table_leg_4 = Transformation();
+    t_table_leg_4.setTranslation({ (+table_length / 2) - (tableleg_length / 2) + position[0], 0.0f + position[1], (+table_width / 2) - (tableleg_width / 2) + position[2] });
+    t_table_leg_4.setScale({ tableleg_length, (table_height * 2) - (tabletop_thickness), tableleg_width });
+    table_leg_4.setTransformation(t_table_leg_4);
+    scene.pushMesh(table_leg_4);
+}
+
 int main(int argc, char** argv)
 {
 #ifdef _WIN64
@@ -201,7 +248,7 @@ int main(int argc, char** argv)
     OrthoProjInfo ortho_info = { 2.0f, -2.0f, -2.0f, 2.0f, 1.0f, 10.0f };
 
     scene = Scene({ 0.0f, 0.0f, -3.0f }, pers_info, ortho_info, true);
-
+    /*
     Mesh m = createRegularIcosahedron(color_red);
     Transformation t = Transformation();
     t.setTranslation({ 0.0f, 0.0f, 1.0f });
@@ -225,7 +272,10 @@ int main(int argc, char** argv)
     t3.setScale({ 0.5f, 0.1f, 0.3f });
     m3.setTransformation(t3);
     scene.pushMesh(m3);
-    
+    */
+
+    createTable({ 0.0f, 0.0f, -1.0f }, 2.0f, 0.5f, 1.0f, 0.1, 0.05, 0.2, color_blue);
+
     scene.genAllVBOs(&VBO[0]);
     scene.genAllIBOs(&IBO[0]);
 
