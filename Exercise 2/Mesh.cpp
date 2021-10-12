@@ -58,6 +58,7 @@ int Mesh::getNumberTriangles() {
 
 // VBO, IBO
 void Mesh::genVBO(GLuint* VBO) {
+    assert(this->mesh_vertices.size() > 0);
     this->Vertices = &mesh_vertices[0];
 
     glGenBuffers(1, VBO);
@@ -66,6 +67,7 @@ void Mesh::genVBO(GLuint* VBO) {
 }
 
 void Mesh::genIBO(GLuint* IBO) {
+    assert(this->mesh_indices.size() > 0);
     this->Indices = &mesh_indices[0];
 
     glGenBuffers(1, IBO);
@@ -89,7 +91,7 @@ void Mesh::debug_print_vertices() {
     cout << "sizeof() first vertex = " << sizeof(this->mesh_vertices[0]) << endl;
     cout << "Number of vertices * sizeof() first vertex = " << Mesh::getNumberVertices() * sizeof(this->mesh_vertices[0]) << endl;
     for (int i = 0; i < Mesh::getNumberVertices(); i++) {
-        cout << "pos: { " << this->mesh_vertices[i].getPosition()[0] << " " << this->mesh_vertices[i].getPosition()[1] << " " << this->mesh_vertices[i].getPosition()[2] << " }\n";
+        cout << "pos: { " << this->mesh_vertices[i].getPosition()[0] << " " << this->mesh_vertices[i].getPosition()[1] << " " << this->mesh_vertices[i].getPosition()[2] << " }  |  ";
         cout << "color: { " << this->mesh_vertices[i].getColor()[0] << " " << this->mesh_vertices[i].getColor()[1] << " " << this->mesh_vertices[i].getColor()[2] << " }\n";
     }
 }
