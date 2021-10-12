@@ -59,6 +59,13 @@ void subdivideTriangle(int num_triangle, Mesh &m) {
     m.deleteTriangleIndices(num_triangle);
 }
 
+// compare if two floats are equals, taken from: https://www.tutorialspoint.com/floating-point-comparison-in-cplusplus
+bool cmp_eq_float(float x, float y, float epsilon = 0.001f) {
+    if (fabs(x - y) < epsilon)
+        return true;  //they are same
+    return false;     //they are not same
+}
+
 // Object creation
 
 Mesh createCube(Vector3f color) {
@@ -147,4 +154,44 @@ Mesh createSubdividedIcosahedron(int subdiv, Vector3f color) {
     }
 
     return icosahedron;
+}
+
+Mesh createPlane(float delta, Vector3f color) {
+    // FIXME: if delta value is <= 0.05 the indices are calculated wrong!
+    // This happens because of floating operation precision errors in u = u + delta and v = v + delta.
+    // Try with delta = 0.05: it won't create the vertices in x = 0.5 and z = 0.5 (last row and column)
+    float epsilon = 0.05f; // floating point precision error tolerance
+    assert(delta > epsilon);
+
+    Mesh m;
+
+    float size_u = 1.0f;
+    float size_v = 1.0f;
+
+    float u_start = -0.5f;
+    float v_start = -0.5f;
+
+    // Create vertices
+    for (float u = u_start; u <= (u_start + size_u); u = u + delta) {
+        for (float v = v_start; v <= (v_start + size_v); v = v + delta) {
+            m.pushVertex({ u, 0.0f, v }, color);
+        }
+    }
+    
+    // Create indices
+    int num_points_col = static_cast<int>(size_u / delta) + 1;
+    int index = 0;
+    for (int i = 0; i < num_points_col; i++) {
+        for (int j = 0; j < (num_points_col - 1); j++) {
+            if ((index + 1) % num_points_col == 0) {
+                index++;
+                continue;
+            }
+            m.pushTriangleIndices(index, index + 1, index + num_points_col);
+            m.pushTriangleIndices(index + 1, index + num_points_col + 1, index + num_points_col);
+            index++;
+        }
+    }
+
+    return m;
 }

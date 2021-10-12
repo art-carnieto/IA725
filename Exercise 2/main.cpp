@@ -35,7 +35,7 @@
 
 #define WINDOW_WIDTH  1280
 #define WINDOW_HEIGHT 720
-#define NUMBER_MESHES 5
+#define NUMBER_MESHES 1
 
 //Ting: eh recomendavel criar um VAO
 GLuint VAO; // VAO = Vertex Array Object
@@ -274,7 +274,17 @@ int main(int argc, char** argv)
     scene.pushMesh(m3);
     */
 
-    createTable({ 0.0f, 0.0f, -1.0f }, 2.0f, 0.5f, 1.0f, 0.1, 0.05, 0.2, color_blue);
+    //createTable({ 0.0f, 0.0f, -1.0f }, 2.0f, 0.5f, 1.0f, 0.1, 0.05, 0.2, color_blue);
+
+    Mesh m = createPlane(0.1f, color_blue);
+    Transformation t = Transformation();
+    t.setScale({ 1.0f, 1.0f, 1.0f });
+    t.setRotation({ 90.0f, 0.0f, 0.0f });
+    m.setTransformation(t);
+    scene.pushMesh(m);
+
+    m.debug_print_vertices();
+    m.debug_print_indices();
 
     scene.genAllVBOs(&VBO[0]);
     scene.genAllIBOs(&IBO[0]);

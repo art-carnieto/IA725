@@ -10,8 +10,10 @@
 // Geometry
 void subdivideTriangle(int num_triangle, Mesh &m);
 void normalizeVertexPositions(float v[3]);
+bool cmp_eq_float(float x, float y, float epsilon);
 
 // Object creation
 Mesh createCube(Vector3f color);
 Mesh createRegularIcosahedron(Vector3f color);
 Mesh createSubdividedIcosahedron(int subdiv, Vector3f color);
+Mesh createPlane(float delta, Vector3f color);
