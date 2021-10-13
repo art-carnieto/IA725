@@ -275,7 +275,7 @@ int main(int argc, char** argv)
     */
 
     //createTable({ 0.0f, 0.0f, -1.0f }, 2.0f, 0.5f, 1.0f, 0.1, 0.05, 0.2, color_blue);
-    
+    /*
     Mesh m = createPlane(0.1f, color_blue);
     Transformation t = Transformation();
     t.setScale({ 1.0f, 1.0f, 1.0f });
@@ -296,6 +296,16 @@ int main(int argc, char** argv)
 
     circle.debug_print_vertices();
     circle.debug_print_indices();
+    */
+
+    Mesh cone = createCone(30, 1.0f, 1.0f, color_green);
+    Transformation t = Transformation();
+    t.setRotation({ 45.0f, 0.0f, 0.0f });
+    cone.setTransformation(t);
+    scene.pushMesh(cone);
+
+    cone.debug_print_vertices();
+    cone.debug_print_indices();
 
     scene.genAllVBOs(&VBO[0]);
     scene.genAllIBOs(&IBO[0]);

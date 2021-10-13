@@ -18,3 +18,4 @@ Mesh createRegularIcosahedron(Vector3f color);
 Mesh createSubdividedIcosahedron(int subdiv, Vector3f color);
 Mesh createPlane(float delta, Vector3f color);
 Mesh createCircle(int subdiv, float radius, Vector3f color);
+Mesh createCone(int subdiv, float radius, float height, Vector3f color);

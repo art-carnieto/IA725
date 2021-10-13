@@ -212,9 +212,41 @@ Mesh createCircle(int subdiv, float radius, Vector3f color) {
 
     // Indices
     for (int i = 1; i < subdiv; i++) {
-        m.pushTriangleIndices(i, 0, i + 1);
+        m.pushTriangleIndices(i, 0, i + 1);  // circle is facing up
     }
     m.pushTriangleIndices(subdiv, 0, 1);  // last triangle
+
+    return m;
+}
+
+Mesh createCone(int subdiv, float radius, float height, Vector3f color) {
+    Mesh m;
+    m.pushVertex({ 0.0f, 0.0f, 0.0f }, color);  // midpoint
+
+    float theta_step = 360.0f / subdiv;
+    float theta = 0.0f;
+
+    // Circular base
+    // Vertices
+    for (int i = 0; i < subdiv; i++) {
+        m.pushVertex({ radius * cos(ToRadian(theta)), 0.0f, radius * sin(ToRadian(theta)) }, color);
+        theta += theta_step;
+    }
+
+    // Indices
+    for (int i = 1; i < subdiv; i++) {
+        m.pushTriangleIndices(0, i, i + 1);  // circle is facing down
+    }
+    m.pushTriangleIndices(0, subdiv, 1);  // last triangle of base
+
+    // Body
+    m.pushVertex({ 0.0f, height, 0.0f }, color);  // top vertex
+    
+    // Indices
+    for (int i = 1; i < subdiv; i++) {
+        m.pushTriangleIndices(i, subdiv + 1, i + 1);
+    }
+    m.pushTriangleIndices(subdiv, subdiv + 1, 1);  // last triangle of body
 
     return m;
 }
