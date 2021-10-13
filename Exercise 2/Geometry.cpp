@@ -206,7 +206,7 @@ Mesh createCircle(int subdiv, float radius, Vector3f color) {
 
     // Vertices
     for (int i = 0; i < subdiv; i++) {
-        m.pushVertex({ radius * cos(ToRadian(theta)), radius * sin(ToRadian(theta)), 0.0f }, color);
+        m.pushVertex({ radius * cos(ToRadian(theta)), 0.0f, radius * sin(ToRadian(theta)) }, color);
         theta += theta_step;
     }
 
