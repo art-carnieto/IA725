@@ -203,13 +203,11 @@ Mesh createCircle(int subdiv, float radius, Vector3f color) {
     float theta_step = 360.0f / subdiv;
     float theta = 0.0f;
 
-
     // Vertices
     for (int i = 0; i < subdiv; i++) {
         m.pushVertex({ radius * cos(ToRadian(theta)), 0.0f, radius * sin(ToRadian(theta)) }, color);
         theta += theta_step;
     }
-
     // Indices
     for (int i = 1; i < subdiv; i++) {
         m.pushTriangleIndices(i, 0, i + 1);  // circle is facing up
@@ -221,18 +219,17 @@ Mesh createCircle(int subdiv, float radius, Vector3f color) {
 
 Mesh createCone(int subdiv, float radius, float height, Vector3f color) {
     Mesh m;
-    m.pushVertex({ 0.0f, 0.0f, 0.0f }, color);  // midpoint
 
     float theta_step = 360.0f / subdiv;
     float theta = 0.0f;
 
     // Circular base
     // Vertices
+    m.pushVertex({ 0.0f, 0.0f, 0.0f }, color);  // midpoint
     for (int i = 0; i < subdiv; i++) {
         m.pushVertex({ radius * cos(ToRadian(theta)), 0.0f, radius * sin(ToRadian(theta)) }, color);
         theta += theta_step;
     }
-
     // Indices
     for (int i = 1; i < subdiv; i++) {
         m.pushTriangleIndices(0, i, i + 1);  // circle is facing down
@@ -241,12 +238,54 @@ Mesh createCone(int subdiv, float radius, float height, Vector3f color) {
 
     // Body
     m.pushVertex({ 0.0f, height, 0.0f }, color);  // top vertex
-    
     // Indices
     for (int i = 1; i < subdiv; i++) {
         m.pushTriangleIndices(i, subdiv + 1, i + 1);
     }
     m.pushTriangleIndices(subdiv, subdiv + 1, 1);  // last triangle of body
 
+    return m;
+}
+
+Mesh createCylinder(int subdiv, float radius, float height, Vector3f color) {
+    Mesh m;
+
+    float theta_step = 360.0f / subdiv;
+    float theta = 0.0f;
+
+    // Circular bottom
+    // Vertices
+    m.pushVertex({ 0.0f, 0.0f, 0.0f }, color);  // midpoint
+    for (int i = 0; i < subdiv; i++) {
+        m.pushVertex({ radius * cos(ToRadian(theta)), 0.0f, radius * sin(ToRadian(theta)) }, color);
+        theta += theta_step;
+    }
+    // Indices
+    for (int i = 1; i < subdiv; i++) {
+        m.pushTriangleIndices(0, i, i + 1);  // circle is facing down
+    }
+    m.pushTriangleIndices(0, subdiv, 1);  // last triangle of base
+
+    // Circular top
+    m.pushVertex({ 0.0f, height, 0.0f }, color);  // top midpoint
+    theta = 0.0f;
+    // Vertices
+    for (int i = 0; i < subdiv; i++) {
+        m.pushVertex({ radius * cos(ToRadian(theta)), height, radius * sin(ToRadian(theta)) }, color);
+        theta += theta_step;
+    }
+    // Indices
+    for (int i = subdiv + 2; i < (subdiv * 2) + 1; i++) {
+        m.pushTriangleIndices(i, subdiv + 1, i + 1);
+    }
+    m.pushTriangleIndices((subdiv * 2) + 1, subdiv + 1, subdiv + 2);  // last triangle of top circle
+
+    // Body indices
+    for (int i = 1; i < subdiv; i++) {
+        m.pushTriangleIndices(i, i + subdiv + 1, i + 1);
+        m.pushTriangleIndices(i + 1, i + subdiv + 1, i + subdiv + 2);
+    }
+    m.pushTriangleIndices(subdiv, (subdiv * 2) + 1, 1);
+    m.pushTriangleIndices(1, (subdiv * 2) + 1, subdiv + 2);
     return m;
 }
