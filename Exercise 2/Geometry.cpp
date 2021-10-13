@@ -195,3 +195,26 @@ Mesh createPlane(float delta, Vector3f color) {
 
     return m;
 }
+
+Mesh createCircle(int subdiv, float radius, Vector3f color) {
+    Mesh m;
+    m.pushVertex({ 0.0f, 0.0f, 0.0f }, color);  // midpoint
+
+    float theta_step = 360.0f / subdiv;
+    float theta = 0.0f;
+
+
+    // Vertices
+    for (int i = 0; i < subdiv; i++) {
+        m.pushVertex({ radius * cos(ToRadian(theta)), radius * sin(ToRadian(theta)), 0.0f }, color);
+        theta += theta_step;
+    }
+
+    // Indices
+    for (int i = 1; i < subdiv; i++) {
+        m.pushTriangleIndices(i, 0, i + 1);
+    }
+    m.pushTriangleIndices(subdiv, 0, 1);  // last triangle
+
+    return m;
+}
