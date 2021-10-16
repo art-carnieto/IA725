@@ -289,3 +289,36 @@ Mesh createCylinder(int subdiv, float radius, float height, Vector3f color) {
     m.pushTriangleIndices(1, (subdiv * 2) + 1, subdiv + 2);
     return m;
 }
+
+// adapted from https://github.com/JoeyDeVries/Cell/blob/master/cell/mesh/sphere.cpp
+Mesh createSphere(int xSegments, int ySegments, float radius, Vector3f color) {
+    Mesh m;
+
+    for (unsigned int y = 0; y <= ySegments; ++y) {
+        for (unsigned int x = 0; x <= xSegments; ++x) {
+            float xSegment = (float)x / (float)xSegments;
+            float ySegment = (float)y / (float)ySegments;
+            float xPos = radius * std::cos(xSegment * (M_PI * 2)) * std::sin(ySegment * M_PI);
+            float yPos = radius * std::cos(ySegment * M_PI);
+            float zPos = radius * std::sin(xSegment * (M_PI * 2)) * std::sin(ySegment * M_PI);
+
+            m.pushVertex({ xPos, yPos, zPos }, color);
+        }
+    }
+
+    for (int y = 0; y < ySegments; ++y) {
+        for (int x = 0; x < xSegments; ++x) {
+            m.pushTriangleIndices(
+                (y + 1) * (xSegments + 1) + x,
+                y * (xSegments + 1) + x,
+                y * (xSegments + 1) + x + 1);
+
+            m.pushTriangleIndices(
+                (y + 1) * (xSegments + 1) + x,
+                y * (xSegments + 1) + x + 1,
+                (y + 1) * (xSegments + 1) + x + 1);
+        }
+    }
+
+    return m;
+}
