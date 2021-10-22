@@ -11,6 +11,10 @@
 void subdivideTriangle(int num_triangle, Mesh &m);
 void normalizeVertexPositions(float v[3]);
 bool cmp_eq_float(float x, float y, float epsilon);
+Vertex BernsteinCurve(float u, Vertex points[4]);
+Vertex BernsteinSurface(float u, float v, Vertex patch_points[4][4]);
+vector<Vertex> genPatchBezier(Vertex patch_points[4][4], int divs);
+vector<Vertex> genPatchBezierUsingIndices(vector<Vertex> list_control_points, unsigned int indices[16], int divs);
 
 // Object creation
 Mesh createCube(Vector3f color);
@@ -21,3 +25,5 @@ Mesh createCircle(int subdiv, float radius, Vector3f color);
 Mesh createCone(int subdiv, float radius, float height, Vector3f color);
 Mesh createCylinder(int subdiv, float radius, float height, Vector3f color);
 Mesh createSphere(int xSegments, int ySegments, float radius, Vector3f color);
+Mesh createCubicBezierMesh(vector<Vertex> list_control_points, vector<unsigned int> bezier_indices, int subdiv, Vector3f color);
+Mesh createUtahTeapot(int subdiv, Vector3f color);

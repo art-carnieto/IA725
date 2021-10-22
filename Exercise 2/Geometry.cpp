@@ -1,4 +1,7 @@
 #include "Geometry.hpp"
+#include <vector>
+#include "TeapotData.hpp"
+#include <iostream>
 
 // Auxiliaries
 void normalizeVertexPositions(float v[3]) {
@@ -64,6 +67,104 @@ bool cmp_eq_float(float x, float y, float epsilon = 0.001f) {
     if (fabs(x - y) < epsilon)
         return true;  //they are same
     return false;     //they are not same
+}
+
+// adapted from http://www.inf.ufsc.br/~aldo.vw/grafica/apostilas/openGL/lesson29/lesson29.html
+// Calculates 3rd Degree Polynomial Based On Array Of 4 Points
+// And A Single Variable (u) Which Is Generally Between 0 And 1
+Vertex BernsteinCurve(float u, Vertex points[4]) {
+    float a[3], b[3], c[3], d[3];  // 4 control points
+
+    for (int i = 0; i < 3; i++) {  // access the x, y and z dimensions
+        a[i] = static_cast<float>(pow((1 - u), 3));
+        b[i] = static_cast<float>(3 * u * pow((1 - u), 2));
+        c[i] = static_cast<float>(3 * pow(u, 2) * (1 - u));
+        d[i] = static_cast<float>(pow(u, 3));
+    }
+
+    float bernstein[3];  // x, y and z
+    for (int i = 0; i < 3; i++) {  // access the x, y and z dimensions
+        bernstein[i] = points[0].getPosition()[i] * a[i] + 
+            points[1].getPosition()[i] * b[i] +
+            points[2].getPosition()[i] * c[i] +
+            points[3].getPosition()[i] * d[i];
+    }
+    Vertex new_vertex = Vertex(bernstein[0], bernstein[1], bernstein[2]);
+    
+    return new_vertex;
+}
+
+// adapted from https://github.com/rgalo-coder/ComputacaoGrafica/blob/master/ExercicioBase/BuleUtah.cpp
+Vertex BernsteinSurface(float u, float v, Vertex patch_points[4][4]) {
+    Vertex uCurve[4];
+    for (int i = 0; i < 4; i++) {  // gets each column of the 4x4 grid separately
+        uCurve[i] = BernsteinCurve(u, patch_points[i]);
+    }
+    return BernsteinCurve(v, uCurve);
+}
+
+vector<Vertex> genPatchBezier(Vertex patch_points[4][4], int divs) {
+    vector<Vertex> patch;
+    
+    float step = 1.0f / divs;
+    float u = 0.0f;
+    float v = 0.0f;
+    
+    for (int i = 0; i <= divs; i++) {
+        for (int j = 0; j <= divs; j++) {
+            patch.emplace_back(BernsteinSurface(u, v, patch_points));
+            u += step;
+        }
+        u = 0.0f;
+        v += step;
+    }
+    return patch;
+}
+
+vector<Vertex> genPatchBezierUsingIndices(vector<Vertex> list_control_points, unsigned int indices[16], int divs) {
+    Vertex patch_points[4][4];
+
+    patch_points[0][0] = list_control_points[indices[0]];
+    patch_points[0][1] = list_control_points[indices[1]];
+    patch_points[0][2] = list_control_points[indices[2]];
+    patch_points[0][3] = list_control_points[indices[3]];
+
+    patch_points[1][0] = list_control_points[indices[4]];
+    patch_points[1][1] = list_control_points[indices[5]];
+    patch_points[1][2] = list_control_points[indices[6]];
+    patch_points[1][3] = list_control_points[indices[7]];
+    
+    patch_points[2][0] = list_control_points[indices[8]];
+    patch_points[2][1] = list_control_points[indices[9]];
+    patch_points[2][2] = list_control_points[indices[10]];
+    patch_points[2][3] = list_control_points[indices[11]];
+    
+    patch_points[3][0] = list_control_points[indices[12]];
+    patch_points[3][1] = list_control_points[indices[13]];
+    patch_points[3][2] = list_control_points[indices[14]];
+    patch_points[3][3] = list_control_points[indices[15]];
+    
+    return genPatchBezier(patch_points, divs);
+}
+
+vector<Vertex> loadTeapotVertices() {
+    vector<Vertex> teapot;
+    for (int i = 0; i < 127; i++) {
+        teapot.emplace_back(Vertex(teapot_vertices[i][0], teapot_vertices[i][1], teapot_vertices[i][2]));
+    }
+
+    return teapot;
+}
+
+vector<unsigned int> loadTeapotIndices() {
+    vector<unsigned int> teapot;
+    for (int i = 0; i < 10; i++) {  // 10 Bezier patches
+        for (int j = 0; j < 16; j++) {  // 16 control points each
+            teapot.emplace_back(teapot_indices[i][j]);
+        }
+    }
+
+    return teapot;
 }
 
 // Object creation
@@ -321,4 +422,53 @@ Mesh createSphere(int xSegments, int ySegments, float radius, Vector3f color) {
     }
 
     return m;
+}
+
+Mesh createCubicBezierMesh(vector<Vertex> list_control_points, vector<unsigned int> bezier_indices, int subdiv, Vector3f color) {
+    Mesh m;
+
+    int size_list = bezier_indices.size() / 16;
+    int offset = 0;
+    vector<unsigned int>::iterator it = bezier_indices.begin();  // indices iterator
+
+    for (int patch_index = 0; patch_index < size_list; patch_index++) {
+        unsigned int indices[16];
+        for (int i = 0; i < 16; i++) {
+            indices[i] = *it;
+            it++;
+        }
+
+        // create vertices for a single Bezier patch
+        vector<Vertex> vertices = genPatchBezierUsingIndices(list_control_points, indices, subdiv);
+
+        // push vertices into Mesh
+        for (int j = 0; j < vertices.size(); j++) m.pushVertex(vertices[j]);
+
+        // Indices
+        // adapted from https://github.com/rgalo-coder/ComputacaoGrafica/blob/master/ExercicioBase/BuleUtah.cpp
+        for (int row = 0; row < subdiv; row++) {
+            for (int col = 0; col < subdiv; col++) {
+                m.pushTriangleIndices(
+                    (subdiv + 1) * row + col + offset,
+                    (subdiv + 1) * row + col + 1 + offset,
+                    (subdiv + 1) * (row + 1) + col + offset
+                );
+                m.pushTriangleIndices(
+                    (subdiv + 1) * (row + 1) + col + 1 + offset,
+                    (subdiv + 1) * (row + 1) + col + offset,
+                    (subdiv + 1) * row + col + 1 + offset
+                );
+            }
+        }
+        offset += vertices.size();
+    }
+
+    return m;
+}
+
+Mesh createUtahTeapot(int subdiv, Vector3f color) {
+    vector<Vertex> teapot_control_points = loadTeapotVertices();
+    vector<unsigned int> teapot_indices = loadTeapotIndices();
+    
+    return createCubicBezierMesh(teapot_control_points, teapot_indices, subdiv, color);
 }

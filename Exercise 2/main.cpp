@@ -238,7 +238,7 @@ int main(int argc, char** argv)
     glFrontFace(GL_CW);
     glCullFace(GL_BACK);
 
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // wireframe mode
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // wireframe mode
 
     //Ting: eh uma boa pratica criar um vertex array object para "conter" todos os estados de vertices
     glGenVertexArrays(1, &VAO);
@@ -317,13 +317,65 @@ int main(int argc, char** argv)
     cylinder.debug_print_vertices();
     cylinder.debug_print_indices();
     */
-
+    /*
     Mesh sphere = createSphere(20, 20, 1.0f, color_green);
     scene.pushMesh(sphere);
 
     sphere.debug_print_vertices();
     sphere.debug_print_indices();
+    */
+    /*
+    vector<Vertex> test_bezier;
+    test_bezier.emplace_back(Vertex(0.2000, 0.0000, 2.70000));
+    test_bezier.emplace_back(Vertex(0.2000, -0.1120, 2.70000));
+    test_bezier.emplace_back(Vertex(0.1120, -0.2000, 2.70000));
+    test_bezier.emplace_back(Vertex(0.0000, -0.2000, 2.70000));
+    test_bezier.emplace_back(Vertex(1.3375, 0.0000, 2.53125));
+    test_bezier.emplace_back(Vertex(1.3375, -0.7490, 2.53125));
+    test_bezier.emplace_back(Vertex(0.7490, -1.3375, 2.53125));
+    test_bezier.emplace_back(Vertex(0.0000, -1.3375, 2.53125));
+    test_bezier.emplace_back(Vertex(1.4375, 0.0000, 2.53125));
+    test_bezier.emplace_back(Vertex(1.4375, -0.8050, 2.53125));
+    test_bezier.emplace_back(Vertex(0.8050, -1.4375, 2.53125));
+    test_bezier.emplace_back(Vertex(0.0000, -1.4375, 2.53125));
+    test_bezier.emplace_back(Vertex(1.5000, 0.0000, 2.40000));
+    test_bezier.emplace_back(Vertex(1.5000, -0.8400, 2.40000));
+    test_bezier.emplace_back(Vertex(0.8400, -1.5000, 2.40000));
+    test_bezier.emplace_back(Vertex(0.0000, -1.5000, 2.40000));
 
+    test_bezier.emplace_back(Vertex(1.7500, 0.0000, 1.87500));
+    test_bezier.emplace_back(Vertex(1.7500, -0.9800, 1.87500));
+    test_bezier.emplace_back(Vertex(0.9800, -1.7500, 1.87500));
+    test_bezier.emplace_back(Vertex(0.0000, -1.7500, 1.87500));
+    test_bezier.emplace_back(Vertex(2.0000, 0.0000, 1.35000));
+    test_bezier.emplace_back(Vertex(2.0000, -1.1200, 1.35000));
+    test_bezier.emplace_back(Vertex(1.1200, -2.0000, 1.35000));
+    test_bezier.emplace_back(Vertex(0.0000, -2.0000, 1.35000));
+    test_bezier.emplace_back(Vertex(2.0000, 0.0000, 0.90000));
+    test_bezier.emplace_back(Vertex(2.0000, -1.1200, 0.90000));
+    test_bezier.emplace_back(Vertex(1.1200, -2.0000, 0.90000));
+    test_bezier.emplace_back(Vertex(0.0000, -2.0000, 0.90000));
+    test_bezier.emplace_back(Vertex(-2.0000, 0.0000, 0.90000));
+    test_bezier.emplace_back(Vertex(2.0000, 0.0000, 0.45000));
+    test_bezier.emplace_back(Vertex(2.0000, -1.1200, 0.45000));
+    test_bezier.emplace_back(Vertex(1.1200, -2.0000, 0.45000));
+
+    Mesh test = createCubicBezierMesh(test_bezier, 10, color_white);
+    Transformation t = Transformation();
+    t.setScale({ 0.5, 0.5, 0.5 });
+    test.setTransformation(t);
+    scene.pushMesh(test);
+
+    test.debug_print_vertices();
+    test.debug_print_indices();
+    */
+
+    Mesh teapot = createUtahTeapot(10, color_white);
+    Transformation t = Transformation();
+    t.setScale({ 0.3, 0.3, 0.3 });
+    t.setRotation({ -90.0f, 0.0f, 0.0f });
+    teapot.setTransformation(t);
+    scene.pushMesh(teapot);
 
     scene.genAllVBOs(&VBO[0]);
     scene.genAllIBOs(&IBO[0]);
