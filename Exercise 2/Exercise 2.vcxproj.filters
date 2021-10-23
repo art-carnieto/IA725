@@ -44,10 +44,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="shader.fs">
+    <None Include="fragment.frag">
       <Filter>Arquivos de Origem</Filter>
     </None>
-    <None Include="shader.vs">
+    <None Include="vertex.vert">
       <Filter>Arquivos de Origem</Filter>
     </None>
   </ItemGroup>

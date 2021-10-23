@@ -153,8 +153,8 @@
     <ClCompile Include="Vertex.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="shader.fs" />
-    <None Include="shader.vs" />
+    <None Include="fragment.frag" />
+    <None Include="vertex.vert" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.hpp" />
