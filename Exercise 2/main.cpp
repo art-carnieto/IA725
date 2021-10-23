@@ -255,10 +255,10 @@ int main(int argc, char** argv)
     char choice;  // User input to choose which object will be drawn
 
     while (!valid_choice) {
-        cout << "Please choose which object to be drawn:" << endl;
-        cout << "1) Table" << endl;
-        cout << "2) Subdivided icosahedron (sphere)" << endl;
-        cout << "3) Utah teapot" << endl;
+        cout << "Please type the option of which object to be drawn:" << endl;
+        cout << "  1) Table" << endl;
+        cout << "  2) Subdivided icosahedron (sphere)" << endl;
+        cout << "  3) Utah teapot" << endl;
         cin >> choice;
         if (choice != '1' && choice != '2' && choice != '3')
             cout << "Option not recognized, please try again!" << endl << endl;
