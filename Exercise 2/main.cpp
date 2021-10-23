@@ -31,11 +31,11 @@
 #include "Scene.hpp"
 #include "Colors.hpp"
 
-#include <iostream> // for tests using cout
+#include <iostream>  // for user interaction on prompt
 
 #define WINDOW_WIDTH  1280
 #define WINDOW_HEIGHT 720
-#define NUMBER_MESHES 5
+#define NUMBER_MESHES 5  // 5 because of the table drawing: it uses 5 transformed cubes!
 
 //Ting: eh recomendavel criar um VAO
 GLuint VAO; // VAO = Vertex Array Object
@@ -221,7 +221,7 @@ int main(int argc, char** argv)
     glutInitContextVersion(3, 3);// Major version and minor version
     glutInitContextProfile(GLUT_CORE_PROFILE);
 
-    int win = glutCreateWindow("Mesa");
+    int win = glutCreateWindow("Exercise 2");
 
     // Must be done after glut is initialized!
     GLenum res = glewInit();
@@ -230,7 +230,7 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    GLclampf Red = 0.0f, Green = 0.0f, Blue = 0.0f, Alpha = 0.0f;
+    GLclampf Red = 0.0f, Green = 0.0f, Blue = 0.0f, Alpha = 0.0f;  // black background
     glClearColor(Red, Green, Blue, Alpha);
 
     glEnable(GL_DEPTH_TEST);
@@ -244,13 +244,15 @@ int main(int argc, char** argv)
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
 
+    //                        FOV |    Width   |    Height    | zNear | zFar;
     PersProjInfo pers_info = { 45, WINDOW_WIDTH, WINDOW_HEIGHT, 1.0f, 10.0f };
-    OrthoProjInfo ortho_info = { 2.0f, -2.0f, -2.0f, 2.0f, 1.0f, 10.0f };
-
-    scene = Scene({ 0.0f, 0.0f, -3.0f }, pers_info, ortho_info, true);
+    //                          right | left | bottom | top | z near | z far
+    OrthoProjInfo ortho_info = { 2.0f, -2.0f, -2.0f,   2.0f,   1.0f,  10.0f };
+    //              camera position | perspective infos | orthographic infos | is_perspective
+    scene = Scene({ 0.0f, 0.0f, -3.0f },  pers_info,         ortho_info,           true);
 
     bool valid_choice = false;
-    char choice;
+    char choice;  // User input to choose which object will be drawn
 
     while (!valid_choice) {
         cout << "Please choose which object to be drawn:" << endl;
@@ -264,23 +266,24 @@ int main(int argc, char** argv)
             valid_choice = true;
     }
     if (choice == '1') {
-        createTable({ 0.0f, 0.0f, -1.0f }, 2.0f, 0.5f, 1.0f, 0.1, 0.05, 0.2, color_saddle_brown);
+        //                position       lenght height width tabletop_thickness tableleg_length tableleg_width       color
+        createTable({ 0.0f, 0.0f, 0.0f }, 2.0f,  0.5f,  1.0f,      0.1,              0.05,          0.2,      color_saddle_brown);
     }
     else if (choice == '2') {
+        //                                subdivision number  color
         Mesh icosahedron = createSubdividedIcosahedron(3, color_yellow);
         Transformation t1 = Transformation();
-        t1.setTranslation({ 1.0f, 0.0f, 0.0f });
-        t1.setRotation({ 0.0f, 0.0f, 0.0f });
-        t1.setScale({ 0.5f, 0.1f, 0.3f });
+        t1.setScale({ 0.5f, 0.5f, 0.5f });  // scale it down to half so it's better to see it on screen
         icosahedron.setTransformation(t1);
         scene.pushMesh(icosahedron);
     }
     else if (choice == '3') {
+        //                subdivision number  color
         Mesh teapot = createUtahTeapot(10, color_blue);
         Transformation t = Transformation();
-        t.setScale({ 0.5, 0.5, 0.5 });
-        t.setRotation({ -90.0f, 0.0f, 0.0f });
-        t.setTranslation({ 0.0f, -0.7, 0.0f });
+        t.setScale({ 0.4, 0.4, 0.4 });  // original teapot is too big! Resize it to be smaller
+        t.setRotation({ -90.0f, 0.0f, 0.0f });  // rotates it to be in the correct upright position
+        t.setTranslation({ 0.0f, -0.7, 0.0f });  // moves the object down to recenter it because the rotation moves it up
         teapot.setTransformation(t);
         scene.pushMesh(teapot);
     }
