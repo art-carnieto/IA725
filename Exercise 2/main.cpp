@@ -370,7 +370,7 @@ int main(int argc, char** argv)
     test.debug_print_indices();
     */
 
-    Mesh teapot = createUtahTeapot(10, color_white);
+    Mesh teapot = createUtahTeapot(10, color_red);
     Transformation t = Transformation();
     t.setScale({ 0.5, 0.5, 0.5 });
     t.setRotation({ -90.0f, 0.0f, 0.0f });

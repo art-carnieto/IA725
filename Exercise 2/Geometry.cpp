@@ -71,7 +71,7 @@ bool cmp_eq_float(float x, float y, float epsilon = 0.001f) {
 // adapted from http://www.inf.ufsc.br/~aldo.vw/grafica/apostilas/openGL/lesson29/lesson29.html
 // Calculates 3rd Degree Polynomial Based On Array Of 4 Points
 // And A Single Variable (u) Which Is Generally Between 0 And 1
-Vertex BernsteinCurve(float u, Vertex points[4]) {
+Vertex BernsteinCurve(float u, Vertex points[4], Vector3f color) {
     float a[3], b[3], c[3], d[3];  // 4 control points
 
     for (int i = 0; i < 3; i++) {  // access the x, y and z dimensions
@@ -88,21 +88,21 @@ Vertex BernsteinCurve(float u, Vertex points[4]) {
             points[2].getPosition()[i] * c[i] +
             points[3].getPosition()[i] * d[i];
     }
-    Vertex new_vertex = Vertex(bernstein[0], bernstein[1], bernstein[2]);
+    Vertex new_vertex = Vertex(bernstein[0], bernstein[1], bernstein[2], color[0], color[1], color[2]);
     
     return new_vertex;
 }
 
 // adapted from https://github.com/rgalo-coder/ComputacaoGrafica/blob/master/ExercicioBase/BuleUtah.cpp
-Vertex BernsteinSurface(float u, float v, Vertex patch_points[4][4]) {
+Vertex BernsteinSurface(float u, float v, Vertex patch_points[4][4], Vector3f color) {
     Vertex uCurve[4];
     for (int i = 0; i < 4; i++) {  // gets each column of the 4x4 grid separately
-        uCurve[i] = BernsteinCurve(u, patch_points[i]);
+        uCurve[i] = BernsteinCurve(u, patch_points[i], color);
     }
-    return BernsteinCurve(v, uCurve);
+    return BernsteinCurve(v, uCurve, color);
 }
 
-vector<Vertex> genPatchBezier(Vertex patch_points[4][4], int divs) {
+vector<Vertex> genPatchBezier(Vertex patch_points[4][4], int divs, Vector3f color) {
     vector<Vertex> patch;
     
     float step = 1.0f / divs;
@@ -111,7 +111,7 @@ vector<Vertex> genPatchBezier(Vertex patch_points[4][4], int divs) {
     
     for (int i = 0; i <= divs; i++) {
         for (int j = 0; j <= divs; j++) {
-            patch.emplace_back(BernsteinSurface(u, v, patch_points));
+            patch.emplace_back(BernsteinSurface(u, v, patch_points, color));
             u += step;
         }
         u = 0.0f;
@@ -120,7 +120,7 @@ vector<Vertex> genPatchBezier(Vertex patch_points[4][4], int divs) {
     return patch;
 }
 
-vector<Vertex> genPatchBezierUsingIndices(vector<Vertex> list_control_points, unsigned int indices[16], int divs) {
+vector<Vertex> genPatchBezierUsingIndices(vector<Vertex> list_control_points, unsigned int indices[16], int divs, Vector3f color) {
     Vertex patch_points[4][4];
 
     patch_points[0][0] = list_control_points[indices[0]];
@@ -143,7 +143,7 @@ vector<Vertex> genPatchBezierUsingIndices(vector<Vertex> list_control_points, un
     patch_points[3][2] = list_control_points[indices[14]];
     patch_points[3][3] = list_control_points[indices[15]];
     
-    return genPatchBezier(patch_points, divs);
+    return genPatchBezier(patch_points, divs, color);
 }
 
 vector<Vertex> loadTeapotVertices() {
@@ -424,6 +424,7 @@ Mesh createSphere(int xSegments, int ySegments, float radius, Vector3f color) {
 }
 
 Mesh createCubicBezierMesh(vector<Vertex> list_control_points, vector<unsigned int> bezier_indices, int subdiv, Vector3f color) {
+    // list_control_points should already have the color set
     Mesh m;
 
     int size_list = bezier_indices.size() / 16;
@@ -438,7 +439,7 @@ Mesh createCubicBezierMesh(vector<Vertex> list_control_points, vector<unsigned i
         }
 
         // create vertices for a single Bezier patch
-        vector<Vertex> vertices = genPatchBezierUsingIndices(list_control_points, indices, subdiv);
+        vector<Vertex> vertices = genPatchBezierUsingIndices(list_control_points, indices, subdiv, color);
 
         // push vertices into Mesh
         for (int j = 0; j < vertices.size(); j++) m.pushVertex(vertices[j]);
