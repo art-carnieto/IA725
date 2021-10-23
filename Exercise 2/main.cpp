@@ -248,23 +248,8 @@ int main(int argc, char** argv)
     OrthoProjInfo ortho_info = { 2.0f, -2.0f, -2.0f, 2.0f, 1.0f, 10.0f };
 
     scene = Scene({ 0.0f, 0.0f, -3.0f }, pers_info, ortho_info, true);
+
     /*
-    Mesh m = createRegularIcosahedron(color_red);
-    Transformation t = Transformation();
-    t.setTranslation({ 0.0f, 0.0f, 1.0f });
-    t.setRotation({ 40.0f, 0.0f, 0.0f });
-    t.setScale({ 0.5f, 0.5f, 0.5f });
-    m.setTransformation(t);
-    scene.pushMesh(m);
-
-    Mesh m2 = createCube(color_blue);
-    Transformation t2 = Transformation();
-    t2.setTranslation({ 0.0f, 1.0f, 1.0f });
-    t2.setRotation({ 10.0f, 0.0f, 0.0f });
-    t2.setScale({ 0.7f, 0.1f, 2.0f });
-    m2.setTransformation(t2);
-    scene.pushMesh(m2);
-
     Mesh m3 = createSubdividedIcosahedron(3, color_green);
     Transformation t3 = Transformation();
     t3.setTranslation({ 1.0f, 0.0f, 0.0f });
@@ -275,100 +260,6 @@ int main(int argc, char** argv)
     */
 
     //createTable({ 0.0f, 0.0f, -1.0f }, 2.0f, 0.5f, 1.0f, 0.1, 0.05, 0.2, color_blue);
-    /*
-    Mesh m = createPlane(0.1f, color_blue);
-    Transformation t = Transformation();
-    t.setScale({ 1.0f, 1.0f, 1.0f });
-    t.setRotation({ -90.0f, 0.0f, 0.0f });
-    m.setTransformation(t);
-    scene.pushMesh(m);
-
-    m.debug_print_vertices();
-    m.debug_print_indices();
-    
-
-    Mesh circle = createCircle(16, 1.0f, color_red);
-    Transformation t2 = Transformation();
-    t2.setScale({ 1.0f, 1.0f, 1.0f });
-    t2.setRotation({ -90.0f, 0.0f, 0.0f });
-    circle.setTransformation(t2);
-    scene.pushMesh(circle);
-
-    circle.debug_print_vertices();
-    circle.debug_print_indices();
-    */
-    /*
-    Mesh cone = createCone(30, 1.0f, 1.0f, color_green);
-    Transformation t = Transformation();
-    t.setRotation({ 45.0f, 0.0f, 0.0f });
-    cone.setTransformation(t);
-    scene.pushMesh(cone);
-
-    cone.debug_print_vertices();
-    cone.debug_print_indices();
-    */
-    /*
-    Mesh cylinder = createCylinder(30, 1.0f, 0.5f, color_blue);
-    Transformation t = Transformation();
-    t.setRotation({ 45.0f, 0.0f, 0.0f });
-    cylinder.setTransformation(t);
-    scene.pushMesh(cylinder);
-
-    cylinder.debug_print_vertices();
-    cylinder.debug_print_indices();
-    */
-    /*
-    Mesh sphere = createSphere(20, 20, 1.0f, color_green);
-    scene.pushMesh(sphere);
-
-    sphere.debug_print_vertices();
-    sphere.debug_print_indices();
-    */
-    /*
-    vector<Vertex> test_bezier;
-    test_bezier.emplace_back(Vertex(0.2000, 0.0000, 2.70000));
-    test_bezier.emplace_back(Vertex(0.2000, -0.1120, 2.70000));
-    test_bezier.emplace_back(Vertex(0.1120, -0.2000, 2.70000));
-    test_bezier.emplace_back(Vertex(0.0000, -0.2000, 2.70000));
-    test_bezier.emplace_back(Vertex(1.3375, 0.0000, 2.53125));
-    test_bezier.emplace_back(Vertex(1.3375, -0.7490, 2.53125));
-    test_bezier.emplace_back(Vertex(0.7490, -1.3375, 2.53125));
-    test_bezier.emplace_back(Vertex(0.0000, -1.3375, 2.53125));
-    test_bezier.emplace_back(Vertex(1.4375, 0.0000, 2.53125));
-    test_bezier.emplace_back(Vertex(1.4375, -0.8050, 2.53125));
-    test_bezier.emplace_back(Vertex(0.8050, -1.4375, 2.53125));
-    test_bezier.emplace_back(Vertex(0.0000, -1.4375, 2.53125));
-    test_bezier.emplace_back(Vertex(1.5000, 0.0000, 2.40000));
-    test_bezier.emplace_back(Vertex(1.5000, -0.8400, 2.40000));
-    test_bezier.emplace_back(Vertex(0.8400, -1.5000, 2.40000));
-    test_bezier.emplace_back(Vertex(0.0000, -1.5000, 2.40000));
-
-    test_bezier.emplace_back(Vertex(1.7500, 0.0000, 1.87500));
-    test_bezier.emplace_back(Vertex(1.7500, -0.9800, 1.87500));
-    test_bezier.emplace_back(Vertex(0.9800, -1.7500, 1.87500));
-    test_bezier.emplace_back(Vertex(0.0000, -1.7500, 1.87500));
-    test_bezier.emplace_back(Vertex(2.0000, 0.0000, 1.35000));
-    test_bezier.emplace_back(Vertex(2.0000, -1.1200, 1.35000));
-    test_bezier.emplace_back(Vertex(1.1200, -2.0000, 1.35000));
-    test_bezier.emplace_back(Vertex(0.0000, -2.0000, 1.35000));
-    test_bezier.emplace_back(Vertex(2.0000, 0.0000, 0.90000));
-    test_bezier.emplace_back(Vertex(2.0000, -1.1200, 0.90000));
-    test_bezier.emplace_back(Vertex(1.1200, -2.0000, 0.90000));
-    test_bezier.emplace_back(Vertex(0.0000, -2.0000, 0.90000));
-    test_bezier.emplace_back(Vertex(-2.0000, 0.0000, 0.90000));
-    test_bezier.emplace_back(Vertex(2.0000, 0.0000, 0.45000));
-    test_bezier.emplace_back(Vertex(2.0000, -1.1200, 0.45000));
-    test_bezier.emplace_back(Vertex(1.1200, -2.0000, 0.45000));
-
-    Mesh test = createCubicBezierMesh(test_bezier, 10, color_white);
-    Transformation t = Transformation();
-    t.setScale({ 0.5, 0.5, 0.5 });
-    test.setTransformation(t);
-    scene.pushMesh(test);
-
-    test.debug_print_vertices();
-    test.debug_print_indices();
-    */
 
     Mesh teapot = createUtahTeapot(10, color_red);
     Transformation t = Transformation();
