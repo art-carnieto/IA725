@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{1f7c6659-4830-442a-8677-ba479140784a}</ProjectGuid>
-    <RootNamespace>Icosaedro</RootNamespace>
+    <ProjectGuid>{6b448fe1-302d-415b-97c0-b870e7215a3a}</ProjectGuid>
+    <RootNamespace>Exercise2</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -78,6 +78,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <PublicModuleDirectories>
+    </PublicModuleDirectories>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -116,7 +118,9 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Include;..\Common</AdditionalIncludeDirectories>
+      <AdditionalModuleDependencies>
+      </AdditionalModuleDependencies>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -142,12 +146,29 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Common\Camera.cpp" />
+    <ClCompile Include="..\Common\Geometry.cpp" />
+    <ClCompile Include="..\Common\math_3d.cpp" />
+    <ClCompile Include="..\Common\Mesh.cpp" />
+    <ClCompile Include="..\Common\ogldev_util.cpp" />
+    <ClCompile Include="..\Common\Scene.cpp" />
+    <ClCompile Include="..\Common\Transformation.cpp" />
+    <ClCompile Include="..\Common\Vertex.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="ogldev_util.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="shader.fs" />
-    <None Include="shader.vs" />
+    <None Include="fragment.frag" />
+    <None Include="vertex.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Include\Camera.hpp" />
+    <ClInclude Include="..\Include\Colors.hpp" />
+    <ClInclude Include="..\Include\Geometry.hpp" />
+    <ClInclude Include="..\Include\Mesh.hpp" />
+    <ClInclude Include="..\Include\Scene.hpp" />
+    <ClInclude Include="..\Include\TeapotData.hpp" />
+    <ClInclude Include="..\Include\Transformation.hpp" />
+    <ClInclude Include="..\Include\Vertex.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
