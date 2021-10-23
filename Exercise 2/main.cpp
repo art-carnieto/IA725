@@ -264,10 +264,10 @@ int main(int argc, char** argv)
             valid_choice = true;
     }
     if (choice == '1') {
-        createTable({ 0.0f, 0.0f, -1.0f }, 2.0f, 0.5f, 1.0f, 0.1, 0.05, 0.2, color_blue);
+        createTable({ 0.0f, 0.0f, -1.0f }, 2.0f, 0.5f, 1.0f, 0.1, 0.05, 0.2, color_saddle_brown);
     }
     else if (choice == '2') {
-        Mesh icosahedron = createSubdividedIcosahedron(3, color_green);
+        Mesh icosahedron = createSubdividedIcosahedron(3, color_yellow);
         Transformation t1 = Transformation();
         t1.setTranslation({ 1.0f, 0.0f, 0.0f });
         t1.setRotation({ 0.0f, 0.0f, 0.0f });
@@ -276,7 +276,7 @@ int main(int argc, char** argv)
         scene.pushMesh(icosahedron);
     }
     else if (choice == '3') {
-        Mesh teapot = createUtahTeapot(10, color_red);
+        Mesh teapot = createUtahTeapot(10, color_blue);
         Transformation t = Transformation();
         t.setScale({ 0.5, 0.5, 0.5 });
         t.setRotation({ -90.0f, 0.0f, 0.0f });
