@@ -78,6 +78,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <PublicModuleDirectories>
+    </PublicModuleDirectories>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -116,7 +118,9 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Include;..\Common</AdditionalIncludeDirectories>
+      <AdditionalModuleDependencies>
+      </AdditionalModuleDependencies>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -142,29 +146,29 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Common\Camera.cpp" />
+    <ClCompile Include="..\Common\Geometry.cpp" />
     <ClCompile Include="..\Common\math_3d.cpp" />
+    <ClCompile Include="..\Common\Mesh.cpp" />
     <ClCompile Include="..\Common\ogldev_util.cpp" />
-    <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="Geometry.cpp" />
+    <ClCompile Include="..\Common\Scene.cpp" />
+    <ClCompile Include="..\Common\Transformation.cpp" />
+    <ClCompile Include="..\Common\Vertex.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Mesh.cpp" />
-    <ClCompile Include="Scene.cpp" />
-    <ClCompile Include="Transformation.cpp" />
-    <ClCompile Include="Vertex.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fragment.frag" />
     <None Include="vertex.vert" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Camera.hpp" />
-    <ClInclude Include="Colors.hpp" />
-    <ClInclude Include="Geometry.hpp" />
-    <ClInclude Include="Mesh.hpp" />
-    <ClInclude Include="Scene.hpp" />
-    <ClInclude Include="TeapotData.hpp" />
-    <ClInclude Include="Transformation.hpp" />
-    <ClInclude Include="Vertex.hpp" />
+    <ClInclude Include="..\Include\Camera.hpp" />
+    <ClInclude Include="..\Include\Colors.hpp" />
+    <ClInclude Include="..\Include\Geometry.hpp" />
+    <ClInclude Include="..\Include\Mesh.hpp" />
+    <ClInclude Include="..\Include\Scene.hpp" />
+    <ClInclude Include="..\Include\TeapotData.hpp" />
+    <ClInclude Include="..\Include\Transformation.hpp" />
+    <ClInclude Include="..\Include\Vertex.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
