@@ -372,8 +372,9 @@ int main(int argc, char** argv)
 
     Mesh teapot = createUtahTeapot(10, color_white);
     Transformation t = Transformation();
-    t.setScale({ 0.3, 0.3, 0.3 });
+    t.setScale({ 0.5, 0.5, 0.5 });
     t.setRotation({ -90.0f, 0.0f, 0.0f });
+    t.setTranslation({ 0.0f, -0.7, 0.0f });
     teapot.setTransformation(t);
     scene.pushMesh(teapot);
 

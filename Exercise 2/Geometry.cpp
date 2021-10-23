@@ -1,7 +1,6 @@
 #include "Geometry.hpp"
 #include <vector>
 #include "TeapotData.hpp"
-#include <iostream>
 
 // Auxiliaries
 void normalizeVertexPositions(float v[3]) {
@@ -149,7 +148,7 @@ vector<Vertex> genPatchBezierUsingIndices(vector<Vertex> list_control_points, un
 
 vector<Vertex> loadTeapotVertices() {
     vector<Vertex> teapot;
-    for (int i = 0; i < 127; i++) {
+    for (int i = 0; i < teapot_number_vertices; i++) {
         teapot.emplace_back(Vertex(teapot_vertices[i][0], teapot_vertices[i][1], teapot_vertices[i][2]));
     }
 
@@ -158,9 +157,9 @@ vector<Vertex> loadTeapotVertices() {
 
 vector<unsigned int> loadTeapotIndices() {
     vector<unsigned int> teapot;
-    for (int i = 0; i < 10; i++) {  // 10 Bezier patches
+    for (int i = 0; i < teapot_number_indices; i++) {
         for (int j = 0; j < 16; j++) {  // 16 control points each
-            teapot.emplace_back(teapot_indices[i][j]);
+            teapot.emplace_back(teapot_indices[i][j] - 1);  // -1 because the indices start at 1, and not 0
         }
     }
 
@@ -469,6 +468,5 @@ Mesh createCubicBezierMesh(vector<Vertex> list_control_points, vector<unsigned i
 Mesh createUtahTeapot(int subdiv, Vector3f color) {
     vector<Vertex> teapot_control_points = loadTeapotVertices();
     vector<unsigned int> teapot_indices = loadTeapotIndices();
-    
     return createCubicBezierMesh(teapot_control_points, teapot_indices, subdiv, color);
 }
