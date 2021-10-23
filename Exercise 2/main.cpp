@@ -35,7 +35,7 @@
 
 #define WINDOW_WIDTH  1280
 #define WINDOW_HEIGHT 720
-#define NUMBER_MESHES 2
+#define NUMBER_MESHES 5
 
 //Ting: eh recomendavel criar um VAO
 GLuint VAO; // VAO = Vertex Array Object
@@ -249,26 +249,41 @@ int main(int argc, char** argv)
 
     scene = Scene({ 0.0f, 0.0f, -3.0f }, pers_info, ortho_info, true);
 
-    /*
-    Mesh m3 = createSubdividedIcosahedron(3, color_green);
-    Transformation t3 = Transformation();
-    t3.setTranslation({ 1.0f, 0.0f, 0.0f });
-    t3.setRotation({ 0.0f, 0.0f, 0.0f });
-    t3.setScale({ 0.5f, 0.1f, 0.3f });
-    m3.setTransformation(t3);
-    scene.pushMesh(m3);
-    */
+    bool valid_choice = false;
+    char choice;
 
-    //createTable({ 0.0f, 0.0f, -1.0f }, 2.0f, 0.5f, 1.0f, 0.1, 0.05, 0.2, color_blue);
-
-    Mesh teapot = createUtahTeapot(10, color_red);
-    Transformation t = Transformation();
-    t.setScale({ 0.5, 0.5, 0.5 });
-    t.setRotation({ -90.0f, 0.0f, 0.0f });
-    t.setTranslation({ 0.0f, -0.7, 0.0f });
-    teapot.setTransformation(t);
-    scene.pushMesh(teapot);
-
+    while (!valid_choice) {
+        cout << "Please choose which object to be drawn:" << endl;
+        cout << "1) Table" << endl;
+        cout << "2) Subdivided icosahedron (sphere)" << endl;
+        cout << "3) Utah teapot" << endl;
+        cin >> choice;
+        if (choice != '1' && choice != '2' && choice != '3')
+            cout << "Option not recognized, please try again!" << endl << endl;
+        else
+            valid_choice = true;
+    }
+    if (choice == '1') {
+        createTable({ 0.0f, 0.0f, -1.0f }, 2.0f, 0.5f, 1.0f, 0.1, 0.05, 0.2, color_blue);
+    }
+    else if (choice == '2') {
+        Mesh icosahedron = createSubdividedIcosahedron(3, color_green);
+        Transformation t1 = Transformation();
+        t1.setTranslation({ 1.0f, 0.0f, 0.0f });
+        t1.setRotation({ 0.0f, 0.0f, 0.0f });
+        t1.setScale({ 0.5f, 0.1f, 0.3f });
+        icosahedron.setTransformation(t1);
+        scene.pushMesh(icosahedron);
+    }
+    else if (choice == '3') {
+        Mesh teapot = createUtahTeapot(10, color_red);
+        Transformation t = Transformation();
+        t.setScale({ 0.5, 0.5, 0.5 });
+        t.setRotation({ -90.0f, 0.0f, 0.0f });
+        t.setTranslation({ 0.0f, -0.7, 0.0f });
+        teapot.setTransformation(t);
+        scene.pushMesh(teapot);
+    }
     scene.genAllVBOs(&VBO[0]);
     scene.genAllIBOs(&IBO[0]);
 
