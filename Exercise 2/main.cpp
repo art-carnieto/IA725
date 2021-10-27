@@ -35,6 +35,10 @@
 
 #define WINDOW_WIDTH  1280
 #define WINDOW_HEIGHT 720
+
+//Ting: VBO contem um amontoado de vertices. Em vertex shader nao se distinguem as primitiva.
+//Sao os programadores que separam os vertices em grupos diferentes para facilitar o processamento
+// por objeto. Neste projeto vale a pena distinguir os vertices em 3 conjuntos (mesa, esfera e bule).
 #define NUMBER_MESHES 5  // 5 because of the table drawing: it uses 5 transformed cubes!
 
 //Ting: eh recomendavel criar um VAO
@@ -45,22 +49,27 @@ GLuint gWVPLocation;
 
 Scene scene;
 
+static GLuint first = 0;
+
 static void RenderSceneCB()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    static float Scale = 0.0f;  // scale is used to rotate the world
+    if (first == 1) {
+        static float Scale = 0.0f;  // scale is used to rotate the world
 
 #ifdef _WIN64
-    Scale += 0.5f;
+        Scale += 0.5f;
 #else
-    Scale += 0.02f;
+        Scale += 0.02f;
 #endif
-    Transformation world_transformation = Transformation();
-    world_transformation.setRotation({ 0.0f, Scale, 0.0f });
-    scene.setWorldTransformation(world_transformation);
+        Transformation world_transformation = Transformation();
+        world_transformation.setRotation({ 0.0f, Scale, 0.0f });
+        scene.setWorldTransformation(world_transformation);
 
-    scene.drawAllMeshes(&VBO[0], &IBO[0], &gWVPLocation);
+        scene.drawAllMeshes(&VBO[0], &IBO[0], &gWVPLocation);
+
+    }
 
     glutPostRedisplay();
 
@@ -158,7 +167,7 @@ void createTable(Vector3f position,
         float table_length, float table_height, float table_width,
         float tabletop_thickness, float tableleg_length, float tableleg_width,
         Vector3f color) {
-    
+
     // tabletop
     Mesh tabletop = createCube(color);
     Transformation t_tabletop = Transformation();
@@ -199,6 +208,68 @@ void createTable(Vector3f position,
     t_table_leg_4.setScale({ tableleg_length, (table_height * 2) - (tabletop_thickness), tableleg_width });
     table_leg_4.setTransformation(t_table_leg_4);
     scene.pushMesh(table_leg_4);
+}
+
+/*!
+ *
+ */
+void Keyboard(unsigned char key, int x, int y)
+{
+    if (key == 27)
+        exit(0);
+
+    if (first == 1) return;
+
+    switch (key)
+    {
+    case '1':
+        //Ting: Veja que a mesa eh associada a UM nome de VBO!
+    {
+        //                position       lenght height width tabletop_thickness tableleg_length tableleg_width       color
+        createTable({ 0.0f, 0.0f, 0.0f }, 2.0f,  0.5f,  1.0f,      0.1,              0.05,          0.2,      color_saddle_brown);
+    }
+
+    //Ting: Veja que na funcao Mesh::genVBO(GLuint* VBO) eh gerado um nome de VBO!
+    scene.genAllVBOs(&VBO[0]);
+    scene.genAllIBOs(&IBO[0]);
+
+    first = 1;
+    break;
+    case '2':
+    {
+        Mesh icosahedron = createSubdividedIcosahedron(3, color_yellow);
+        Transformation t1 = Transformation();
+        t1.setScale({ 0.5f, 0.5f, 0.5f });  // scale it down to half so it's better to see it on screen
+        icosahedron.setTransformation(t1);
+        scene.pushMesh(icosahedron);
+    }
+    //Ting: Ao inves de sobreescrever o nome anterior, o que acha de guardar numa outra posicao da memoria o nome do segundo
+    //objeto para voce poder ter acesso aos dados dos dois objetos?
+    scene.genAllVBOs(&VBO[0]);
+    scene.genAllIBOs(&IBO[0]);
+
+    first = 1;
+    break;
+    case '3':
+    {
+        Mesh teapot = createUtahTeapot(10, color_blue);
+        Transformation t = Transformation();
+        t.setScale({ 0.4, 0.4, 0.4 });  // original teapot is too big! Resize it to be smaller
+        t.setRotation({ -90.0f, 0.0f, 0.0f });  // rotates it to be in the correct upright position
+        t.setTranslation({ 0.0f, -0.7, 0.0f });  // moves the object down to recenter it because the rotation moves it up
+        teapot.setTransformation(t);
+        scene.pushMesh(teapot);
+    }
+    //Ting: E aqui nao poderia ser um terceiro nome numa terceira posicao? 
+    scene.genAllVBOs(&VBO[0]);
+    scene.genAllIBOs(&IBO[0]);
+
+    first = 1;
+    break;
+    }
+    // Rerenderizar
+    glutPostRedisplay();
+
 }
 
 int main(int argc, char** argv)
@@ -254,45 +325,63 @@ int main(int argc, char** argv)
     bool valid_choice = false;
     char choice;  // User input to choose which object will be drawn
 
-    while (!valid_choice) {
-        cout << "Please type the option of which object to be drawn:" << endl;
-        cout << "  1) Table" << endl;
-        cout << "  2) Subdivided icosahedron (sphere)" << endl;
-        cout << "  3) Utah teapot" << endl;
-        cin >> choice;
-        if (choice != '1' && choice != '2' && choice != '3')
-            cout << "Option not recognized, please try again!" << endl << endl;
-        else
-            valid_choice = true;
-    }
-    if (choice == '1') {
-        //                position       lenght height width tabletop_thickness tableleg_length tableleg_width       color
-        createTable({ 0.0f, 0.0f, 0.0f }, 2.0f,  0.5f,  1.0f,      0.1,              0.05,          0.2,      color_saddle_brown);
-    }
-    else if (choice == '2') {
-        //                                subdivision number  color
-        Mesh icosahedron = createSubdividedIcosahedron(3, color_yellow);
-        Transformation t1 = Transformation();
-        t1.setScale({ 0.5f, 0.5f, 0.5f });  // scale it down to half so it's better to see it on screen
-        icosahedron.setTransformation(t1);
-        scene.pushMesh(icosahedron);
-    }
-    else if (choice == '3') {
-        //                subdivision number  color
-        Mesh teapot = createUtahTeapot(10, color_blue);
-        Transformation t = Transformation();
-        t.setScale({ 0.4, 0.4, 0.4 });  // original teapot is too big! Resize it to be smaller
-        t.setRotation({ -90.0f, 0.0f, 0.0f });  // rotates it to be in the correct upright position
-        t.setTranslation({ 0.0f, -0.7, 0.0f });  // moves the object down to recenter it because the rotation moves it up
-        teapot.setTransformation(t);
-        scene.pushMesh(teapot);
-    }
-    scene.genAllVBOs(&VBO[0]);
-    scene.genAllIBOs(&IBO[0]);
+    //Ting: Num sistema interativo, o fluxo de controle eh orientado a eventos
+    //Precisa-se registrar "calbacks"/rotinas de tratamento de eventos.
+    //Veja no link https://www.opengl.org/resources/libraries/glut/spec3/node45.html
+    //as funcoes de registro de rotinas para tratamento de eventos especificos
+    glutDisplayFunc(RenderSceneCB);  //Ting: Etay
+    glutKeyboardFunc(Keyboard);
+
+    //Ting: Analise com cuidado a estrutura de dados dos codigos de Etay. Fiz pequenas alteracoes
+    // so para podermos ter a tela inicializada com fundo preto e permitir que sejam teclado '1', '2', e '3'
+    // sobre a janela de desenho para que o objeto selecionado seja mostrado.
+
+    // while (!valid_choice) {
+    //     cout << "Please type the option of which object to be drawn:" << endl;
+    //     cout << "  1) Table" << endl;
+    //     cout << "  2) Subdivided icosahedron (sphere)" << endl;
+    //     cout << "  3) Utah teapot" << endl;
+    //     cin >> choice;
+    //     if (choice != '1' && choice != '2' && choice != '3')
+    //         cout << "Option not recognized, please try again!" << endl << endl;
+    //     else
+    //         valid_choice = true;
+    // }
+    // if (choice == '1') {
+    //     //                position       lenght height width tabletop_thickness tableleg_length tableleg_width       color
+    //     createTable({ 0.0f, 0.0f, 0.0f }, 2.0f,  0.5f,  1.0f,      0.1,              0.05,          0.2,      color_saddle_brown);
+    // }
+    // else if (choice == '2') {
+    //     //                                subdivision number  color
+    //     Mesh icosahedron = createSubdividedIcosahedron(3, color_yellow);
+    //     Transformation t1 = Transformation();
+    //     t1.setScale({ 0.5f, 0.5f, 0.5f });  // scale it down to half so it's better to see it on screen
+    //     icosahedron.setTransformation(t1);
+    //     scene.pushMesh(icosahedron);
+    // }
+    // else if (choice == '3') {
+    //     //                subdivision number  color
+    //     Mesh teapot = createUtahTeapot(10, color_blue);
+    //     Transformation t = Transformation();
+    //     t.setScale({ 0.4, 0.4, 0.4 });  // original teapot is too big! Resize it to be smaller
+    //     t.setRotation({ -90.0f, 0.0f, 0.0f });  // rotates it to be in the correct upright position
+    //     t.setTranslation({ 0.0f, -0.7, 0.0f });  // moves the object down to recenter it because the rotation moves it up
+    //     teapot.setTransformation(t);
+    //     scene.pushMesh(teapot);
+    // }
+
+
+    // scene.genAllVBOs(&VBO[0]);
+    // scene.genAllIBOs(&IBO[0]);
 
     CompileShaders();
 
-    glutDisplayFunc(RenderSceneCB);
+    {
+        cout << "Please type the option of which object to be drawn on the display area:" << endl;
+        cout << "  1) Table" << endl;
+        cout << "  2) Subdivided icosahedron (sphere)" << endl;
+        cout << "  3) Utah teapot" << endl;
+    }
 
     glutMainLoop();
 
