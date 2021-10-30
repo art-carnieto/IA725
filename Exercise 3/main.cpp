@@ -67,6 +67,20 @@ void debug_print_IBO() {
     cout << endl;
 }
 
+void debug_print_versions() {
+    // adapted from https://www.badprog.com/c-opengl-checking-the-freeglut-glew-and-opengl-version
+    // Print OpenGL, FreeGLUT and GLEW versions
+    string freeGlutVersion = to_string(glutGet(GLUT_VERSION));
+    freeGlutVersion.insert(1, "."); // transforms 30000 into 3.0000)
+    freeGlutVersion.insert(4, "."); // transforms 3.0000 into 3.00.00
+
+    cout << "OpenGL version: " << glGetString(GL_VERSION) << endl;
+    cout << "FreeGLUT version: " << freeGlutVersion << endl;
+    cout << "GLEW version: " <<
+        GLEW_VERSION << "." << GLEW_VERSION_MAJOR << "." <<
+        GLEW_VERSION_MINOR << "." << GLEW_VERSION_MICRO << endl << endl;
+}
+
 static void RenderSceneCB()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -262,6 +276,8 @@ int main(int argc, char** argv)
 
     teapot.genVBO(&VBO[2]);
     teapot.genIBO(&IBO[2]);
+
+    debug_print_versions();
 
     debug_print_VAO();
     debug_print_VBO();
