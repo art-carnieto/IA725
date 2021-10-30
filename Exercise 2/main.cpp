@@ -39,7 +39,7 @@
 //Ting: VBO contem um amontoado de vertices. Em vertex shader nao se distinguem as primitiva.
 //Sao os programadores que separam os vertices em grupos diferentes para facilitar o processamento
 // por objeto. Neste projeto vale a pena distinguir os vertices em 3 conjuntos (mesa, esfera e bule).
-#define NUMBER_MESHES 5  // 5 because of the table drawing: it uses 5 transformed cubes!
+#define NUMBER_MESHES 1  // after changes on how the table is drawn only one VBO and IBO positions are needed on this program
 
 //Ting: eh recomendavel criar um VAO
 GLuint VAO; // VAO = Vertex Array Object
@@ -185,52 +185,7 @@ static void CompileShaders()
     glUseProgram(ShaderProgram);
 }
 
-void createTable(Vector3f position,
-        float table_length, float table_height, float table_width,
-        float tabletop_thickness, float tableleg_length, float tableleg_width,
-        Vector3f color) {
 
-    // tabletop
-    Mesh tabletop = createCube(color);
-    Transformation t_tabletop = Transformation();
-    t_tabletop.setTranslation({ 0.0f + position[0], table_height + position[1], 0.0f + position[2] });
-    t_tabletop.setScale({ table_length, tabletop_thickness, table_width });
-    tabletop.pushTransformation(t_tabletop);
-    scene.pushMesh(tabletop);
-
-    // table leg 1: left back
-    Mesh table_leg_1 = createCube(color);
-    Transformation t_table_leg_1 = Transformation();
-    t_table_leg_1.setTranslation({ (-table_length / 2) + (tableleg_length / 2) + position[0], 0.0f + position[1], (-table_width / 2) + (tableleg_width / 2) + position[2] });
-    t_table_leg_1.setScale({ tableleg_length, (table_height * 2) - (tabletop_thickness), tableleg_width });
-    table_leg_1.pushTransformation(t_table_leg_1);
-    scene.pushMesh(table_leg_1);
-
-
-    // table leg 2: left front
-    Mesh table_leg_2 = createCube(color);
-    Transformation t_table_leg_2 = Transformation();
-    t_table_leg_2.setTranslation({ (-table_length / 2) + (tableleg_length / 2) + position[0], 0.0f + position[1], (+table_width / 2) - (tableleg_width / 2) + position[2] });
-    t_table_leg_2.setScale({ tableleg_length, (table_height * 2) - (tabletop_thickness), tableleg_width });
-    table_leg_2.pushTransformation(t_table_leg_2);
-    scene.pushMesh(table_leg_2);
-
-    // table leg 3: right back
-    Mesh table_leg_3 = createCube(color);
-    Transformation t_table_leg_3 = Transformation();
-    t_table_leg_3.setTranslation({ (+table_length / 2) - (tableleg_length / 2) + position[0], 0.0f + position[1], (-table_width / 2) + (tableleg_width / 2) + position[2] });
-    t_table_leg_3.setScale({ tableleg_length, (table_height * 2) - (tabletop_thickness), tableleg_width });
-    table_leg_3.pushTransformation(t_table_leg_3);
-    scene.pushMesh(table_leg_3);
-
-    // table leg 4: right front
-    Mesh table_leg_4 = createCube(color);
-    Transformation t_table_leg_4 = Transformation();
-    t_table_leg_4.setTranslation({ (+table_length / 2) - (tableleg_length / 2) + position[0], 0.0f + position[1], (+table_width / 2) - (tableleg_width / 2) + position[2] });
-    t_table_leg_4.setScale({ tableleg_length, (table_height * 2) - (tabletop_thickness), tableleg_width });
-    table_leg_4.pushTransformation(t_table_leg_4);
-    scene.pushMesh(table_leg_4);
-}
 
 /*!
  *
@@ -247,8 +202,11 @@ void Keyboard(unsigned char key, int x, int y)
     case '1':
         //Ting: Veja que a mesa eh associada a UM nome de VBO!
     {
-        //                position       lenght height width tabletop_thickness tableleg_length tableleg_width       color
-        createTable({ 0.0f, 0.0f, 0.0f }, 2.0f,  0.5f,  1.0f,      0.1,              0.05,          0.2,      color_saddle_brown);
+        //                             position        lenght height width 
+        Mesh table = createTable({ 0.0f, 0.0f, 0.0f }, 2.0f,  0.5f,  1.0f,      
+        // tabletop_thickness tableleg_length tableleg_width       color
+                  0.1,              0.05,          0.2,      color_saddle_brown);
+        scene.pushMesh(table);
     }
 
     //Ting: Veja que na funcao Mesh::genVBO(GLuint* VBO) eh gerado um nome de VBO!

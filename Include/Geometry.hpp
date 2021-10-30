@@ -18,6 +18,10 @@ vector<Vertex> genPatchBezierUsingIndices(vector<Vertex> list_control_points, un
 
 // Object creation
 Mesh createCube(Vector3f color);
+Mesh createTable(Vector3f position,
+    float table_length, float table_height, float table_width,
+    float tabletop_thickness, float tableleg_length, float tableleg_width,
+    Vector3f color);
 Mesh createRegularIcosahedron(Vector3f color);
 Mesh createSubdividedIcosahedron(int subdiv, Vector3f color);
 Mesh createPlane(float delta, Vector3f color);
