@@ -195,6 +195,47 @@ Mesh createCube(Vector3f color) {
     return m;
 }
 
+Mesh createTable(Vector3f position,
+    float table_length, float table_height, float table_width,
+    float tabletop_thickness, float tableleg_length, float tableleg_width,
+    Vector3f color) {
+
+    // this is the cube primitive that will be transformed 5 times to create a table
+    Mesh cube_primitive = createCube(color);
+
+    // tabletop
+    Transformation t_tabletop = Transformation();
+    t_tabletop.setTranslation({ 0.0f + position[0], table_height + position[1], 0.0f + position[2] });
+    t_tabletop.setScale({ table_length, tabletop_thickness, table_width });
+    cube_primitive.pushTransformation(t_tabletop);
+
+    // table leg 1: left back
+    Transformation t_table_leg_1 = Transformation();
+    t_table_leg_1.setTranslation({ (-table_length / 2) + (tableleg_length / 2) + position[0], 0.0f + position[1], (-table_width / 2) + (tableleg_width / 2) + position[2] });
+    t_table_leg_1.setScale({ tableleg_length, (table_height * 2) - (tabletop_thickness), tableleg_width });
+    cube_primitive.pushTransformation(t_table_leg_1);
+
+    // table leg 2: left front
+    Transformation t_table_leg_2 = Transformation();
+    t_table_leg_2.setTranslation({ (-table_length / 2) + (tableleg_length / 2) + position[0], 0.0f + position[1], (+table_width / 2) - (tableleg_width / 2) + position[2] });
+    t_table_leg_2.setScale({ tableleg_length, (table_height * 2) - (tabletop_thickness), tableleg_width });
+    cube_primitive.pushTransformation(t_table_leg_2);
+
+    // table leg 3: right back
+    Transformation t_table_leg_3 = Transformation();
+    t_table_leg_3.setTranslation({ (+table_length / 2) - (tableleg_length / 2) + position[0], 0.0f + position[1], (-table_width / 2) + (tableleg_width / 2) + position[2] });
+    t_table_leg_3.setScale({ tableleg_length, (table_height * 2) - (tabletop_thickness), tableleg_width });
+    cube_primitive.pushTransformation(t_table_leg_3);
+
+    // table leg 4: right front
+    Transformation t_table_leg_4 = Transformation();
+    t_table_leg_4.setTranslation({ (+table_length / 2) - (tableleg_length / 2) + position[0], 0.0f + position[1], (+table_width / 2) - (tableleg_width / 2) + position[2] });
+    t_table_leg_4.setScale({ tableleg_length, (table_height * 2) - (tabletop_thickness), tableleg_width });
+    cube_primitive.pushTransformation(t_table_leg_4);
+
+    return cube_primitive;
+}
+
 Mesh createRegularIcosahedron(Vector3f color) {
     Mesh m;
     // those coordinates are pre-calculated

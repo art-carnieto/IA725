@@ -76,12 +76,16 @@ void Mesh::genIBO(GLuint* IBO) {
 }
 
 // Transformation
-Transformation Mesh::getTransformation() {
-    return this->mesh_t;
+int Mesh::getNumberTransformations() {
+    return this->mesh_transformations.size();
 }
 
-void Mesh::setTransformation(Transformation t) {
-    this->mesh_t = t;
+Transformation Mesh::getTransformation(int index) {
+    return this->mesh_transformations[index];
+}
+
+void Mesh::pushTransformation(Transformation t) {
+    this->mesh_transformations.emplace_back(t);
 }
 
 // Debug
