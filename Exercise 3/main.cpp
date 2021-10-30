@@ -259,7 +259,8 @@ int main(int argc, char** argv)
 
     Mesh icosahedron = createSubdividedIcosahedron(3, color_yellow);
     Transformation t1 = Transformation();
-    t1.setScale({ 0.5f, 0.5f, 0.5f });  // scale it down to half so it's better to see it on screen
+    t1.setScale({ 0.3f, 0.3f, 0.3f });  // scale icosahedron down
+    t1.setTranslation({ 0.5f, 0.85f, 0.0f }); // moves icosahedron to the top of the table
     icosahedron.pushTransformation(t1);
     scene.pushMesh(icosahedron);
 
@@ -268,9 +269,9 @@ int main(int argc, char** argv)
 
     Mesh teapot = createUtahTeapot(10, color_blue);
     Transformation t = Transformation();
-    t.setScale({ 0.4, 0.4, 0.4 });  // original teapot is too big! Resize it to be smaller
+    t.setScale({ 0.15f, 0.15f, 0.15f });  // original teapot is too big! Resize it to be smaller
     t.setRotation({ -90.0f, 0.0f, 0.0f });  // rotates it to be in the correct upright position
-    t.setTranslation({ 0.0f, -0.7, 0.0f });  // moves the object down to recenter it because the rotation moves it up
+    t.setTranslation({ -0.5f, 0.55, 0.0f });  // moves Utah teapot to the top of the table
     teapot.pushTransformation(t);
     scene.pushMesh(teapot);
 
