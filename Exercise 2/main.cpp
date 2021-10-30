@@ -89,8 +89,10 @@ static void RenderSceneCB()
         world_transformation.setRotation({ 0.0f, Scale, 0.0f });
         scene.setWorldTransformation(world_transformation);
 
-        scene.drawAllMeshes(&VBO[0], &IBO[0], &gWVPLocation);
-
+        // draws object of position 0 (table, icosahedron or teapot)
+        scene.drawMesh(0, &VBO[0], &IBO[0], &gWVPLocation);
+        // as this exercises only draws a single object, only one will be drawn!
+        // and only one position on the VBO and IBO buffers will be used
     }
 
     glutPostRedisplay();
@@ -199,65 +201,68 @@ void Keyboard(unsigned char key, int x, int y)
 
     switch (key)
     {
-    case '1':
-        //Ting: Veja que a mesa eh associada a UM nome de VBO!
-    {
-        //                             position        lenght height width 
-        Mesh table = createTable({ 0.0f, 0.0f, 0.0f }, 2.0f,  0.5f,  1.0f,      
-        // tabletop_thickness tableleg_length tableleg_width       color
-                  0.1,              0.05,          0.2,      color_saddle_brown);
-        scene.pushMesh(table);
-    }
+        case '1':
+            //Ting: Veja que a mesa eh associada a UM nome de VBO!
+        {
+            //                             position        lenght height width 
+            Mesh table = createTable({ 0.0f, 0.0f, 0.0f }, 2.0f,  0.5f,  1.0f,      
+            // tabletop_thickness tableleg_length tableleg_width       color
+                      0.1,              0.05,          0.2,      color_saddle_brown);
+            scene.pushMesh(table);
+        
+            //Ting: Veja que na funcao Mesh::genVBO(GLuint* VBO) eh gerado um nome de VBO!
+            table.genVBO(&VBO[0]);
+            table.genIBO(&IBO[0]);
 
-    //Ting: Veja que na funcao Mesh::genVBO(GLuint* VBO) eh gerado um nome de VBO!
-    scene.genAllVBOs(&VBO[0]);
-    scene.genAllIBOs(&IBO[0]);
+            debug_print_VAO();
+            debug_print_VBO();
+            debug_print_IBO();
 
-    debug_print_VAO();
-    debug_print_VBO();
-    debug_print_IBO();
+            first = 1;
+            break;
+        }
 
-    first = 1;
-    break;
-    case '2':
-    {
-        Mesh icosahedron = createSubdividedIcosahedron(3, color_yellow);
-        Transformation t1 = Transformation();
-        t1.setScale({ 0.5f, 0.5f, 0.5f });  // scale it down to half so it's better to see it on screen
-        icosahedron.pushTransformation(t1);
-        scene.pushMesh(icosahedron);
-    }
-    //Ting: Ao inves de sobreescrever o nome anterior, o que acha de guardar numa outra posicao da memoria o nome do segundo
-    //objeto para voce poder ter acesso aos dados dos dois objetos?
-    scene.genAllVBOs(&VBO[0]);
-    scene.genAllIBOs(&IBO[0]);
+        case '2':
+        {
+            Mesh icosahedron = createSubdividedIcosahedron(3, color_yellow);
+            Transformation t1 = Transformation();
+            t1.setScale({ 0.5f, 0.5f, 0.5f });  // scale it down to half so it's better to see it on screen
+            icosahedron.pushTransformation(t1);
+            scene.pushMesh(icosahedron);
 
-    debug_print_VAO();
-    debug_print_VBO();
-    debug_print_IBO();
+            //Ting: Ao inves de sobreescrever o nome anterior, o que acha de guardar numa outra posicao da memoria o nome do segundo
+            //objeto para voce poder ter acesso aos dados dos dois objetos?
+            icosahedron.genVBO(&VBO[0]);
+            icosahedron.genIBO(&IBO[0]);
 
-    first = 1;
-    break;
-    case '3':
-    {
-        Mesh teapot = createUtahTeapot(10, color_blue);
-        Transformation t = Transformation();
-        t.setScale({ 0.4, 0.4, 0.4 });  // original teapot is too big! Resize it to be smaller
-        t.setRotation({ -90.0f, 0.0f, 0.0f });  // rotates it to be in the correct upright position
-        t.setTranslation({ 0.0f, -0.7, 0.0f });  // moves the object down to recenter it because the rotation moves it up
-        teapot.pushTransformation(t);
-        scene.pushMesh(teapot);
-    }
-    //Ting: E aqui nao poderia ser um terceiro nome numa terceira posicao? 
-    scene.genAllVBOs(&VBO[0]);
-    scene.genAllIBOs(&IBO[0]);
+            debug_print_VAO();
+            debug_print_VBO();
+            debug_print_IBO();
 
-    debug_print_VAO();
-    debug_print_VBO();
-    debug_print_IBO();
+            first = 1;
+            break;
+        }
+        case '3':
+        {
+            Mesh teapot = createUtahTeapot(10, color_blue);
+            Transformation t = Transformation();
+            t.setScale({ 0.4, 0.4, 0.4 });  // original teapot is too big! Resize it to be smaller
+            t.setRotation({ -90.0f, 0.0f, 0.0f });  // rotates it to be in the correct upright position
+            t.setTranslation({ 0.0f, -0.7, 0.0f });  // moves the object down to recenter it because the rotation moves it up
+            teapot.pushTransformation(t);
+            scene.pushMesh(teapot);
+        
+            //Ting: E aqui nao poderia ser um terceiro nome numa terceira posicao? 
+            teapot.genVBO(&VBO[0]);
+            teapot.genIBO(&IBO[0]);
 
-    first = 1;
-    break;
+            debug_print_VAO();
+            debug_print_VBO();
+            debug_print_IBO();
+
+            first = 1;
+            break;
+        }
     }
     // Rerenderizar
     glutPostRedisplay();
