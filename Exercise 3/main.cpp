@@ -214,7 +214,7 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    GLclampf Red = 0.0f, Green = 0.0f, Blue = 0.0f, Alpha = 0.0f;  // black background
+    GLclampf Red = 0.2f, Green = 0.2f, Blue = 0.2f, Alpha = 0.0f;  // dark gray background
     glClearColor(Red, Green, Blue, Alpha);
 
     glEnable(GL_DEPTH_TEST);
