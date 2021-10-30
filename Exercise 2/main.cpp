@@ -188,10 +188,6 @@ static void CompileShaders()
 }
 
 
-
-/*!
- *
- */
 void Keyboard(unsigned char key, int x, int y)
 {
     if (key == 27)
@@ -319,9 +315,6 @@ int main(int argc, char** argv)
     //              camera position | perspective infos | orthographic infos | is_perspective
     scene = Scene({ 0.0f, 0.0f, -3.0f },  pers_info,         ortho_info,           true);
 
-    bool valid_choice = false;
-    char choice;  // User input to choose which object will be drawn
-
     //Ting: Num sistema interativo, o fluxo de controle eh orientado a eventos
     //Precisa-se registrar "calbacks"/rotinas de tratamento de eventos.
     //Veja no link https://www.opengl.org/resources/libraries/glut/spec3/node45.html
@@ -332,44 +325,6 @@ int main(int argc, char** argv)
     //Ting: Analise com cuidado a estrutura de dados dos codigos de Etay. Fiz pequenas alteracoes
     // so para podermos ter a tela inicializada com fundo preto e permitir que sejam teclado '1', '2', e '3'
     // sobre a janela de desenho para que o objeto selecionado seja mostrado.
-
-    // while (!valid_choice) {
-    //     cout << "Please type the option of which object to be drawn:" << endl;
-    //     cout << "  1) Table" << endl;
-    //     cout << "  2) Subdivided icosahedron (sphere)" << endl;
-    //     cout << "  3) Utah teapot" << endl;
-    //     cin >> choice;
-    //     if (choice != '1' && choice != '2' && choice != '3')
-    //         cout << "Option not recognized, please try again!" << endl << endl;
-    //     else
-    //         valid_choice = true;
-    // }
-    // if (choice == '1') {
-    //     //                position       lenght height width tabletop_thickness tableleg_length tableleg_width       color
-    //     createTable({ 0.0f, 0.0f, 0.0f }, 2.0f,  0.5f,  1.0f,      0.1,              0.05,          0.2,      color_saddle_brown);
-    // }
-    // else if (choice == '2') {
-    //     //                                subdivision number  color
-    //     Mesh icosahedron = createSubdividedIcosahedron(3, color_yellow);
-    //     Transformation t1 = Transformation();
-    //     t1.setScale({ 0.5f, 0.5f, 0.5f });  // scale it down to half so it's better to see it on screen
-    //     icosahedron.pushTransformation(t1);
-    //     scene.pushMesh(icosahedron);
-    // }
-    // else if (choice == '3') {
-    //     //                subdivision number  color
-    //     Mesh teapot = createUtahTeapot(10, color_blue);
-    //     Transformation t = Transformation();
-    //     t.setScale({ 0.4, 0.4, 0.4 });  // original teapot is too big! Resize it to be smaller
-    //     t.setRotation({ -90.0f, 0.0f, 0.0f });  // rotates it to be in the correct upright position
-    //     t.setTranslation({ 0.0f, -0.7, 0.0f });  // moves the object down to recenter it because the rotation moves it up
-    //     teapot.pushTransformation(t);
-    //     scene.pushMesh(teapot);
-    // }
-
-
-    // scene.genAllVBOs(&VBO[0]);
-    // scene.genAllIBOs(&IBO[0]);
 
     CompileShaders();
 
@@ -382,6 +337,5 @@ int main(int argc, char** argv)
 
     glutMainLoop();
 
-    
     return 0;
 }
