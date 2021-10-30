@@ -86,27 +86,27 @@ void Scene::genIBO(int index, GLuint* IBO) {
 }
 
 void Scene::drawMesh(int index, GLuint* VBO, GLuint* IBO, GLuint* gWVPLocation) {
+	glBindBuffer(GL_ARRAY_BUFFER, *VBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *IBO);
+
+	// position
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
+
+	// color
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(3 * sizeof(float)));
+
+	// loop through all transformations of the Mesh and draw each one of them
 	for (int index_t = 0; index_t < getMesh(index).getNumberTransformations(); index_t++) {
 		WVP = getWVP() * getMesh(index).getTransformation(index_t).getFinalTransformation();
 		glUniformMatrix4fv(*gWVPLocation, 1, GL_TRUE, &WVP.m[0][0]);
 
-		glBindBuffer(GL_ARRAY_BUFFER, *VBO);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *IBO);
-
-		// position
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
-
-		// color
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(3 * sizeof(float)));
-
 		glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(getMesh(index).getIndices().size()), GL_UNSIGNED_INT, 0);
-
-		glDisableVertexAttribArray(0);
-		glDisableVertexAttribArray(1);
-
 	}
+
+	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
 }
 
 void Scene::genAllVBOs(GLuint* VBO) {
