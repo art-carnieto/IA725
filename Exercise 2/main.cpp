@@ -51,6 +51,28 @@ Scene scene;
 
 static GLuint first = 0;
 
+void debug_print_VAO() {
+    cout << "*** DEBUG PRINT VAO *** " << endl;
+    cout << "VAO = " << VAO << endl;
+    cout << endl;
+}
+
+void debug_print_VBO() {
+    cout << "*** DEBUG PRINT VBO *** " << endl;
+    for (int i = 0; i < NUMBER_MESHES; i++) {
+        cout << "VBO[" << i << "] = " << VBO[i] << endl;
+    }
+    cout << endl;
+}
+
+void debug_print_IBO() {
+    cout << "*** DEBUG PRINT IBO *** " << endl;
+    for (int i = 0; i < NUMBER_MESHES; i++) {
+        cout << "IBO[" << i << "] = " << IBO[i] << endl;
+    }
+    cout << endl;
+}
+
 static void RenderSceneCB()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -233,6 +255,10 @@ void Keyboard(unsigned char key, int x, int y)
     scene.genAllVBOs(&VBO[0]);
     scene.genAllIBOs(&IBO[0]);
 
+    debug_print_VAO();
+    debug_print_VBO();
+    debug_print_IBO();
+
     first = 1;
     break;
     case '2':
@@ -247,6 +273,10 @@ void Keyboard(unsigned char key, int x, int y)
     //objeto para voce poder ter acesso aos dados dos dois objetos?
     scene.genAllVBOs(&VBO[0]);
     scene.genAllIBOs(&IBO[0]);
+
+    debug_print_VAO();
+    debug_print_VBO();
+    debug_print_IBO();
 
     first = 1;
     break;
@@ -263,6 +293,10 @@ void Keyboard(unsigned char key, int x, int y)
     //Ting: E aqui nao poderia ser um terceiro nome numa terceira posicao? 
     scene.genAllVBOs(&VBO[0]);
     scene.genAllIBOs(&IBO[0]);
+
+    debug_print_VAO();
+    debug_print_VBO();
+    debug_print_IBO();
 
     first = 1;
     break;
