@@ -36,12 +36,8 @@
 #define WINDOW_WIDTH  1280
 #define WINDOW_HEIGHT 720
 
-//Ting: VBO contem um amontoado de vertices. Em vertex shader nao se distinguem as primitiva.
-//Sao os programadores que separam os vertices em grupos diferentes para facilitar o processamento
-// por objeto. Neste projeto vale a pena distinguir os vertices em 3 conjuntos (mesa, esfera e bule).
 #define NUMBER_MESHES 3  // 3 meshes: table, icosahedron and Utah teapot
 
-//Ting: eh recomendavel criar um VAO
 GLuint VAO; // VAO = Vertex Array Object
 GLuint VBO[NUMBER_MESHES]; // VBO = Vertex Buffer Object
 GLuint IBO[NUMBER_MESHES]; // IBO = Index Buffer Object
@@ -206,7 +202,6 @@ int main(int argc, char** argv)
     int y = 100;
     glutInitWindowPosition(x, y);
 
-    //Ting: setar profile de OpenGL explicitamente eh uma boa pratica ... 
     glutInitContextVersion(3, 3);// Major version and minor version
     glutInitContextProfile(GLUT_CORE_PROFILE);
 
@@ -229,7 +224,6 @@ int main(int argc, char** argv)
 
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // wireframe mode
 
-    //Ting: eh uma boa pratica criar um vertex array object para "conter" todos os estados de vertices
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
 
@@ -246,7 +240,6 @@ int main(int argc, char** argv)
                   0.1,              0.05,          0.2,      color_saddle_brown);
     scene.pushMesh(table);
 
-    //Ting: Veja que na funcao Mesh::genVBO(GLuint* VBO) eh gerado um nome de VBO!
     table.genVBO(&VBO[0]);
     table.genIBO(&IBO[0]);
 
@@ -256,8 +249,6 @@ int main(int argc, char** argv)
     icosahedron.pushTransformation(t1);
     scene.pushMesh(icosahedron);
 
-    //Ting: Ao inves de sobreescrever o nome anterior, o que acha de guardar numa outra posicao da memoria o nome do segundo
-    //objeto para voce poder ter acesso aos dados dos dois objetos?
     icosahedron.genVBO(&VBO[1]);
     icosahedron.genIBO(&IBO[1]);
 
@@ -276,16 +267,8 @@ int main(int argc, char** argv)
     debug_print_VBO();
     debug_print_IBO();
 
-    //Ting: Num sistema interativo, o fluxo de controle eh orientado a eventos
-    //Precisa-se registrar "calbacks"/rotinas de tratamento de eventos.
-    //Veja no link https://www.opengl.org/resources/libraries/glut/spec3/node45.html
-    //as funcoes de registro de rotinas para tratamento de eventos especificos
-    glutDisplayFunc(RenderSceneCB);  //Ting: Etay
+    glutDisplayFunc(RenderSceneCB);
     glutKeyboardFunc(Keyboard);
-
-    //Ting: Analise com cuidado a estrutura de dados dos codigos de Etay. Fiz pequenas alteracoes
-    // so para podermos ter a tela inicializada com fundo preto e permitir que sejam teclado '1', '2', e '3'
-    // sobre a janela de desenho para que o objeto selecionado seja mostrado.
 
     CompileShaders();
 
