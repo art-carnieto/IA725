@@ -6,7 +6,7 @@
 class Mesh {
     vector<Vertex> mesh_vertices;
     vector<unsigned int> mesh_indices;
-    Transformation mesh_t;
+    vector<Transformation> mesh_transformations;
     Vertex* Vertices;
     unsigned int* Indices;
 
@@ -26,8 +26,9 @@ public:
     void deleteTriangleIndices(int num_triangle);
     int getNumberTriangles();
 
-    Transformation getTransformation();
-    void setTransformation(Transformation t);
+    int getNumberTransformations();
+    Transformation getTransformation(int index);
+    void pushTransformation(Transformation t);
 
     void genVBO(GLuint* VBO);
     void genIBO(GLuint* IBO);

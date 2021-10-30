@@ -195,7 +195,7 @@ void createTable(Vector3f position,
     Transformation t_tabletop = Transformation();
     t_tabletop.setTranslation({ 0.0f + position[0], table_height + position[1], 0.0f + position[2] });
     t_tabletop.setScale({ table_length, tabletop_thickness, table_width });
-    tabletop.setTransformation(t_tabletop);
+    tabletop.pushTransformation(t_tabletop);
     scene.pushMesh(tabletop);
 
     // table leg 1: left back
@@ -203,7 +203,7 @@ void createTable(Vector3f position,
     Transformation t_table_leg_1 = Transformation();
     t_table_leg_1.setTranslation({ (-table_length / 2) + (tableleg_length / 2) + position[0], 0.0f + position[1], (-table_width / 2) + (tableleg_width / 2) + position[2] });
     t_table_leg_1.setScale({ tableleg_length, (table_height * 2) - (tabletop_thickness), tableleg_width });
-    table_leg_1.setTransformation(t_table_leg_1);
+    table_leg_1.pushTransformation(t_table_leg_1);
     scene.pushMesh(table_leg_1);
 
 
@@ -212,7 +212,7 @@ void createTable(Vector3f position,
     Transformation t_table_leg_2 = Transformation();
     t_table_leg_2.setTranslation({ (-table_length / 2) + (tableleg_length / 2) + position[0], 0.0f + position[1], (+table_width / 2) - (tableleg_width / 2) + position[2] });
     t_table_leg_2.setScale({ tableleg_length, (table_height * 2) - (tabletop_thickness), tableleg_width });
-    table_leg_2.setTransformation(t_table_leg_2);
+    table_leg_2.pushTransformation(t_table_leg_2);
     scene.pushMesh(table_leg_2);
 
     // table leg 3: right back
@@ -220,7 +220,7 @@ void createTable(Vector3f position,
     Transformation t_table_leg_3 = Transformation();
     t_table_leg_3.setTranslation({ (+table_length / 2) - (tableleg_length / 2) + position[0], 0.0f + position[1], (-table_width / 2) + (tableleg_width / 2) + position[2] });
     t_table_leg_3.setScale({ tableleg_length, (table_height * 2) - (tabletop_thickness), tableleg_width });
-    table_leg_3.setTransformation(t_table_leg_3);
+    table_leg_3.pushTransformation(t_table_leg_3);
     scene.pushMesh(table_leg_3);
 
     // table leg 4: right front
@@ -228,7 +228,7 @@ void createTable(Vector3f position,
     Transformation t_table_leg_4 = Transformation();
     t_table_leg_4.setTranslation({ (+table_length / 2) - (tableleg_length / 2) + position[0], 0.0f + position[1], (+table_width / 2) - (tableleg_width / 2) + position[2] });
     t_table_leg_4.setScale({ tableleg_length, (table_height * 2) - (tabletop_thickness), tableleg_width });
-    table_leg_4.setTransformation(t_table_leg_4);
+    table_leg_4.pushTransformation(t_table_leg_4);
     scene.pushMesh(table_leg_4);
 }
 
@@ -266,7 +266,7 @@ void Keyboard(unsigned char key, int x, int y)
         Mesh icosahedron = createSubdividedIcosahedron(3, color_yellow);
         Transformation t1 = Transformation();
         t1.setScale({ 0.5f, 0.5f, 0.5f });  // scale it down to half so it's better to see it on screen
-        icosahedron.setTransformation(t1);
+        icosahedron.pushTransformation(t1);
         scene.pushMesh(icosahedron);
     }
     //Ting: Ao inves de sobreescrever o nome anterior, o que acha de guardar numa outra posicao da memoria o nome do segundo
@@ -287,7 +287,7 @@ void Keyboard(unsigned char key, int x, int y)
         t.setScale({ 0.4, 0.4, 0.4 });  // original teapot is too big! Resize it to be smaller
         t.setRotation({ -90.0f, 0.0f, 0.0f });  // rotates it to be in the correct upright position
         t.setTranslation({ 0.0f, -0.7, 0.0f });  // moves the object down to recenter it because the rotation moves it up
-        teapot.setTransformation(t);
+        teapot.pushTransformation(t);
         scene.pushMesh(teapot);
     }
     //Ting: E aqui nao poderia ser um terceiro nome numa terceira posicao? 
@@ -390,7 +390,7 @@ int main(int argc, char** argv)
     //     Mesh icosahedron = createSubdividedIcosahedron(3, color_yellow);
     //     Transformation t1 = Transformation();
     //     t1.setScale({ 0.5f, 0.5f, 0.5f });  // scale it down to half so it's better to see it on screen
-    //     icosahedron.setTransformation(t1);
+    //     icosahedron.pushTransformation(t1);
     //     scene.pushMesh(icosahedron);
     // }
     // else if (choice == '3') {
@@ -400,7 +400,7 @@ int main(int argc, char** argv)
     //     t.setScale({ 0.4, 0.4, 0.4 });  // original teapot is too big! Resize it to be smaller
     //     t.setRotation({ -90.0f, 0.0f, 0.0f });  // rotates it to be in the correct upright position
     //     t.setTranslation({ 0.0f, -0.7, 0.0f });  // moves the object down to recenter it because the rotation moves it up
-    //     teapot.setTransformation(t);
+    //     teapot.pushTransformation(t);
     //     scene.pushMesh(teapot);
     // }
 
@@ -419,5 +419,6 @@ int main(int argc, char** argv)
 
     glutMainLoop();
 
+    
     return 0;
 }
