@@ -31,7 +31,7 @@
 #include "Scene.hpp"
 #include "Colors.hpp"
 
-#include <iostream>  // for user interaction on prompt
+#include <iostream>  // for printing user instructions and tests
 
 #define WINDOW_WIDTH  1280
 #define WINDOW_HEIGHT 720
@@ -39,7 +39,7 @@
 //Ting: VBO contem um amontoado de vertices. Em vertex shader nao se distinguem as primitiva.
 //Sao os programadores que separam os vertices em grupos diferentes para facilitar o processamento
 // por objeto. Neste projeto vale a pena distinguir os vertices em 3 conjuntos (mesa, esfera e bule).
-#define NUMBER_MESHES 1  // after changes on how the table is drawn only one VBO and IBO positions are needed on this program
+#define NUMBER_MESHES 1  // after changes on how the table is created only one VBO and IBO positions are needed on this program
 
 //Ting: eh recomendavel criar um VAO
 GLuint VAO; // VAO = Vertex Array Object
@@ -190,10 +190,10 @@ static void CompileShaders()
 
 void Keyboard(unsigned char key, int x, int y)
 {
-    if (key == 27)
+    if (key == 27)  // ESC key
         exit(0);
 
-    if (first == 1) return;
+    if (first == 1) return;  // choice was already made, does nothing more
 
     switch (key)
     {
