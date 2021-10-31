@@ -193,10 +193,48 @@ static void CompileShaders()
 }
 
 
-void Keyboard(unsigned char key, int x, int y)
+void KeyboardCB(unsigned char key, int x, int y)
 {
     if (key == 27)  // ESC key
         exit(0);
+
+    switch (key) {
+    case GLUT_KEY_RIGHT:
+    {
+        scene.moveCameraRight(0.05);
+        break;
+    }
+    case GLUT_KEY_LEFT:
+    {
+        scene.moveCameraLeft(0.05);
+        break;
+    }
+    case GLUT_KEY_UP:
+    {
+        scene.moveCameraUp(0.05);
+        break;
+    }
+    case GLUT_KEY_DOWN:
+    {
+        scene.moveCameraDown(0.05);
+        break;
+    }
+    case GLUT_KEY_PAGE_UP:
+    {
+        scene.moveCameraFront(0.05);
+        break;
+    }
+    case GLUT_KEY_PAGE_DOWN:
+    {
+        scene.moveCameraBack(0.05);
+        break;
+    }
+    }
+}
+
+void SpecialKeyboardCB(int key, int x, int y)
+{
+    KeyboardCB(key, x, y);
 
 }
 
@@ -287,7 +325,8 @@ int main(int argc, char** argv)
     debug_print_IBO();
 
     glutDisplayFunc(RenderSceneCB);
-    glutKeyboardFunc(Keyboard);
+    glutKeyboardFunc(KeyboardCB);
+    glutSpecialFunc(SpecialKeyboardCB);
 
     CompileShaders();
 
