@@ -278,6 +278,8 @@ int main(int argc, char** argv)
     teapot.genVBO(&VBO[2]);
     teapot.genIBO(&IBO[2]);
 
+    scene.moveCameraUp(1.0f);
+
     debug_print_versions();
 
     debug_print_VAO();

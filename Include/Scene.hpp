@@ -48,4 +48,11 @@ public:
 	void genAllVBOs(GLuint* VBO);
 	void genAllIBOs(GLuint* IBO);
 	void drawAllMeshes(GLuint* VBO, GLuint* IBO, GLuint* gWVPLocation);
+
+	void moveCameraUp(float amount);
+	void moveCameraDown(float amount);
+	void moveCameraLeft(float amount);
+	void moveCameraRight(float amount);
+	void moveCameraFront(float amount);
+	void moveCameraBack(float amount);
 };

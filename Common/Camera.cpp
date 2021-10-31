@@ -34,3 +34,51 @@ Matrix4f Camera::getFinalTransformation() {
 
 	return this->t_cam.getFinalTransformation();
 }
+
+void Camera::moveUp(float amount) {
+	setCameraPos({
+		this->cameraPos[0],
+		this->cameraPos[1] + amount,
+		this->cameraPos[2]
+		});
+}
+
+void Camera::moveDown(float amount) {
+	setCameraPos({
+		this->cameraPos[0],
+		this->cameraPos[1] - amount,
+		this->cameraPos[2]
+		});
+}
+
+void Camera::moveLeft(float amount) {
+	setCameraPos({
+		this->cameraPos[0] - amount,
+		this->cameraPos[1],
+		this->cameraPos[2]
+		});
+}
+
+void Camera::moveRight(float amount) {
+	setCameraPos({
+		this->cameraPos[0] + amount,
+		this->cameraPos[1],
+		this->cameraPos[2]
+		});
+}
+
+void Camera::moveFront(float amount) {
+	setCameraPos({
+		this->cameraPos[0],
+		this->cameraPos[1],
+		this->cameraPos[2] + amount
+		});
+}
+
+void Camera::moveBack(float amount) {
+	setCameraPos({
+		this->cameraPos[0],
+		this->cameraPos[1],
+		this->cameraPos[2] - amount
+		});
+}

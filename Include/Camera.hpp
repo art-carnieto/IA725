@@ -18,4 +18,11 @@ public:
 	float getFOV();
 
 	Matrix4f getFinalTransformation();
+
+	void moveUp(float amount);
+	void moveDown(float amount);
+	void moveLeft(float amount);
+	void moveRight(float amount);
+	void moveFront(float amount);
+	void moveBack(float amount);
 };

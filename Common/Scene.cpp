@@ -130,3 +130,27 @@ void Scene::drawAllMeshes(GLuint* VBO, GLuint* IBO, GLuint* gWVPLocation) {
 		IBO++;  // advances pointer position
 	}
 }
+
+void Scene::moveCameraUp(float amount) {
+	this->camera.moveUp(amount);
+}
+
+void Scene::moveCameraDown(float amount) {
+	this->camera.moveDown(amount);
+}
+
+void Scene::moveCameraLeft(float amount) {
+	this->camera.moveLeft(amount);
+}
+
+void Scene::moveCameraRight(float amount) {
+	this->camera.moveRight(amount);
+}
+
+void Scene::moveCameraFront(float amount) {
+	this->camera.moveFront(amount);
+}
+
+void Scene::moveCameraBack(float amount) {
+	this->camera.moveBack(amount);
+}
