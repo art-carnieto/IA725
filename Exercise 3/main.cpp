@@ -238,6 +238,21 @@ void SpecialKeyboardCB(int key, int x, int y)
 
 }
 
+void MouseCB(int button, int state, int x, int y) {
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+    {
+        cout << "Left click pressed and hold!" << endl;
+    }
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_UP)
+    {
+        cout << "Left click released!" << endl;
+    }
+}
+
+void MotionCB(int x, int y) {
+    cout << "  x = " << x << " y = " << y << endl;
+}
+
 int main(int argc, char** argv)
 {
 #ifdef _WIN64
@@ -327,6 +342,8 @@ int main(int argc, char** argv)
     glutDisplayFunc(RenderSceneCB);
     glutKeyboardFunc(KeyboardCB);
     glutSpecialFunc(SpecialKeyboardCB);
+    glutMouseFunc(MouseCB);
+    glutMotionFunc(MotionCB);
 
     CompileShaders();
 
