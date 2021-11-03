@@ -308,7 +308,8 @@ int main(int argc, char** argv)
     table.genVBO(&VBO[0]);
     table.genIBO(&IBO[0]);
 
-    Mesh icosahedron = createSubdividedIcosahedron(3, color_yellow);
+    // icosahedron subdivided by 4, as required by the exercise
+    Mesh icosahedron = createSubdividedIcosahedron(4, color_yellow);
     Transformation t1 = Transformation();
     t1.setScale({ 0.3f, 0.3f, 0.3f });  // scale icosahedron down
     t1.setTranslation({ 0.5f, 0.85f, 0.0f }); // moves icosahedron to the top of the table
