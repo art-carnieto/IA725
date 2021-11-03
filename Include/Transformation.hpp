@@ -1,6 +1,8 @@
 // intensive use of math_3d.cpp and ogldev_math_3d.h
 #pragma once
 #include "ogldev_math_3d.h"
+#include "glm/glm.hpp"
+
 
 class Transformation {
 	Matrix4f final_transformation;
@@ -15,6 +17,7 @@ public:
 
 	void setRotation(Vector3f rotation);
 	Matrix4f getRotation();
+	void setRotation(glm::mat4 rotation);
 	
 	void setTranslation(Vector3f translation);
 	Matrix4f getTranslation();

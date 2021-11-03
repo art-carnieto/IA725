@@ -85,16 +85,7 @@ static void RenderSceneCB()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
-    static float Scale = 0.0f;  // scale is used to rotate the world
-
-#ifdef _WIN64
-    Scale += 0.5f;
-#else
-    Scale += 0.02f;
-#endif
-    Transformation world_transformation = Transformation();
-    world_transformation.setRotation({ 0.0f, Scale, 0.0f });
-    scene.setWorldTransformation(world_transformation);
+    scene.computeArcball();
 
     scene.drawMesh(0, &VBO[0], &IBO[0], &gWVPLocation);  // draw table
     scene.drawMesh(1, &VBO[1], &IBO[1], &gWVPLocation);  // draw icosahedron
@@ -238,19 +229,26 @@ void SpecialKeyboardCB(int key, int x, int y)
 
 }
 
+// Adapted from https://en.wikibooks.org/wiki/OpenGL_Programming/Modern_OpenGL_Tutorial_Arcball
 void MouseCB(int button, int state, int x, int y) {
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
     {
-        cout << "Left click pressed and hold!" << endl;
+        scene.arcball_on = true;
+        scene.mousePosX = scene.lastMouseX = x;
+        scene.mousePosY = scene.lastMouseY = y;
     }
     if (button == GLUT_LEFT_BUTTON && state == GLUT_UP)
     {
-        cout << "Left click released!" << endl;
+        scene.arcball_on = false;
     }
 }
 
+// Adapted from https://en.wikibooks.org/wiki/OpenGL_Programming/Modern_OpenGL_Tutorial_Arcball
 void MotionCB(int x, int y) {
-    cout << "  x = " << x << " y = " << y << endl;
+    if (scene.arcball_on) {  // if left button is pressed
+        scene.mousePosX = x;
+        scene.mousePosY = y;
+    }
 }
 
 int main(int argc, char** argv)
@@ -331,13 +329,10 @@ int main(int argc, char** argv)
     teapot.genVBO(&VBO[2]);
     teapot.genIBO(&IBO[2]);
 
-    scene.moveCameraUp(1.0f);
-
     debug_print_versions();
-
-    debug_print_VAO();
-    debug_print_VBO();
-    debug_print_IBO();
+    //debug_print_VAO();
+    //debug_print_VBO();
+    //debug_print_IBO();
 
     glutDisplayFunc(RenderSceneCB);
     glutKeyboardFunc(KeyboardCB);

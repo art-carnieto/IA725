@@ -20,6 +20,12 @@ void Transformation::setRotation(Vector3f rotation) {
 	this->rotation.InitRotateTransform(rotation[0], rotation[1], rotation[2]);
 }
 
+void Transformation::setRotation(glm::mat4 rotation) {
+	for (int i = 0; i < 4; i++)
+		for (int j = 0; j < 4; j++)
+			this->rotation.m[i][j] = rotation[i][j];
+}
+
 Matrix4f Transformation::getRotation() {
 	return this->rotation;
 }

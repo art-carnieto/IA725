@@ -3,6 +3,10 @@
 #include "Mesh.hpp"
 #include "Camera.hpp"
 #include <GL/glew.h>
+#include "glm/glm.hpp"
+#include "glm/ext.hpp"
+#include <glm/ext/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 class Scene {
 	vector<Mesh> meshes;
@@ -18,6 +22,9 @@ class Scene {
 	Matrix4f Projection;
 
 public:
+	int mousePosX, mousePosY, lastMouseX, lastMouseY;
+	bool arcball_on;
+
 	Scene();
 	Scene(Vector3f camera_pos, PersProjInfo pers_info, OrthoProjInfo ortho_info, bool perspective);
 
@@ -55,4 +62,8 @@ public:
 	void moveCameraRight(float amount);
 	void moveCameraFront(float amount);
 	void moveCameraBack(float amount);
+
+	void ArcballRotateWorld(glm::mat4 rotation);
+	glm::vec3 get_arcball_vector(int x, int y);
+	void computeArcball();
 };
