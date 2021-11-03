@@ -10,6 +10,9 @@ Scene::Scene(Vector3f camera_pos, PersProjInfo pers_info, OrthoProjInfo ortho_in
 	this->pers_info = pers_info;
 	this->ortho_info = ortho_info;
 	this->Projection.SetZero();
+	this->mousePosX, this->mousePosY = 0;
+	this->lastMouseX, this->lastMouseY = 0;
+	this->arcball_on = false;
 }
 
 void Scene::pushMesh(Mesh m) {
@@ -128,5 +131,91 @@ void Scene::drawAllMeshes(GLuint* VBO, GLuint* IBO, GLuint* gWVPLocation) {
 		drawMesh(index_mesh, VBO, IBO, gWVPLocation);
 		VBO++;  // advances pointer position
 		IBO++;  // advances pointer position
+	}
+}
+
+void Scene::moveCameraUp(float amount) {
+	this->camera.moveUp(amount);
+}
+
+void Scene::moveCameraDown(float amount) {
+	this->camera.moveDown(amount);
+}
+
+void Scene::moveCameraLeft(float amount) {
+	this->camera.moveLeft(amount);
+}
+
+void Scene::moveCameraRight(float amount) {
+	this->camera.moveRight(amount);
+}
+
+void Scene::moveCameraFront(float amount) {
+	this->camera.moveFront(amount);
+}
+
+void Scene::moveCameraBack(float amount) {
+	this->camera.moveBack(amount);
+}
+
+void Scene::ArcballRotateWorld(glm::mat4 rotation) {
+	this->World.setRotation(rotation);
+}
+
+/**
+ * Adapted from https://en.wikibooks.org/wiki/OpenGL_Programming/Modern_OpenGL_Tutorial_Arcball
+ * Get a normalized vector from the center of the virtual ball O to a
+ * point P on the virtual ball surface, such that P is aligned on
+ * screen's (X,Y) coordinates.  If (X,Y) is too far away from the
+ * sphere, return the nearest point on the virtual ball surface.
+ */
+glm::vec3 Scene::get_arcball_vector(int x, int y) {
+	glm::vec3 P = glm::vec3(1.0 * x / this->pers_info.Width * 2 - 1.0,
+		1.0 * y / this->pers_info.Height * 2 - 1.0,
+		0);
+	P.y = -P.y;
+	float OP_squared = P.x * P.x + P.y * P.y;
+	if (OP_squared <= 1 * 1)
+		P.z = sqrt(1 * 1 - OP_squared);  // Pythagoras
+	else
+		P = glm::normalize(P);  // nearest point
+	return P;
+}
+
+// Adapted from https://en.wikibooks.org/wiki/OpenGL_Programming/Modern_OpenGL_Tutorial_Arcball
+void Scene::computeArcball() {
+	if (this->mousePosX != this->lastMouseX || this->mousePosY != this->lastMouseY) {
+		glm::vec3 va = get_arcball_vector(lastMouseX, lastMouseY);
+		glm::vec3 vb = get_arcball_vector(mousePosX, mousePosY);
+		float angle = acos(min(1.0f, glm::dot(va, vb)));
+		glm::vec3 axis_in_camera_coord = glm::cross(va, vb);
+		
+		float floatWVP[9];
+		Matrix4f currentWVP = getWVP();
+		int cont = 0;
+		for (int i = 0; i < 3; i++)
+			for (int j = 0; j < 3; j++) {
+				floatWVP[cont] = currentWVP.m[i][j];
+				cont++;
+			}
+
+		glm::mat3 camera2object = glm::inverse(glm::make_mat3(floatWVP));
+		glm::vec3 axis_in_object_coord = camera2object * axis_in_camera_coord;
+
+		float worldRotation[16];
+		cont = 0;
+		for (int i = 0; i < 4; i++) 
+			for (int j = 0; j < 4; j++) {
+				worldRotation[cont] = this->World.getRotation().m[i][j];
+				cont++;
+			}
+
+		float intensity = 0.05f;  // this number was chosen by testing
+		glm::mat4 object2world = glm::make_mat4(worldRotation);
+		object2world = glm::rotate(object2world, glm::degrees(angle * intensity), axis_in_object_coord);
+		ArcballRotateWorld(object2world);
+
+		lastMouseX = mousePosX;
+		lastMouseY = mousePosY;
 	}
 }
