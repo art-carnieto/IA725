@@ -270,7 +270,7 @@ int main(int argc, char** argv)
     glutInitContextVersion(3, 3);// Major version and minor version
     glutInitContextProfile(GLUT_CORE_PROFILE);
 
-    int win = glutCreateWindow("Exercise 3");
+    int win = glutCreateWindow("Exercise 4");
 
     // Must be done after glut is initialized!
     GLenum res = glewInit();
@@ -341,9 +341,12 @@ int main(int argc, char** argv)
     glutMouseFunc(MouseCB);
     glutMotionFunc(MotionCB);
 
+    glutSetCursor(GLUT_CURSOR_CROSSHAIR);
+    
     CompileShaders();
 
     glutMainLoop();
 
+    glutDestroyWindow(win);
     return 0;
 }
