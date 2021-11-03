@@ -236,10 +236,12 @@ void MouseCB(int button, int state, int x, int y) {
         scene.arcball_on = true;
         scene.mousePosX = scene.lastMouseX = x;
         scene.mousePosY = scene.lastMouseY = y;
+        glutSetCursor(GLUT_CURSOR_CYCLE);
     }
     if (button == GLUT_LEFT_BUTTON && state == GLUT_UP)
     {
         scene.arcball_on = false;
+        glutSetCursor(GLUT_CURSOR_CROSSHAIR);
     }
 }
 
