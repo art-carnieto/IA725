@@ -365,6 +365,10 @@ int main(int argc, char** argv)
     glutAddMenuEntry("Perspectiva", 0);
     glutAddMenuEntry("Ortogonal", 1);
 
+    // near and far clipping planes test
+    scene.setNearClippingPlane(4.0f);
+    scene.setFarClippingPlane(5.0f);
+
     glutAttachMenu(GLUT_RIGHT_BUTTON);
 
     glutSetCursor(GLUT_CURSOR_CROSSHAIR);

@@ -41,8 +41,11 @@ public:
 	Matrix4f getWVP();
 	void calcWVPTransformation();
 
-	void setClippingPlanes(float nearZ, float farZ);
-	float* getClippingPlanes();
+	void setNearClippingPlane(float nearZ);
+	float getNearClippingPlane();
+
+	void setFarClippingPlane(float nearZ);
+	float getFarClippingPlane();
 
 	void setPerspecive();
 	void setOrthogonal();
