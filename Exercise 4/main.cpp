@@ -253,6 +253,23 @@ void MotionCB(int x, int y) {
     }
 }
 
+void MenuCB(int option) {
+    switch (option)
+    {
+    case 0:
+    {
+        scene.setPerspecive();
+        break;
+    }
+
+    case 1:
+    {
+        scene.setOrthogonal();
+        break;
+    }
+    }
+}
+
 int main(int argc, char** argv)
 {
 #ifdef _WIN64
@@ -342,6 +359,13 @@ int main(int argc, char** argv)
     glutSpecialFunc(SpecialKeyboardCB);
     glutMouseFunc(MouseCB);
     glutMotionFunc(MotionCB);
+
+    int projectionMenu = glutCreateMenu(MenuCB);
+    glutSetMenu(projectionMenu);
+    glutAddMenuEntry("Perspectiva", 0);
+    glutAddMenuEntry("Ortogonal", 1);
+
+    glutAttachMenu(GLUT_RIGHT_BUTTON);
 
     glutSetCursor(GLUT_CURSOR_CROSSHAIR);
     
