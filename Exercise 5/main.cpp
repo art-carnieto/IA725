@@ -67,6 +67,11 @@ void debug_print_IBO() {
     cout << endl;
 }
 
+void debug_print_clippingPlanes() {
+    cout << "near Z = " << scene.getNearClippingPlane();
+    cout << "  |  far Z = " << scene.getFarClippingPlane() << endl;
+}
+
 void debug_print_versions() {
     // adapted from https://www.badprog.com/c-opengl-checking-the-freeglut-glew-and-opengl-version
     // Print OpenGL, FreeGLUT and GLEW versions
@@ -220,6 +225,22 @@ void KeyboardCB(unsigned char key, int x, int y)
         scene.moveCameraBack(0.05);
         break;
     }
+    case 'w':
+    {
+        float currentNearZ = scene.getNearClippingPlane();
+        if(currentNearZ < scene.getFarClippingPlane())  // never passes far planning clip
+            scene.setNearClippingPlane(currentNearZ + 0.1f);
+        debug_print_clippingPlanes();
+        break;
+    }
+    case 's':
+    {
+        float currentNearZ = scene.getNearClippingPlane();
+        if (currentNearZ > 0.1)  // sets 0.1 as the minimum for near Z
+            scene.setNearClippingPlane(currentNearZ - 0.1f);
+        debug_print_clippingPlanes();
+        break;
+    }
     }
 }
 
@@ -364,10 +385,6 @@ int main(int argc, char** argv)
     glutSetMenu(projectionMenu);
     glutAddMenuEntry("Perspectiva", 0);
     glutAddMenuEntry("Ortogonal", 1);
-
-    // near and far clipping planes test
-    scene.setNearClippingPlane(4.0f);
-    scene.setFarClippingPlane(5.0f);
 
     glutAttachMenu(GLUT_RIGHT_BUTTON);
 
