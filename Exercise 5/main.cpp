@@ -75,6 +75,12 @@ void debug_print_clippingPlanes() {
     cout << "  |  far Z = " << scene.getFarClippingPlane() << endl;
 }
 
+void debug_print_cameraPosition(string move_direction) {
+    Vector3f camPos = scene.getCamera().getCameraPos();
+    cout << "Camera moved " << move_direction << "  |  Camera position =  { ";
+    cout << camPos[0] << "  " << camPos[1] << "  " << camPos[2] << "}" << endl;
+}
+
 void debug_print_versions() {
     // adapted from https://www.badprog.com/c-opengl-checking-the-freeglut-glew-and-opengl-version
     // Print OpenGL, FreeGLUT and GLEW versions
@@ -203,31 +209,37 @@ void KeyboardCB(unsigned char key, int x, int y)
     case GLUT_KEY_RIGHT:
     {
         scene.moveCameraRight(0.05);
+        debug_print_cameraPosition("right");
         break;
     }
     case GLUT_KEY_LEFT:
     {
         scene.moveCameraLeft(0.05);
+        debug_print_cameraPosition("left");
         break;
     }
     case GLUT_KEY_UP:
     {
         scene.moveCameraUp(0.05);
+        debug_print_cameraPosition("up");
         break;
     }
     case GLUT_KEY_DOWN:
     {
         scene.moveCameraDown(0.05);
+        debug_print_cameraPosition("down");
         break;
     }
     case GLUT_KEY_PAGE_UP:
     {
         scene.moveCameraFront(0.05);
+        debug_print_cameraPosition("forward");
         break;
     }
     case GLUT_KEY_PAGE_DOWN:
     {
         scene.moveCameraBack(0.05);
+        debug_print_cameraPosition("backward");
         break;
     }
     case 'q':
