@@ -49,6 +49,7 @@ float maximum_frustum_limit = 30.0f;  // maximum limit for the far clipping plan
 float minimum_frustum_limit = 0.1f;  // minimum limit for the near clipping plane
 float interaction_intensity = 0.5f;  // defines how fast the camera and clipping 
                                      // planes moves on user interaction
+bool is_wireframe = false;
 
 void debug_print_VAO() {
     cout << "*** DEBUG PRINT VAO *** " << endl;
@@ -257,6 +258,17 @@ void KeyboardCB(unsigned char key, int x, int y)
         debug_print_clippingPlanes();
         break;
     }
+    case 'z':
+    {
+        if (!is_wireframe) {
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);  // wireframe mode
+            is_wireframe = true;
+        }
+        else {
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);  // fill mode
+            is_wireframe = false;
+        }
+    }
     }
 }
 
@@ -378,8 +390,6 @@ int main(int argc, char** argv)
     glEnable(GL_CULL_FACE);
     glFrontFace(GL_CW);
     glCullFace(GL_BACK);
-
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // wireframe mode
 
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
