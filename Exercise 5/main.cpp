@@ -204,10 +204,12 @@ static void CompileShaders()
 
 void KeyboardCB(unsigned char key, int x, int y)
 {
-    if (key == 27)  // ESC key
-        exit(0);
-
     switch (key) {
+    case 27:  // ESC key
+    {
+        cout << "Goodbye!" << endl;
+        exit(0);
+    }
     case '+':
     {
         if (interaction_intensity < 5.0f)
@@ -222,6 +224,45 @@ void KeyboardCB(unsigned char key, int x, int y)
         cout << "Interaction intensity changed to " << interaction_intensity << endl;
         break;
     }
+    
+    case 'u':
+    {
+        float currentNearZ = scene.getNearClippingPlane();
+        if(currentNearZ + interaction_intensity < scene.getFarClippingPlane())  // never passes far planning clip
+            scene.setNearClippingPlane(currentNearZ + interaction_intensity);
+        debug_print_clippingPlanes();
+        break;
+    }
+    case 'j':
+    {
+        float currentNearZ = scene.getNearClippingPlane();
+        if (currentNearZ - interaction_intensity > minimum_frustum_limit)  // sets 0.1 as the minimum for near Z
+            scene.setNearClippingPlane(currentNearZ - interaction_intensity);
+        debug_print_clippingPlanes();
+        break;
+    }
+    case 'i':
+    {
+        float currentFarZ = scene.getFarClippingPlane();
+        if (currentFarZ + interaction_intensity < maximum_frustum_limit)  // never passes the far clipping plane limit (pre-defined)
+            scene.setFarClippingPlane(currentFarZ + interaction_intensity);
+        debug_print_clippingPlanes();
+        break;
+    }
+    case 'k':
+    {
+        float currentFarZ = scene.getFarClippingPlane();
+        if (currentFarZ - interaction_intensity > scene.getNearClippingPlane())  // never passes the near clipping plane
+            scene.setFarClippingPlane(currentFarZ - interaction_intensity);
+        debug_print_clippingPlanes();
+        break;
+    }
+    }
+}
+
+void SpecialKeyboardCB(int key, int x, int y)
+{
+    switch (key) {
     case GLUT_KEY_RIGHT:
     {
         scene.moveCameraRight(interaction_intensity);
@@ -258,45 +299,7 @@ void KeyboardCB(unsigned char key, int x, int y)
         debug_print_cameraPosition("backward");
         break;
     }
-    case 'q':
-    {
-        float currentNearZ = scene.getNearClippingPlane();
-        if(currentNearZ + interaction_intensity < scene.getFarClippingPlane())  // never passes far planning clip
-            scene.setNearClippingPlane(currentNearZ + interaction_intensity);
-        debug_print_clippingPlanes();
-        break;
     }
-    case 'a':
-    {
-        float currentNearZ = scene.getNearClippingPlane();
-        if (currentNearZ - interaction_intensity > minimum_frustum_limit)  // sets 0.1 as the minimum for near Z
-            scene.setNearClippingPlane(currentNearZ - interaction_intensity);
-        debug_print_clippingPlanes();
-        break;
-    }
-    case 'w':
-    {
-        float currentFarZ = scene.getFarClippingPlane();
-        if (currentFarZ + interaction_intensity < maximum_frustum_limit)  // never passes the far clipping plane limit (pre-defined)
-            scene.setFarClippingPlane(currentFarZ + interaction_intensity);
-        debug_print_clippingPlanes();
-        break;
-    }
-    case 's':
-    {
-        float currentFarZ = scene.getFarClippingPlane();
-        if (currentFarZ - interaction_intensity > scene.getNearClippingPlane())  // never passes the near clipping plane
-            scene.setFarClippingPlane(currentFarZ - interaction_intensity);
-        debug_print_clippingPlanes();
-        break;
-    }
-    }
-}
-
-void SpecialKeyboardCB(int key, int x, int y)
-{
-    KeyboardCB(key, x, y);
-
 }
 
 // Adapted from https://en.wikibooks.org/wiki/OpenGL_Programming/Modern_OpenGL_Tutorial_Arcball
