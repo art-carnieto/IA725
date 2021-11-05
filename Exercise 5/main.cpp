@@ -47,6 +47,8 @@ GLuint gWVPLocation;
 Scene scene;
 float maximum_frustum_limit = 30.0f;  // maximum limit for the far clipping plane
 float minimum_frustum_limit = 0.1f;  // minimum limit for the near clipping plane
+float interaction_intensity = 0.5f;  // defines how fast the camera and clipping 
+                                     // planes moves on user interaction
 
 void debug_print_VAO() {
     cout << "*** DEBUG PRINT VAO *** " << endl;
@@ -206,71 +208,85 @@ void KeyboardCB(unsigned char key, int x, int y)
         exit(0);
 
     switch (key) {
+    case '+':
+    {
+        if (interaction_intensity < 5.0f)
+            interaction_intensity += 0.1;
+        cout << "Interaction intensity changed to " << interaction_intensity << endl;
+        break;
+    }
+    case '-':
+    {
+        if (interaction_intensity - 0.1f > 0.1f)
+            interaction_intensity -= 0.1;
+        cout << "Interaction intensity changed to " << interaction_intensity << endl;
+        break;
+    }
     case GLUT_KEY_RIGHT:
     {
-        scene.moveCameraRight(0.05);
+        scene.moveCameraRight(interaction_intensity);
         debug_print_cameraPosition("right");
         break;
     }
     case GLUT_KEY_LEFT:
     {
-        scene.moveCameraLeft(0.05);
+        scene.moveCameraLeft(interaction_intensity);
         debug_print_cameraPosition("left");
         break;
     }
     case GLUT_KEY_UP:
     {
-        scene.moveCameraUp(0.05);
+        scene.moveCameraUp(interaction_intensity);
         debug_print_cameraPosition("up");
         break;
     }
     case GLUT_KEY_DOWN:
     {
-        scene.moveCameraDown(0.05);
+        scene.moveCameraDown(interaction_intensity);
         debug_print_cameraPosition("down");
         break;
     }
     case GLUT_KEY_PAGE_UP:
     {
-        scene.moveCameraFront(0.05);
+        scene.moveCameraFront(interaction_intensity);
         debug_print_cameraPosition("forward");
         break;
     }
     case GLUT_KEY_PAGE_DOWN:
     {
-        scene.moveCameraBack(0.05);
+        scene.moveCameraBack(interaction_intensity);
         debug_print_cameraPosition("backward");
         break;
     }
     case 'q':
     {
         float currentNearZ = scene.getNearClippingPlane();
-        if(currentNearZ < scene.getFarClippingPlane())  // never passes far planning clip
-            scene.setNearClippingPlane(currentNearZ + 0.1f);
+        if(currentNearZ + interaction_intensity < scene.getFarClippingPlane())  // never passes far planning clip
+            scene.setNearClippingPlane(currentNearZ + interaction_intensity);
         debug_print_clippingPlanes();
         break;
     }
     case 'a':
     {
         float currentNearZ = scene.getNearClippingPlane();
-        if (currentNearZ > minimum_frustum_limit)  // sets 0.1 as the minimum for near Z
-            scene.setNearClippingPlane(currentNearZ - 0.1f);
+        if (currentNearZ - interaction_intensity > minimum_frustum_limit)  // sets 0.1 as the minimum for near Z
+            scene.setNearClippingPlane(currentNearZ - interaction_intensity);
         debug_print_clippingPlanes();
         break;
     }
     case 'w':
     {
         float currentFarZ = scene.getFarClippingPlane();
-        if (currentFarZ < maximum_frustum_limit)  // never passes the far clipping plane limit (pre-defined)
-            scene.setFarClippingPlane(currentFarZ + 0.1f);
+        if (currentFarZ + interaction_intensity < maximum_frustum_limit)  // never passes the far clipping plane limit (pre-defined)
+            scene.setFarClippingPlane(currentFarZ + interaction_intensity);
         debug_print_clippingPlanes();
         break;
     }
     case 's':
     {
         float currentFarZ = scene.getFarClippingPlane();
-        if (currentFarZ > scene.getNearClippingPlane())  // never passes the near clipping plane
-            scene.setFarClippingPlane(currentFarZ - 0.1f);
+        if (currentFarZ - interaction_intensity > scene.getNearClippingPlane())  // never passes the near clipping plane
+            scene.setFarClippingPlane(currentFarZ - interaction_intensity);
         debug_print_clippingPlanes();
         break;
     }
