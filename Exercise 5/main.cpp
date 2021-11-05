@@ -36,7 +36,8 @@
 #define WINDOW_WIDTH  1280
 #define WINDOW_HEIGHT 720
 
-#define NUMBER_MESHES 3  // 3 meshes: table, icosahedron and Utah teapot
+#define NUMBER_MESHES 5  // 3 meshes: table, icosahedron and Utah teapot
+                         // + 2 additional meshes to test the far clipping plane
 
 GLuint VAO; // VAO = Vertex Array Object
 GLuint VBO[NUMBER_MESHES]; // VBO = Vertex Buffer Object
@@ -44,6 +45,8 @@ GLuint IBO[NUMBER_MESHES]; // IBO = Index Buffer Object
 GLuint gWVPLocation;
 
 Scene scene;
+float maximum_frustum_limit = 30.0f;  // maximum limit for the far clipping plane
+float minimum_frustum_limit = 0.1f;  // minimum limit for the near clipping plane
 
 void debug_print_VAO() {
     cout << "*** DEBUG PRINT VAO *** " << endl;
@@ -95,6 +98,8 @@ static void RenderSceneCB()
     scene.drawMesh(0, &VBO[0], &IBO[0], &gWVPLocation);  // draw table
     scene.drawMesh(1, &VBO[1], &IBO[1], &gWVPLocation);  // draw icosahedron
     scene.drawMesh(2, &VBO[2], &IBO[2], &gWVPLocation);  // draw Utah teapot
+    scene.drawMesh(3, &VBO[3], &IBO[3], &gWVPLocation);  // draw cylinder
+    scene.drawMesh(4, &VBO[4], &IBO[4], &gWVPLocation);  // draw cone
 
     glutPostRedisplay();
 
@@ -225,7 +230,7 @@ void KeyboardCB(unsigned char key, int x, int y)
         scene.moveCameraBack(0.05);
         break;
     }
-    case 'w':
+    case 'q':
     {
         float currentNearZ = scene.getNearClippingPlane();
         if(currentNearZ < scene.getFarClippingPlane())  // never passes far planning clip
@@ -233,11 +238,27 @@ void KeyboardCB(unsigned char key, int x, int y)
         debug_print_clippingPlanes();
         break;
     }
-    case 's':
+    case 'a':
     {
         float currentNearZ = scene.getNearClippingPlane();
-        if (currentNearZ > 0.1)  // sets 0.1 as the minimum for near Z
+        if (currentNearZ > minimum_frustum_limit)  // sets 0.1 as the minimum for near Z
             scene.setNearClippingPlane(currentNearZ - 0.1f);
+        debug_print_clippingPlanes();
+        break;
+    }
+    case 'w':
+    {
+        float currentFarZ = scene.getFarClippingPlane();
+        if (currentFarZ < maximum_frustum_limit)  // never passes the far clipping plane limit (pre-defined)
+            scene.setFarClippingPlane(currentFarZ + 0.1f);
+        debug_print_clippingPlanes();
+        break;
+    }
+    case 's':
+    {
+        float currentFarZ = scene.getFarClippingPlane();
+        if (currentFarZ > scene.getNearClippingPlane())  // never passes the near clipping plane
+            scene.setFarClippingPlane(currentFarZ - 0.1f);
         debug_print_clippingPlanes();
         break;
     }
@@ -369,6 +390,25 @@ int main(int argc, char** argv)
 
     teapot.genVBO(&VBO[2]);
     teapot.genIBO(&IBO[2]);
+
+    // additional meshes to test the clipping planes
+    Mesh cylinder = createCylinder(10, 0.2f, 2.0f, color_red);
+    Transformation t_cylinder;
+    t_cylinder.setTranslation({ -0.5f, 0.0f, 29.0f });
+    cylinder.pushTransformation(t_cylinder);
+    scene.pushMesh(cylinder);
+
+    cylinder.genVBO(&VBO[3]);
+    cylinder.genIBO(&IBO[3]);
+
+    Mesh cone = createCone(20, 0.5f, 1.5f, color_lime);
+    Transformation t_cone;
+    t_cone.setTranslation({ 0.5f, 0.0f, 20.0f });
+    cone.pushTransformation(t_cone);
+    scene.pushMesh(cone);
+
+    cone.genVBO(&VBO[4]);
+    cone.genIBO(&IBO[4]);
 
     debug_print_versions();
     //debug_print_VAO();
