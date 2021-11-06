@@ -374,7 +374,7 @@ int main(int argc, char** argv)
     glutInitContextVersion(3, 3);// Major version and minor version
     glutInitContextProfile(GLUT_CORE_PROFILE);
 
-    int win = glutCreateWindow("Exercise 5");
+    int win = glutCreateWindow("Exercise 6");
 
     // Must be done after glut is initialized!
     GLenum res = glewInit();
