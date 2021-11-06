@@ -58,14 +58,22 @@ void Scene::calcWVPTransformation() {
 	this->WVP = this->Projection * this->getCamera().getFinalTransformation() * this->World.getFinalTransformation();
 }
 
-void Scene::setClippingPlanes(float nearZ, float farZ) {
+void Scene::setNearClippingPlane(float nearZ) {
 	this->pers_info.zNear = nearZ;
-	this->pers_info.zFar = farZ;
+	this->ortho_info.n = nearZ;
 }
 
-float* Scene::getClippingPlanes() {
-	float clipping_planes[] = { this->pers_info.zNear, this->pers_info.zFar };
-	return clipping_planes;
+float Scene::getNearClippingPlane() {
+	return this->pers_info.zNear;
+}
+
+void Scene::setFarClippingPlane(float farZ) {
+	this->pers_info.zFar = farZ;
+	this->ortho_info.f = farZ;
+}
+
+float Scene::getFarClippingPlane() {
+	return this->pers_info.zFar;
 }
 
 void Scene::setPerspecive() {
