@@ -14,3 +14,11 @@ extern const float color_magenta[] = { 1.0f, 0.0f, 1.0f };
 
 // Aditional colors
 extern const float color_saddle_brown[] = { 0.5450980392156863f, 0.2705882352941176f, 0.0745098039215686f };
+
+Vector3f RGBintToRGBnormalizedFloat(int R, int G, int B) {
+	return Vector3f((R / 255.0f), (G / 255.0f), (B / 255.0f));
+}
+
+Vector3f RGBnormalizedFloatToRGBint(float R, float G, float B) {
+	return Vector3f((R * 255.0f), (G * 255.0f), (B * 255.0f));
+}
