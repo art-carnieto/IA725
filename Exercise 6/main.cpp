@@ -456,6 +456,43 @@ int main(int argc, char** argv)
     //debug_print_VBO();
     //debug_print_IBO();
 
+    cout << "RGB to HSV tests:" << endl;
+    cout << "redRGB = " << color_red[0] << "  " << color_red[1] << "  " << color_red[2] << endl;
+    Vector3f red = RGBtoHSV(color_red[0], color_red[1], color_red[2]);
+    cout << "redHSV = " << red[0] << "  " << red[1] << "  " << red[2] << endl << endl;
+
+    cout << "limeRGB = " << color_lime[0] << "  " << color_lime[1] << "  " << color_lime[2] << endl;
+    Vector3f lime = RGBtoHSV(color_lime[0], color_lime[1], color_lime[2]);
+    cout << "limeHSV = " << lime[0] << "  " << lime[1] << "  " << lime[2] << endl << endl;
+
+    cout << "blueRGB = " << color_blue[0] << "  " << color_blue[1] << "  " << color_blue[2] << endl;
+    Vector3f blue = RGBtoHSV(color_blue[0], color_blue[1], color_blue[2]);
+    cout << "blueHSV = " << blue[0] << "  " << blue[1] << "  " << blue[2] << endl << endl;
+
+    cout << "blackRGB = " << color_black[0] << "  " << color_black[1] << "  " << color_black[2] << endl;
+    Vector3f black = RGBtoHSV(color_black[0], color_black[1], color_black[2]);
+    cout << "blackHSV = " << black[0] << "  " << black[1] << "  " << black[2] << endl << endl;
+
+    cout << "whiteRGB = " << color_white[0] << "  " << color_white[1] << "  " << color_white[2] << endl;
+    Vector3f white = RGBtoHSV(color_white[0], color_white[1], color_white[2]);
+    cout << "whiteHSV = " << white[0] << "  " << white[1] << "  " << white[2] << endl << endl;
+
+    cout << "yellowRGB = " << color_yellow[0] << "  " << color_yellow[1] << "  " << color_yellow[2] << endl;
+    Vector3f yellow = RGBtoHSV(color_yellow[0], color_yellow[1], color_yellow[2]);
+    cout << "yellowHSV = " << yellow[0] << "  " << yellow[1] << "  " << yellow[2] << endl << endl;
+
+    cout << "cyanRGB = " << color_cyan[0] << "  " << color_cyan[1] << "  " << color_cyan[2] << endl;
+    Vector3f cyan = RGBtoHSV(color_cyan[0], color_cyan[1], color_cyan[2]);
+    cout << "cyanHSV = " << cyan[0] << "  " << cyan[1] << "  " << cyan[2] << endl << endl;
+
+    cout << "magentaRGB = " << color_magenta[0] << "  " << color_magenta[1] << "  " << color_magenta[2] << endl;
+    Vector3f magenta = RGBtoHSV(color_magenta[0], color_magenta[1], color_magenta[2]);
+    cout << "magentaHSV = " << magenta[0] << "  " << magenta[1] << "  " << magenta[2] << endl << endl;
+
+    cout << "saddle_brownRGB = " << color_saddle_brown[0] << "  " << color_saddle_brown[1] << "  " << color_saddle_brown[2] << endl;
+    Vector3f saddle_brown = RGBtoHSV(color_saddle_brown[0], color_saddle_brown[1], color_saddle_brown[2]);
+    cout << "saddle_brownHSV = " << saddle_brown[0] << "  " << saddle_brown[1] << "  " << saddle_brown[2] << endl << endl;
+
     glutDisplayFunc(RenderSceneCB);
     glutKeyboardFunc(KeyboardCB);
     glutSpecialFunc(SpecialKeyboardCB);

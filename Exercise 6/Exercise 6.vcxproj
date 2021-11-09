@@ -150,6 +150,7 @@
     <ClCompile Include="..\Common\Scene.cpp" />
     <ClCompile Include="..\Common\Transformation.cpp" />
     <ClCompile Include="..\Common\Vertex.cpp" />
+    <ClCompile Include="Colors.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
