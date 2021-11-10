@@ -18,3 +18,4 @@ extern const float color_saddle_brown[];
 Vector3f RGBintToRGBnormalizedFloat(int R, int G, int B);
 Vector3f RGBnormalizedFloatToRGBint(float R, float G, float B);
 Vector3f RGBtoHSV(float R, float G, float B);
+Vector3f HSVtoRGB(float H, float S, float V);

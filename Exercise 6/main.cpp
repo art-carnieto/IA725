@@ -493,6 +493,97 @@ int main(int argc, char** argv)
     Vector3f saddle_brown = RGBtoHSV(color_saddle_brown[0], color_saddle_brown[1], color_saddle_brown[2]);
     cout << "saddle_brownHSV = " << saddle_brown[0] << "  " << saddle_brown[1] << "  " << saddle_brown[2] << endl << endl;
 
+    cout << endl << "=====================================" << endl << endl;
+
+    cout << "HSV to RGB tests:" << endl;
+    Vector3f red_rgb = HSVtoRGB(0.0f, 1.0f, 1.0f);
+    cout << "red_rgb = " << red_rgb[0] << "  " << red_rgb[1] << "  " << red_rgb[2] << endl;
+    Vector3f red_rgb255 = RGBnormalizedFloatToRGBint(red_rgb[0], red_rgb[1], red_rgb[2]);
+    cout << "red_rgb255 = " << red_rgb255[0] << "  " << red_rgb255[1] << "  " << red_rgb255[2] << endl << endl;
+
+    Vector3f lime_rgb = HSVtoRGB(120.0f, 1.0f, 1.0f);
+    cout << "lime_rgb = " << lime_rgb[0] << "  " << lime_rgb[1] << "  " << lime_rgb[2] << endl;
+    Vector3f lime_rgb255 = RGBnormalizedFloatToRGBint(lime_rgb[0], lime_rgb[1], lime_rgb[2]);
+    cout << "lime_rgb255 = " << lime_rgb255[0] << "  " << lime_rgb255[1] << "  " << lime_rgb255[2] << endl << endl;
+
+    Vector3f blue_rgb = HSVtoRGB(240.0f, 1.0f, 1.0f);
+    cout << "blue_rgb = " << blue_rgb[0] << "  " << blue_rgb[1] << "  " << blue_rgb[2] << endl;
+    Vector3f blue_rgb255 = RGBnormalizedFloatToRGBint(blue_rgb[0], blue_rgb[1], blue_rgb[2]);
+    cout << "blue_rgb255 = " << blue_rgb255[0] << "  " << blue_rgb255[1] << "  " << blue_rgb255[2] << endl << endl;
+
+    Vector3f black_rgb = HSVtoRGB(0.0f, 0.0f, 0.0f);
+    cout << "black_rgb = " << black_rgb[0] << "  " << black_rgb[1] << "  " << black_rgb[2] << endl;
+    Vector3f black_rgb255 = RGBnormalizedFloatToRGBint(black_rgb[0], black_rgb[1], black_rgb[2]);
+    cout << "black_rgb255 = " << black_rgb255[0] << "  " << black_rgb255[1] << "  " << black_rgb255[2] << endl << endl;
+
+    Vector3f white_rgb = HSVtoRGB(0.0f, 0.0f, 1.0f);
+    cout << "white_rgb = " << white_rgb[0] << "  " << white_rgb[1] << "  " << white_rgb[2] << endl;
+    Vector3f white_rgb255 = RGBnormalizedFloatToRGBint(white_rgb[0], white_rgb[1], white_rgb[2]);
+    cout << "white_rgb255 = " << white_rgb255[0] << "  " << white_rgb255[1] << "  " << white_rgb255[2] << endl << endl;
+
+    Vector3f yellow_rgb = HSVtoRGB(60.0f, 1.0f, 1.0f);
+    cout << "yellow_rgb = " << yellow_rgb[0] << "  " << yellow_rgb[1] << "  " << yellow_rgb[2] << endl;
+    Vector3f yellow_rgb255 = RGBnormalizedFloatToRGBint(yellow_rgb[0], yellow_rgb[1], yellow_rgb[2]);
+    cout << "yellow_rgb255 = " << yellow_rgb255[0] << "  " << yellow_rgb255[1] << "  " << yellow_rgb255[2] << endl << endl;
+
+    Vector3f cyan_rgb = HSVtoRGB(180.0f, 1.0f, 1.0f);
+    cout << "cyan_rgb = " << cyan_rgb[0] << "  " << cyan_rgb[1] << "  " << cyan_rgb[2] << endl;
+    Vector3f cyan_rgb255 = RGBnormalizedFloatToRGBint(cyan_rgb[0], cyan_rgb[1], cyan_rgb[2]);
+    cout << "cyan_rgb255 = " << cyan_rgb255[0] << "  " << cyan_rgb255[1] << "  " << cyan_rgb255[2] << endl << endl;
+
+    Vector3f magenta_rgb = HSVtoRGB(300.0f, 1.0f, 1.0f);
+    cout << "magenta_rgb = " << magenta_rgb[0] << "  " << magenta_rgb[1] << "  " << magenta_rgb[2] << endl;
+    Vector3f magenta_rgb255 = RGBnormalizedFloatToRGBint(magenta_rgb[0], magenta_rgb[1], magenta_rgb[2]);
+    cout << "magenta_rgb255 = " << magenta_rgb255[0] << "  " << magenta_rgb255[1] << "  " << magenta_rgb255[2] << endl << endl;
+    
+    int saddle_brown_original[] = { 139,69,19 };
+    Vector3f saddle_brown_norm = RGBintToRGBnormalizedFloat(saddle_brown_original[0], saddle_brown_original[1], saddle_brown_original[2]);
+    Vector3f saddle_brown_HSV = RGBtoHSV(saddle_brown_norm[0], saddle_brown_norm[1], saddle_brown_norm[2]);
+    Vector3f saddle_brown_RGB = HSVtoRGB(saddle_brown_HSV[0], saddle_brown_HSV[1], saddle_brown_HSV[2]);
+    Vector3f saddle_brown_RGB255 = RGBnormalizedFloatToRGBint(saddle_brown_RGB[0], saddle_brown_RGB[1], saddle_brown_RGB[2]);
+
+    cout << "saddle_brown_original = " << saddle_brown_original[0] << "  " << saddle_brown_original[1] << "  " << saddle_brown_original[2] << endl;
+    cout << "saddle_brown_norm = " << saddle_brown_norm[0] << "  " << saddle_brown_norm[1] << "  " << saddle_brown_norm[2] << endl;
+    cout << "saddle_brown_HSV = " << saddle_brown_HSV[0] << "  " << saddle_brown_HSV[1] << "  " << saddle_brown_HSV[2] << endl;
+    cout << "saddle_brown_RGB = " << saddle_brown_RGB[0] << "  " << saddle_brown_RGB[1] << "  " << saddle_brown_RGB[2] << endl;
+    cout << "saddle_brown_RGB255 = " << saddle_brown_RGB255[0] << "  " << saddle_brown_RGB255[1] << "  " << saddle_brown_RGB255[2] << endl << endl;
+
+    int corn_flower_blue_original[] = { 100,149,237 };
+    Vector3f corn_flower_blue_norm = RGBintToRGBnormalizedFloat(corn_flower_blue_original[0], corn_flower_blue_original[1], corn_flower_blue_original[2]);
+    Vector3f corn_flower_blue_HSV = RGBtoHSV(corn_flower_blue_norm[0], corn_flower_blue_norm[1], corn_flower_blue_norm[2]);
+    Vector3f corn_flower_blue_RGB = HSVtoRGB(corn_flower_blue_HSV[0], corn_flower_blue_HSV[1], corn_flower_blue_HSV[2]);
+    Vector3f corn_flower_blue_RGB255 = RGBnormalizedFloatToRGBint(corn_flower_blue_RGB[0], corn_flower_blue_RGB[1], corn_flower_blue_RGB[2]);
+
+    cout << "corn_flower_blue_original = " << corn_flower_blue_original[0] << "  " << corn_flower_blue_original[1] << "  " << corn_flower_blue_original[2] << endl;
+    cout << "corn_flower_blue_norm = " << corn_flower_blue_norm[0] << "  " << corn_flower_blue_norm[1] << "  " << corn_flower_blue_norm[2] << endl;
+    cout << "corn_flower_blue_HSV = " << corn_flower_blue_HSV[0] << "  " << corn_flower_blue_HSV[1] << "  " << corn_flower_blue_HSV[2] << endl;
+    cout << "corn_flower_blue_RGB = " << corn_flower_blue_RGB[0] << "  " << corn_flower_blue_RGB[1] << "  " << corn_flower_blue_RGB[2] << endl;
+    cout << "corn_flower_blue_RGB255 = " << corn_flower_blue_RGB255[0] << "  " << corn_flower_blue_RGB255[1] << "  " << corn_flower_blue_RGB255[2] << endl << endl;
+
+    int dark_slate_gray_original[] = { 47, 79, 79 };
+    Vector3f dark_slate_gray_norm = RGBintToRGBnormalizedFloat(dark_slate_gray_original[0], dark_slate_gray_original[1], dark_slate_gray_original[2]);
+    Vector3f dark_slate_gray_HSV = RGBtoHSV(dark_slate_gray_norm[0], dark_slate_gray_norm[1], dark_slate_gray_norm[2]);
+    Vector3f dark_slate_gray_RGB = HSVtoRGB(dark_slate_gray_HSV[0], dark_slate_gray_HSV[1], dark_slate_gray_HSV[2]);
+    Vector3f dark_slate_gray_RGB255 = RGBnormalizedFloatToRGBint(dark_slate_gray_RGB[0], dark_slate_gray_RGB[1], dark_slate_gray_RGB[2]);
+
+    cout << "dark_slate_gray_original = " << dark_slate_gray_original[0] << "  " << dark_slate_gray_original[1] << "  " << dark_slate_gray_original[2] << endl;
+    cout << "dark_slate_gray_norm = " << dark_slate_gray_norm[0] << "  " << dark_slate_gray_norm[1] << "  " << dark_slate_gray_norm[2] << endl;
+    cout << "dark_slate_gray_HSV = " << dark_slate_gray_HSV[0] << "  " << dark_slate_gray_HSV[1] << "  " << dark_slate_gray_HSV[2] << endl;
+    cout << "dark_slate_gray_RGB = " << dark_slate_gray_RGB[0] << "  " << dark_slate_gray_RGB[1] << "  " << dark_slate_gray_RGB[2] << endl;
+    cout << "dark_slate_gray_RGB255 = " << dark_slate_gray_RGB255[0] << "  " << dark_slate_gray_RGB255[1] << "  " << dark_slate_gray_RGB255[2] << endl << endl;
+
+    int light_salmon_original[] = { 255,160,122 };
+    Vector3f light_salmon_norm = RGBintToRGBnormalizedFloat(light_salmon_original[0], light_salmon_original[1], light_salmon_original[2]);
+    Vector3f light_salmon_HSV = RGBtoHSV(light_salmon_norm[0], light_salmon_norm[1], light_salmon_norm[2]);
+    Vector3f light_salmon_RGB = HSVtoRGB(light_salmon_HSV[0], light_salmon_HSV[1], light_salmon_HSV[2]);
+    Vector3f light_salmon_RGB255 = RGBnormalizedFloatToRGBint(light_salmon_RGB[0], light_salmon_RGB[1], light_salmon_RGB[2]);
+
+    cout << "light_salmon_original = " << light_salmon_original[0] << "  " << light_salmon_original[1] << "  " << light_salmon_original[2] << endl;
+    cout << "light_salmon_norm = " << light_salmon_norm[0] << "  " << light_salmon_norm[1] << "  " << light_salmon_norm[2] << endl;
+    cout << "light_salmon_HSV = " << light_salmon_HSV[0] << "  " << light_salmon_HSV[1] << "  " << light_salmon_HSV[2] << endl;
+    cout << "light_salmon_RGB = " << light_salmon_RGB[0] << "  " << light_salmon_RGB[1] << "  " << light_salmon_RGB[2] << endl;
+    cout << "light_salmon_RGB255 = " << light_salmon_RGB255[0] << "  " << light_salmon_RGB255[1] << "  " << light_salmon_RGB255[2] << endl << endl;
+
     glutDisplayFunc(RenderSceneCB);
     glutKeyboardFunc(KeyboardCB);
     glutSpecialFunc(SpecialKeyboardCB);

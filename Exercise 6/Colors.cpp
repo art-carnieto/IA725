@@ -48,3 +48,31 @@ Vector3f RGBtoHSV(float R, float G, float B) {
 
     return Vector3f(hue, saturation, Xmax);
 }
+
+// Adapted from https://en.wikipedia.org/wiki/HSL_and_HSV#HSV_to_RGB
+// Hue value is an angle degree from 0 to 360
+// Saturation and Value are from 0.0 to 1.0
+// Returned values are RGB from 0.0 to 1.0
+Vector3f HSVtoRGB(float H, float S, float V) {
+    float chroma = V * S;
+
+    float H_line = H / 60.0f;
+
+    float X = chroma * (1 - std::abs(std::fmod(H_line, 2.0f) - 1));
+
+    float R_1 = 0.0f;
+    float G_1 = 0.0f;
+    float B_1 = 0.0f;
+
+    if (S == 0.0f) { R_1 = 0.0f;  G_1 = 0.0f;  B_1 = 0.0f; }  // H is undefined
+    else if (H_line >= 0.0f && H_line < 1.0f) { R_1 = chroma;  G_1 = X;  B_1 = 0.0f; }
+    else if (H_line >= 1.0f && H_line < 2.0f) { R_1 = X;  G_1 = chroma;  B_1 = 0.0f; }
+    else if (H_line >= 2.0f && H_line < 3.0f) { R_1 = 0.0f;  G_1 = chroma;  B_1 = X; }
+    else if (H_line >= 3.0f && H_line < 4.0f) { R_1 = 0.0f;  G_1 = X;  B_1 = chroma; }
+    else if (H_line >= 4.0f && H_line < 5.0f) { R_1 = X;  G_1 = 0.0f;  B_1 = chroma; }
+    else if (H_line >= 5.0f && H_line < 6.0f) { R_1 = chroma;  G_1 = 0.0f;  B_1 = X; }
+
+    float m = V - chroma;
+
+    return Vector3f(R_1 + m, G_1 + m, B_1 + m);
+}
