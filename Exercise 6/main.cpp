@@ -56,6 +56,8 @@ float icosahedron_hue = 60.0f;  // yellow color angle in degree
 float icosahedron_saturation = 1.0f;  // 100% color saturation
 float icosahedron_value = 1.0f;  // 100% color value
 
+Mesh icosahedron;  // global variable to be able to change color on HSV keyboard interaction
+
 void debug_print_VAO() {
     cout << "*** DEBUG PRINT VAO *** " << endl;
     cout << "VAO = " << VAO << endl;
@@ -285,6 +287,8 @@ void KeyboardCB(unsigned char key, int x, int y)
     {
         if (icosahedron_hue > 0.0f)
             icosahedron_hue -= 10.0f;
+        icosahedron.changeColor(HSVtoRGB(icosahedron_hue, icosahedron_saturation, icosahedron_value));
+        icosahedron.updateVBO(&VBO[1]);
         debug_print_icosahedron_HSV("H");
         break;
     }
@@ -292,6 +296,8 @@ void KeyboardCB(unsigned char key, int x, int y)
     {
         if (icosahedron_hue < 360.0f)
             icosahedron_hue += 10.0f;
+        icosahedron.changeColor(HSVtoRGB(icosahedron_hue, icosahedron_saturation, icosahedron_value));
+        icosahedron.updateVBO(&VBO[1]);
         debug_print_icosahedron_HSV("H");
         break;
     }
@@ -299,6 +305,8 @@ void KeyboardCB(unsigned char key, int x, int y)
     {
         if (icosahedron_saturation > 0.0f)
             icosahedron_saturation -= 0.1f;
+        icosahedron.changeColor(HSVtoRGB(icosahedron_hue, icosahedron_saturation, icosahedron_value));
+        icosahedron.updateVBO(&VBO[1]);
         debug_print_icosahedron_HSV("S");
         break;
     }
@@ -306,6 +314,8 @@ void KeyboardCB(unsigned char key, int x, int y)
     {
         if (icosahedron_saturation < 1.0f)
             icosahedron_saturation += 0.1f;
+        icosahedron.changeColor(HSVtoRGB(icosahedron_hue, icosahedron_saturation, icosahedron_value));
+        icosahedron.updateVBO(&VBO[1]);
         debug_print_icosahedron_HSV("S");
         break;
     }
@@ -313,6 +323,8 @@ void KeyboardCB(unsigned char key, int x, int y)
     {
         if (icosahedron_value > 0.0f)
             icosahedron_value -= 0.1f;
+        icosahedron.changeColor(HSVtoRGB(icosahedron_hue, icosahedron_saturation, icosahedron_value));
+        icosahedron.updateVBO(&VBO[1]);
         debug_print_icosahedron_HSV("V");
         break;
     }
@@ -320,6 +332,8 @@ void KeyboardCB(unsigned char key, int x, int y)
     {
         if (icosahedron_value < 1.0f)
             icosahedron_value += 0.1f;
+        icosahedron.changeColor(HSVtoRGB(icosahedron_hue, icosahedron_saturation, icosahedron_value));
+        icosahedron.updateVBO(&VBO[1]);
         debug_print_icosahedron_HSV("V");
         break;
     }
@@ -465,15 +479,15 @@ int main(int argc, char** argv)
     table.genIBO(&IBO[0]);
 
     // icosahedron subdivided by 4, as required by the exercise
-    Mesh icosahedron = createSubdividedIcosahedron(4, color_yellow);
+    icosahedron = createSubdividedIcosahedron(4, color_yellow);
     Transformation t1 = Transformation();
     t1.setScale({ 0.3f, 0.3f, 0.3f });  // scale icosahedron down
     t1.setTranslation({ 0.5f, 0.85f, 0.0f }); // moves icosahedron to the top of the table
     icosahedron.pushTransformation(t1);
     scene.pushMesh(icosahedron);
 
-    icosahedron.genVBO(&VBO[1]);
-    icosahedron.genIBO(&IBO[1]);
+    icosahedron.genVBOdynamic(&VBO[1]);
+    icosahedron.genIBOdynamic(&IBO[1]);
 
     Mesh teapot = createUtahTeapot(10, color_blue);
     Transformation t = Transformation();
@@ -506,9 +520,9 @@ int main(int argc, char** argv)
     cone.genIBO(&IBO[4]);
         
     debug_print_versions();
-    debug_print_VAO();
-    debug_print_VBO();
-    debug_print_IBO();
+    //debug_print_VAO();
+    //debug_print_VBO();
+    //debug_print_IBO();
 
     glutDisplayFunc(RenderSceneCB);
     glutKeyboardFunc(KeyboardCB);
