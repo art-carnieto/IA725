@@ -20,6 +20,7 @@ public:
     void pushVertex(Vector3f pos, Vector3f color);
     void deleteVertex(int index);
     int getNumberVertices();
+    void changeColor(Vector3f new_color);
 
     vector<unsigned int> getIndices();
     void pushTriangleIndices(unsigned int a, unsigned int b, unsigned int c);
@@ -31,7 +32,10 @@ public:
     void pushTransformation(Transformation t);
 
     void genVBO(GLuint* VBO);
+    void genVBOdynamic(GLuint* VBO);
     void genIBO(GLuint* IBO);
+    void genIBOdynamic(GLuint* IBO);
+    void updateVBO(GLuint* VBO);
 
     void debug_print_vertices();
     void debug_print_indices();

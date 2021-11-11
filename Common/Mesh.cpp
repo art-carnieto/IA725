@@ -35,6 +35,12 @@ int Mesh::getNumberVertices() {
     return static_cast<int>(this->mesh_vertices.size());
 }
 
+void Mesh::changeColor(Vector3f new_color) {
+    for (int i = 0; i < getNumberVertices(); i++) {
+        this->mesh_vertices[i].setColor(new_color);
+    }
+}
+
 // Indices
 vector<unsigned int> Mesh::getIndices() {
     return this->mesh_indices;
@@ -66,6 +72,15 @@ void Mesh::genVBO(GLuint* VBO) {
     glBufferData(GL_ARRAY_BUFFER, getNumberVertices() * sizeof(this->Vertices[0]), this->Vertices, GL_STATIC_DRAW);
 }
 
+void Mesh::genVBOdynamic(GLuint* VBO) {
+    assert(this->mesh_vertices.size() > 0);
+    this->Vertices = &mesh_vertices[0];
+
+    glGenBuffers(1, VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, *VBO);
+    glBufferData(GL_ARRAY_BUFFER, getNumberVertices() * sizeof(this->Vertices[0]), this->Vertices, GL_DYNAMIC_DRAW);
+}
+
 void Mesh::genIBO(GLuint* IBO) {
     assert(this->mesh_indices.size() > 0);
     this->Indices = &mesh_indices[0];
@@ -73,6 +88,22 @@ void Mesh::genIBO(GLuint* IBO) {
     glGenBuffers(1, IBO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *IBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, getIndices().size() * sizeof(this->Indices[0]), this->Indices, GL_STATIC_DRAW);
+}
+
+void Mesh::genIBOdynamic(GLuint* IBO) {
+    assert(this->mesh_indices.size() > 0);
+    this->Indices = &mesh_indices[0];
+
+    glGenBuffers(1, IBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *IBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, getIndices().size() * sizeof(this->Indices[0]), this->Indices, GL_DYNAMIC_DRAW);
+}
+
+void Mesh::updateVBO(GLuint* VBO) {
+    this->Vertices = &mesh_vertices[0];
+
+    glBindBuffer(GL_ARRAY_BUFFER, *VBO);
+    glBufferData(GL_ARRAY_BUFFER, getNumberVertices() * sizeof(this->Vertices[0]), this->Vertices, GL_DYNAMIC_DRAW);
 }
 
 // Transformation

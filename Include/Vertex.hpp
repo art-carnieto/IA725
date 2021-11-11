@@ -11,4 +11,6 @@ public:
     Vertex(float x, float y, float z, float r, float g, float b);
     Vector3f getPosition();
     Vector3f getColor();
+    void setColor(float r, float g, float b);
+    void setColor(Vector3f new_color);
 };

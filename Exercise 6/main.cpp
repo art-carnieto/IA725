@@ -429,8 +429,8 @@ int main(int argc, char** argv)
     teapot.pushTransformation(t);
     scene.pushMesh(teapot);
 
-    teapot.genVBO(&VBO[2]);
-    teapot.genIBO(&IBO[2]);
+    teapot.genVBOdynamic(&VBO[2]);
+    teapot.genIBOdynamic(&IBO[2]);
 
     // additional meshes to test the clipping planes
     Mesh cylinder = createCylinder(10, 0.2f, 2.0f, color_red);
@@ -451,10 +451,15 @@ int main(int argc, char** argv)
     cone.genVBO(&VBO[4]);
     cone.genIBO(&IBO[4]);
 
+    
+    Vector3f new_color_medium_orchid = RGBintToRGBnormalizedFloat(186, 85, 211);
+    teapot.changeColor(new_color_medium_orchid);
+    teapot.updateVBO(&VBO[2]);
+    
     debug_print_versions();
-    //debug_print_VAO();
-    //debug_print_VBO();
-    //debug_print_IBO();
+    debug_print_VAO();
+    debug_print_VBO();
+    debug_print_IBO();
 
     glutDisplayFunc(RenderSceneCB);
     glutKeyboardFunc(KeyboardCB);
