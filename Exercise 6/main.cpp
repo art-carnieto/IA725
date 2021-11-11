@@ -51,6 +51,11 @@ float interaction_intensity = 0.5f;  // defines how fast the camera and clipping
                                      // planes moves on user interaction
 bool is_wireframe = false;
 
+// HSV color manipulation on the icosahedron
+float icosahedron_hue = 60.0f;  // yellow color angle in degree
+float icosahedron_saturation = 1.0f;  // 100% color saturation
+float icosahedron_value = 1.0f;  // 100% color value
+
 void debug_print_VAO() {
     cout << "*** DEBUG PRINT VAO *** " << endl;
     cout << "VAO = " << VAO << endl;
@@ -82,6 +87,12 @@ void debug_print_cameraPosition(string move_direction) {
     Vector3f camPos = scene.getCamera().getCameraPos();
     cout << "Camera moved " << move_direction << "  |  Camera position =  { ";
     cout << camPos[0] << "  " << camPos[1] << "  " << camPos[2] << "}" << endl;
+}
+
+void debug_print_icosahedron_HSV(string component) {
+    if (component == "H") cout << "Icosahedron Hue = " << icosahedron_hue << " degrees" << endl;
+    else if (component == "S") cout << "Icosahedron Saturation = " << (icosahedron_saturation * 100) << " %" << endl;
+    else if (component == "V") cout << "Icosahedron Value = " << (icosahedron_value * 100) << " %" << endl;
 }
 
 void debug_print_versions() {
@@ -225,11 +236,11 @@ void KeyboardCB(unsigned char key, int x, int y)
         cout << "Interaction intensity changed to " << interaction_intensity << endl;
         break;
     }
-    
+
     case 'u':
     {
         float currentNearZ = scene.getNearClippingPlane();
-        if(currentNearZ + interaction_intensity < scene.getFarClippingPlane())  // never passes far planning clip
+        if (currentNearZ + interaction_intensity < scene.getFarClippingPlane())  // never passes far planning clip
             scene.setNearClippingPlane(currentNearZ + interaction_intensity);
         debug_print_clippingPlanes();
         break;
@@ -268,6 +279,49 @@ void KeyboardCB(unsigned char key, int x, int y)
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);  // fill mode
             is_wireframe = false;
         }
+        break;
+    }
+    case 'h':
+    {
+        if (icosahedron_hue > 0.0f)
+            icosahedron_hue -= 10.0f;
+        debug_print_icosahedron_HSV("H");
+        break;
+    }
+    case 'H':
+    {
+        if (icosahedron_hue < 360.0f)
+            icosahedron_hue += 10.0f;
+        debug_print_icosahedron_HSV("H");
+        break;
+    }
+    case 's':
+    {
+        if (icosahedron_saturation > 0.0f)
+            icosahedron_saturation -= 0.1f;
+        debug_print_icosahedron_HSV("S");
+        break;
+    }
+    case 'S':
+    {
+        if (icosahedron_saturation < 1.0f)
+            icosahedron_saturation += 0.1f;
+        debug_print_icosahedron_HSV("S");
+        break;
+    }
+    case 'v':
+    {
+        if (icosahedron_value > 0.0f)
+            icosahedron_value -= 0.1f;
+        debug_print_icosahedron_HSV("V");
+        break;
+    }
+    case 'V':
+    {
+        if (icosahedron_value < 1.0f)
+            icosahedron_value += 0.1f;
+        debug_print_icosahedron_HSV("V");
+        break;
     }
     }
 }
@@ -429,8 +483,8 @@ int main(int argc, char** argv)
     teapot.pushTransformation(t);
     scene.pushMesh(teapot);
 
-    teapot.genVBOdynamic(&VBO[2]);
-    teapot.genIBOdynamic(&IBO[2]);
+    teapot.genVBO(&VBO[2]);
+    teapot.genIBO(&IBO[2]);
 
     // additional meshes to test the clipping planes
     Mesh cylinder = createCylinder(10, 0.2f, 2.0f, color_red);
@@ -450,12 +504,7 @@ int main(int argc, char** argv)
 
     cone.genVBO(&VBO[4]);
     cone.genIBO(&IBO[4]);
-
-    
-    Vector3f new_color_medium_orchid = RGBintToRGBnormalizedFloat(186, 85, 211);
-    teapot.changeColor(new_color_medium_orchid);
-    teapot.updateVBO(&VBO[2]);
-    
+        
     debug_print_versions();
     debug_print_VAO();
     debug_print_VBO();
