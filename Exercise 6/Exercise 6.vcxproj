@@ -143,6 +143,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Common\Camera.cpp" />
+    <ClCompile Include="..\Common\Colors.cpp" />
     <ClCompile Include="..\Common\Geometry.cpp" />
     <ClCompile Include="..\Common\math_3d.cpp" />
     <ClCompile Include="..\Common\Mesh.cpp" />
@@ -150,7 +151,6 @@
     <ClCompile Include="..\Common\Scene.cpp" />
     <ClCompile Include="..\Common\Transformation.cpp" />
     <ClCompile Include="..\Common\Vertex.cpp" />
-    <ClCompile Include="Colors.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
