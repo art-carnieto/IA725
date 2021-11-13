@@ -25,3 +25,11 @@ Vector3f Vertex::getPosition() {
 Vector3f Vertex::getColor() {
     return Vertex::color;
 }
+
+void Vertex::setColor(float r, float g, float b) {
+    this->color = Vector3f(r, g, b);
+}
+
+void Vertex::setColor(Vector3f new_color) {
+    this->color = new_color;
+}
