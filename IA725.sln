@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31613.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Hello World", "OpenGLApplication\OpenGLApplication.vcxproj", "{6C0D59AF-FBF6-41A4-A6BB-116980611C0D}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Exercise 2", "Exercise 2\Exercise 2.vcxproj", "{6B448FE1-302D-415B-97C0-B870E7215A3A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{398257CD-B54B-4F88-A610-AAB732027762}"
@@ -28,14 +26,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6C0D59AF-FBF6-41A4-A6BB-116980611C0D}.Debug|x64.ActiveCfg = Debug|x64
-		{6C0D59AF-FBF6-41A4-A6BB-116980611C0D}.Debug|x64.Build.0 = Debug|x64
-		{6C0D59AF-FBF6-41A4-A6BB-116980611C0D}.Debug|x86.ActiveCfg = Debug|Win32
-		{6C0D59AF-FBF6-41A4-A6BB-116980611C0D}.Debug|x86.Build.0 = Debug|Win32
-		{6C0D59AF-FBF6-41A4-A6BB-116980611C0D}.Release|x64.ActiveCfg = Release|x64
-		{6C0D59AF-FBF6-41A4-A6BB-116980611C0D}.Release|x64.Build.0 = Release|x64
-		{6C0D59AF-FBF6-41A4-A6BB-116980611C0D}.Release|x86.ActiveCfg = Release|Win32
-		{6C0D59AF-FBF6-41A4-A6BB-116980611C0D}.Release|x86.Build.0 = Release|Win32
 		{6B448FE1-302D-415B-97C0-B870E7215A3A}.Debug|x64.ActiveCfg = Debug|x64
 		{6B448FE1-302D-415B-97C0-B870E7215A3A}.Debug|x64.Build.0 = Debug|x64
 		{6B448FE1-302D-415B-97C0-B870E7215A3A}.Debug|x86.ActiveCfg = Debug|Win32
