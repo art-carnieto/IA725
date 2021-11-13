@@ -22,7 +22,7 @@ Exercises:
 | 5  | Design: add clipping functionality by a plane within the view volume (plane repositioning via terminal keys). Peer review of the projects.  | :soon:  |
 | 6  | Implement a function to edit the H,S,V components of the icosahedron color in the table scene with the Utah teapot and the icosahedron subdivided up to order 3 by means of the following interactions: H increases the angle and h reduces the angle on the color disk by 10 units (chroma); S increases the white and s reduces the white by 10 units (saturation), and V increases the brightness and v reduces the brightness by 10 units (luminance).  | :heavy_check_mark:  |
 | 7  | Add a white light source to the scene of the table with the sphere and the Utah teapot. Apply the *Blinn-Phong* lighting model and three types of shading (*Flat*, *Gouraud* and *Phong*) to "colorize" the three objects in the scene. Add this new feature as an item, containing 3 sub-items to the menu you created earlier.  | :x: |
-| 8  | Theoretical exercises done on Moodle to study about rasterization in computer graphics.  | :x: |
+| 8  | Theoretical exercises done on Moodle to study about rasterization in computer graphics.  | :heavy_check_mark: |
 | 9  | Add to the scene of the table with the sphere and the Utah teapot a shadow of the table in relation to the white light source.  | :x: |
 | 10 | Projeto: Adicione à cena da mesa com a esfera e o bule de Utah uma textura de madeira para a mesa, uma textura bump para o icosaedro de 4 ordem, e um bule de superfície bem polida e lisa. Avaliação do projeto pelos pares.  | :x: |
 | 11 | Theoretical exercises done on Moodle to study about modern graphics hardware in computer graphics. | :x: |
