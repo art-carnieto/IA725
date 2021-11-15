@@ -58,6 +58,8 @@ float icosahedron_value = 1.0f;  // 100% color value
 
 Mesh icosahedron;  // global variable to be able to change color on HSV keyboard interaction
 
+int type_shading = 0;  // type of shading used on the scene. 0 = flat, 1 = Gouraud, 2 = Phong
+
 void debug_print_VAO() {
     cout << "*** DEBUG PRINT VAO *** " << endl;
     cout << "VAO = " << VAO << endl;
@@ -95,6 +97,12 @@ void debug_print_icosahedron_HSV(string component) {
     if (component == "H") cout << "Icosahedron Hue = " << icosahedron_hue << " degrees" << endl;
     else if (component == "S") cout << "Icosahedron Saturation = " << (icosahedron_saturation * 100) << " %" << endl;
     else if (component == "V") cout << "Icosahedron Value = " << (icosahedron_value * 100) << " %" << endl;
+}
+
+void debug_print_shading() {
+    if (type_shading == 0) cout << "Flat shading selected" << endl;
+    else if (type_shading == 1) cout << "Gouraud shading selected" << endl;
+    else if (type_shading == 2) cout << "Phong shading selected" << endl;
 }
 
 void debug_print_versions() {
@@ -414,10 +422,27 @@ void MenuCB(int option) {
         scene.setPerspecive();
         break;
     }
-
     case 1:
     {
         scene.setOrthogonal();
+        break;
+    }
+    case 2:
+    {
+        type_shading = 0;  // Flat shading
+        debug_print_shading();
+        break;
+    }
+    case 3:
+    {
+        type_shading = 1;  // Gouraud shading
+        debug_print_shading();
+        break;
+    }
+    case 4:
+    {
+        type_shading = 2;  // Phong shading
+        debug_print_shading();
         break;
     }
     }
@@ -534,6 +559,9 @@ int main(int argc, char** argv)
     glutSetMenu(projectionMenu);
     glutAddMenuEntry("Perspectiva", 0);
     glutAddMenuEntry("Ortogonal", 1);
+    glutAddMenuEntry("Flat", 2);
+    glutAddMenuEntry("Gouraud", 3);
+    glutAddMenuEntry("Phong", 4);
 
     glutAttachMenu(GLUT_RIGHT_BUTTON);
 
