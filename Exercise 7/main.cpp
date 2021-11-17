@@ -543,7 +543,23 @@ int main(int argc, char** argv)
 
     cone.genVBO(&VBO[4]);
     cone.genIBO(&IBO[4]);
-        
+
+    Vector3f pos = { 0.0f, 0.0f, 0.0f };
+    Vector3f color = { 1.0f, 1.0f, 1.0f };
+    Vector3f normal = { 0.0f, 1.0f, 0.0f };
+    Vertex test = Vertex(pos, color, normal);
+    cout << "test position = ";
+    test.getPosition().Print();
+    cout << endl;
+
+    cout << "test color = ";
+    test.getColor().Print();
+    cout << endl;
+
+    cout << "test normal = ";
+    test.getNormal().Print();
+    cout << endl;
+
     debug_print_versions();
     //debug_print_VAO();
     //debug_print_VBO();
