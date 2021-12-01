@@ -10,12 +10,14 @@ Vertex::Vertex(float x, float y, float z)   // create vertex using just position
     float green = (float)rand() / (float)RAND_MAX;
     float blue = (float)rand() / (float)RAND_MAX;
     color = Vector3f(red, green, blue);
+    normal = Vector3f({ 0.0f, 0.0f, 0.0f });
 }
 
 Vertex::Vertex(float x, float y, float z, float r, float g, float b)
 {
     pos = Vector3f(x, y, z);
     color = Vector3f(r, g, b);
+    normal = Vector3f({ 0.0f, 0.0f, 0.0f });
 }
 
 Vertex::Vertex(float x, float y, float z, float r, float g, float b, float nx, float ny, float nz)
@@ -32,11 +34,13 @@ Vertex::Vertex(Vector3f pos) {  // create vertex using just positions, colors ar
     float green = (float)rand() / (float)RAND_MAX;
     float blue = (float)rand() / (float)RAND_MAX;
     this->color = Vector3f(red, green, blue);
+    this->normal = Vector3f({ 0.0f, 0.0f, 0.0f });
 }
 
 Vertex::Vertex(Vector3f pos, Vector3f color) {
     this->pos = pos;
     this->color = color;
+    this->normal = Vector3f({ 0.0f, 0.0f, 0.0f });
 }
 
 Vertex::Vertex(Vector3f pos, Vector3f color, Vector3f normal) {

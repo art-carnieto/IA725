@@ -24,6 +24,14 @@ void Mesh::pushVertex(Vector3f pos, Vector3f color) {
     this->mesh_vertices.emplace_back(Vertex(pos[0], pos[1], pos[2], color[0], color[1], color[2]));
 }
 
+void Mesh::pushVertex(float pos[3], float color[3], float normal[3]) {
+    this->mesh_vertices.emplace_back(Vertex(pos[0], pos[1], pos[2], color[0], color[1], color[2], normal[0], normal[1], normal[2]));
+}
+
+void Mesh::pushVertex(Vector3f pos, Vector3f color, Vector3f normal) {
+    this->mesh_vertices.emplace_back(Vertex(pos[0], pos[1], pos[2], color[0], color[1], color[2], normal[0], normal[1], normal[2]));
+}
+
 void Mesh::deleteVertex(int index) {
     assert(index < Mesh::getNumberVertices() - 1); // avoid index overflow on Vertices
     this->mesh_vertices.erase(this->mesh_vertices.begin() + index);

@@ -18,6 +18,8 @@ public:
     void pushVertex(float pos[3]);
     void pushVertex(float pos[3], float color[3]);
     void pushVertex(Vector3f pos, Vector3f color);
+    void pushVertex(float pos[3], float color[3], float normal[3]);
+    void pushVertex(Vector3f pos, Vector3f color, Vector3f normal);
     void deleteVertex(int index);
     int getNumberVertices();
     void changeColor(Vector3f new_color);
