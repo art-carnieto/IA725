@@ -170,28 +170,56 @@ vector<unsigned int> loadTeapotIndices() {
 
 Mesh createCube(Vector3f color) {
     Mesh m;
-    m.pushVertex({ 0.5f, 0.5f, 0.5f }, color);
-    m.pushVertex({ -0.5f, 0.5f, -0.5f }, color);
-    m.pushVertex({ -0.5f, 0.5f, 0.5f }, color);
-    m.pushVertex({ 0.5f, -0.5f, -0.5f }, color);
-    m.pushVertex({ -0.5f, -0.5f, -0.5f }, color);
-    m.pushVertex({ 0.5f, 0.5f, -0.5f }, color);
-    m.pushVertex({ 0.5f, -0.5f, 0.5f }, color);
-    m.pushVertex({ -0.5f, -0.5f, 0.5f }, color);
+    m.setUsesIndices(false);  // cube will not use indices to have correct normal vectors on each side
 
-    m.pushTriangleIndices(0, 1, 2);
-    m.pushTriangleIndices(1, 3, 4);
-    m.pushTriangleIndices(5, 6, 3);
-    m.pushTriangleIndices(7, 3, 6);
-    m.pushTriangleIndices(2, 4, 7);
-    m.pushTriangleIndices(0, 7, 6);
-    m.pushTriangleIndices(0, 5, 1);
-    m.pushTriangleIndices(1, 5, 3);
-    m.pushTriangleIndices(5, 0, 6);
-    m.pushTriangleIndices(7, 4, 3);
-    m.pushTriangleIndices(2, 1, 4);
-    m.pushTriangleIndices(0, 2, 7);
+    m.pushVertex({ 0.5f, 0.5f, 0.5f }, color);    // 0
+    m.pushVertex({ -0.5f, 0.5f, -0.5f }, color);  // 1
+    m.pushVertex({ -0.5f, 0.5f, 0.5f }, color);   // 2
 
+    m.pushVertex({ -0.5f, 0.5f, -0.5f }, color);  // 1
+    m.pushVertex({ 0.5f, -0.5f, -0.5f }, color);  // 3
+    m.pushVertex({ -0.5f, -0.5f, -0.5f }, color); // 4
+
+    m.pushVertex({ 0.5f, 0.5f, -0.5f }, color);   // 5
+    m.pushVertex({ 0.5f, -0.5f, 0.5f }, color);   // 6
+    m.pushVertex({ 0.5f, -0.5f, -0.5f }, color);  // 3
+        
+    m.pushVertex({ -0.5f, -0.5f, 0.5f }, color);  // 7
+    m.pushVertex({ 0.5f, -0.5f, -0.5f }, color);  // 3
+    m.pushVertex({ 0.5f, -0.5f, 0.5f }, color);   // 6
+
+    m.pushVertex({ -0.5f, 0.5f, 0.5f }, color);   // 2
+    m.pushVertex({ -0.5f, -0.5f, -0.5f }, color); // 4
+    m.pushVertex({ -0.5f, -0.5f, 0.5f }, color);  // 7
+
+    m.pushVertex({ 0.5f, 0.5f, 0.5f }, color);    // 0
+    m.pushVertex({ -0.5f, -0.5f, 0.5f }, color);  // 7
+    m.pushVertex({ 0.5f, -0.5f, 0.5f }, color);   // 6
+
+    m.pushVertex({ 0.5f, 0.5f, 0.5f }, color);    // 0
+    m.pushVertex({ 0.5f, 0.5f, -0.5f }, color);   // 5
+    m.pushVertex({ -0.5f, 0.5f, -0.5f }, color);  // 1
+
+    m.pushVertex({ -0.5f, 0.5f, -0.5f }, color);  // 1
+    m.pushVertex({ 0.5f, 0.5f, -0.5f }, color);   // 5
+    m.pushVertex({ 0.5f, -0.5f, -0.5f }, color);  // 3
+
+    m.pushVertex({ 0.5f, 0.5f, -0.5f }, color);   // 5
+    m.pushVertex({ 0.5f, 0.5f, 0.5f }, color);    // 0
+    m.pushVertex({ 0.5f, -0.5f, 0.5f }, color);   // 6
+
+    m.pushVertex({ -0.5f, -0.5f, 0.5f }, color);  // 7
+    m.pushVertex({ -0.5f, -0.5f, -0.5f }, color); // 4
+    m.pushVertex({ 0.5f, -0.5f, -0.5f }, color);  // 3
+
+    m.pushVertex({ -0.5f, 0.5f, 0.5f }, color);   // 2
+    m.pushVertex({ -0.5f, 0.5f, -0.5f }, color);  // 1
+    m.pushVertex({ -0.5f, -0.5f, -0.5f }, color); // 4
+
+    m.pushVertex({ 0.5f, 0.5f, 0.5f }, color);    // 0
+    m.pushVertex({ -0.5f, 0.5f, 0.5f }, color);   // 2
+    m.pushVertex({ -0.5f, -0.5f, 0.5f }, color);  // 7
+    
     return m;
 }
 

@@ -41,7 +41,8 @@
 
 GLuint VAO; // VAO = Vertex Array Object
 GLuint VBO[NUMBER_MESHES]; // VBO = Vertex Buffer Object
-GLuint IBO[NUMBER_MESHES]; // IBO = Index Buffer Object
+GLuint IBO[NUMBER_MESHES - 1]; // IBO = Index Buffer Object
+// -1 because the table no longer use indices list, just vertices!
 GLuint gWVPLocation;
 
 Scene scene;
@@ -125,11 +126,12 @@ static void RenderSceneCB()
         
     scene.computeArcball();
 
-    scene.drawMesh(0, &VBO[0], &IBO[0], &gWVPLocation);  // draw table
-    scene.drawMesh(1, &VBO[1], &IBO[1], &gWVPLocation);  // draw icosahedron
-    scene.drawMesh(2, &VBO[2], &IBO[2], &gWVPLocation);  // draw Utah teapot
-    scene.drawMesh(3, &VBO[3], &IBO[3], &gWVPLocation);  // draw cylinder
-    scene.drawMesh(4, &VBO[4], &IBO[4], &gWVPLocation);  // draw cone
+    // Table IBO is NULL because it no longer uses indices list, just vertices!
+    scene.drawMesh(0, &VBO[0], NULL, &gWVPLocation);  // draw table
+    scene.drawMesh(1, &VBO[1], &IBO[0], &gWVPLocation);  // draw icosahedron
+    scene.drawMesh(2, &VBO[2], &IBO[1], &gWVPLocation);  // draw Utah teapot
+    scene.drawMesh(3, &VBO[3], &IBO[2], &gWVPLocation);  // draw cylinder
+    scene.drawMesh(4, &VBO[4], &IBO[3], &gWVPLocation);  // draw cone
 
     glutPostRedisplay();
 
@@ -501,7 +503,7 @@ int main(int argc, char** argv)
     scene.pushMesh(table);
 
     table.genVBO(&VBO[0]);
-    table.genIBO(&IBO[0]);
+    // the table cuboids do not use indices anymore, just vertices!
 
     // icosahedron subdivided by 3, as required by the exercise
     icosahedron = createSubdividedIcosahedron(3, color_yellow);
@@ -512,7 +514,7 @@ int main(int argc, char** argv)
     scene.pushMesh(icosahedron);
 
     icosahedron.genVBOdynamic(&VBO[1]);
-    icosahedron.genIBOdynamic(&IBO[1]);
+    icosahedron.genIBOdynamic(&IBO[0]);
 
     Mesh teapot = createUtahTeapot(10, color_blue);
     Transformation t = Transformation();
@@ -523,7 +525,7 @@ int main(int argc, char** argv)
     scene.pushMesh(teapot);
 
     teapot.genVBO(&VBO[2]);
-    teapot.genIBO(&IBO[2]);
+    teapot.genIBO(&IBO[1]);
 
     // additional meshes to test the clipping planes
     Mesh cylinder = createCylinder(10, 0.2f, 2.0f, color_red);
@@ -533,7 +535,7 @@ int main(int argc, char** argv)
     scene.pushMesh(cylinder);
 
     cylinder.genVBO(&VBO[3]);
-    cylinder.genIBO(&IBO[3]);
+    cylinder.genIBO(&IBO[2]);
 
     Mesh cone = createCone(20, 0.5f, 1.5f, color_lime);
     Transformation t_cone;
@@ -542,23 +544,7 @@ int main(int argc, char** argv)
     scene.pushMesh(cone);
 
     cone.genVBO(&VBO[4]);
-    cone.genIBO(&IBO[4]);
-
-    Vector3f pos = { 0.0f, 0.0f, 0.0f };
-    Vector3f color = { 1.0f, 1.0f, 1.0f };
-    Vector3f normal = { 0.0f, 1.0f, 0.0f };
-    Vertex test = Vertex(pos, color, normal);
-    cout << "test position = ";
-    test.getPosition().Print();
-    cout << endl;
-
-    cout << "test color = ";
-    test.getColor().Print();
-    cout << endl;
-
-    cout << "test normal = ";
-    test.getNormal().Print();
-    cout << endl;
+    cone.genIBO(&IBO[3]);
 
     debug_print_versions();
     //debug_print_VAO();
