@@ -9,9 +9,14 @@ class Mesh {
     vector<Transformation> mesh_transformations;
     Vertex* Vertices;
     unsigned int* Indices;
+    bool uses_indices;  // true = is using indices to not repeat vertex definition in case the vertex is being shared
+    // false = does not use indices, vertices are repeated in case they are used in more than one triangle (not shared)
 
 public:
     Mesh();
+
+    bool getUsesIndices();
+    void setUsesIndices(bool set_uses_indices);
 
     vector<Vertex> getVertices();
     void pushVertex(Vertex v);

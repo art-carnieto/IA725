@@ -98,7 +98,7 @@ void Scene::genIBO(int index, GLuint* IBO) {
 
 void Scene::drawMesh(int index, GLuint* VBO, GLuint* IBO, GLuint* gWVPLocation) {
 	glBindBuffer(GL_ARRAY_BUFFER, *VBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *IBO);
+	if (getMesh(index).getUsesIndices()) glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *IBO);
 
 	// position
 	glEnableVertexAttribArray(0);
@@ -113,7 +113,10 @@ void Scene::drawMesh(int index, GLuint* VBO, GLuint* IBO, GLuint* gWVPLocation) 
 		WVP = getWVP() * getMesh(index).getTransformation(index_t).getFinalTransformation();
 		glUniformMatrix4fv(*gWVPLocation, 1, GL_TRUE, &WVP.m[0][0]);
 
-		glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(getMesh(index).getIndices().size()), GL_UNSIGNED_INT, 0);
+		if (getMesh(index).getUsesIndices())
+			glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(getMesh(index).getIndices().size()), GL_UNSIGNED_INT, 0);
+		else
+			glDrawArrays(GL_TRIANGLES, 0, getMesh(index).getNumberVertices());
 	}
 
 	glDisableVertexAttribArray(0);
