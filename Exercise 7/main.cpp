@@ -44,6 +44,7 @@ GLuint VBO[NUMBER_MESHES]; // VBO = Vertex Buffer Object
 GLuint IBO[NUMBER_MESHES - 1]; // IBO = Index Buffer Object
 // -1 because the table no longer use indices list, just vertices!
 GLuint gWVPLocation;
+GLuint gShadingModeLocation;
 
 Scene scene;
 float maximum_frustum_limit = 30.0f;  // maximum limit for the far clipping plane
@@ -133,6 +134,8 @@ static void RenderSceneCB()
     scene.drawMesh(3, &VBO[3], &IBO[2], &gWVPLocation);  // draw cylinder
     scene.drawMesh(4, &VBO[4], &IBO[3], &gWVPLocation);  // draw cone
 
+    glUniform1i(gShadingModeLocation, type_shading);  // updates shading mode in vertex shader
+
     glutPostRedisplay();
 
     glutSwapBuffers();
@@ -213,6 +216,8 @@ static void CompileShaders()
         printf("Error getting uniform location of 'gWVP'\n");
         exit(1);
     }
+
+    gShadingModeLocation = glGetUniformLocation(ShaderProgram, "shadingMode");
 
     glValidateProgram(ShaderProgram);
     glGetProgramiv(ShaderProgram, GL_VALIDATE_STATUS, &Success);

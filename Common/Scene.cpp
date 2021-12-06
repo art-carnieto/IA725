@@ -108,6 +108,10 @@ void Scene::drawMesh(int index, GLuint* VBO, GLuint* IBO, GLuint* gWVPLocation) 
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(3 * sizeof(float)));
 
+	// normal
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(6 * sizeof(float)));
+
 	// loop through all transformations of the Mesh and draw each one of them
 	for (int index_t = 0; index_t < getMesh(index).getNumberTransformations(); index_t++) {
 		WVP = getWVP() * getMesh(index).getTransformation(index_t).getFinalTransformation();
@@ -121,6 +125,7 @@ void Scene::drawMesh(int index, GLuint* VBO, GLuint* IBO, GLuint* gWVPLocation) 
 
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
+	glDisableVertexAttribArray(2);
 }
 
 void Scene::genAllVBOs(GLuint* VBO) {
