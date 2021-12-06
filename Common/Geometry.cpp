@@ -172,53 +172,53 @@ Mesh createCube(Vector3f color) {
     Mesh m;
     m.setUsesIndices(false);  // cube will not use indices to have correct normal vectors on each side
 
-    m.pushVertex({ 0.5f, 0.5f, 0.5f }, color);    // 0
-    m.pushVertex({ -0.5f, 0.5f, -0.5f }, color);  // 1
-    m.pushVertex({ -0.5f, 0.5f, 0.5f }, color);   // 2
+    m.pushVertex({ 0.5f, 0.5f, 0.5f }, color, { 0.0f, 1.0f, 0.0f });    // 0
+    m.pushVertex({ -0.5f, 0.5f, -0.5f }, color, { 0.0f, 1.0f, 0.0f });  // 1
+    m.pushVertex({ -0.5f, 0.5f, 0.5f }, color, { 0.0f, 1.0f, 0.0f });   // 2
 
-    m.pushVertex({ -0.5f, 0.5f, -0.5f }, color);  // 1
-    m.pushVertex({ 0.5f, -0.5f, -0.5f }, color);  // 3
-    m.pushVertex({ -0.5f, -0.5f, -0.5f }, color); // 4
+    m.pushVertex({ -0.5f, 0.5f, -0.5f }, color, { 0.0f, 0.0f, -1.0f });  // 1
+    m.pushVertex({ 0.5f, -0.5f, -0.5f }, color, { 0.0f, 0.0f, -1.0f });  // 3
+    m.pushVertex({ -0.5f, -0.5f, -0.5f }, color, { 0.0f, 0.0f, -1.0f }); // 4
 
-    m.pushVertex({ 0.5f, 0.5f, -0.5f }, color);   // 5
-    m.pushVertex({ 0.5f, -0.5f, 0.5f }, color);   // 6
-    m.pushVertex({ 0.5f, -0.5f, -0.5f }, color);  // 3
+    m.pushVertex({ 0.5f, 0.5f, -0.5f }, color, { 1.0f, 0.0f, 0.0f });   // 5
+    m.pushVertex({ 0.5f, -0.5f, 0.5f }, color, { 1.0f, 0.0f, 0.0f });   // 6
+    m.pushVertex({ 0.5f, -0.5f, -0.5f }, color, { 1.0f, 0.0f, 0.0f });  // 3
         
-    m.pushVertex({ -0.5f, -0.5f, 0.5f }, color);  // 7
-    m.pushVertex({ 0.5f, -0.5f, -0.5f }, color);  // 3
-    m.pushVertex({ 0.5f, -0.5f, 0.5f }, color);   // 6
+    m.pushVertex({ -0.5f, -0.5f, 0.5f }, color, { 0.0f, -1.0f, 0.0f });  // 7
+    m.pushVertex({ 0.5f, -0.5f, -0.5f }, color, { 0.0f, -1.0f, 0.0f });  // 3
+    m.pushVertex({ 0.5f, -0.5f, 0.5f }, color, { 0.0f, -1.0f, 0.0f });   // 6
 
-    m.pushVertex({ -0.5f, 0.5f, 0.5f }, color);   // 2
-    m.pushVertex({ -0.5f, -0.5f, -0.5f }, color); // 4
-    m.pushVertex({ -0.5f, -0.5f, 0.5f }, color);  // 7
+    m.pushVertex({ -0.5f, 0.5f, 0.5f }, color, { -1.0f, 0.0f, 0.0f });   // 2
+    m.pushVertex({ -0.5f, -0.5f, -0.5f }, color, { -1.0f, 0.0f, 0.0f }); // 4
+    m.pushVertex({ -0.5f, -0.5f, 0.5f }, color, { -1.0f, 0.0f, 0.0f });  // 7
 
-    m.pushVertex({ 0.5f, 0.5f, 0.5f }, color);    // 0
-    m.pushVertex({ -0.5f, -0.5f, 0.5f }, color);  // 7
-    m.pushVertex({ 0.5f, -0.5f, 0.5f }, color);   // 6
+    m.pushVertex({ 0.5f, 0.5f, 0.5f }, color, { 0.0f, 0.0f, 1.0f });    // 0
+    m.pushVertex({ -0.5f, -0.5f, 0.5f }, color, { 0.0f, 0.0f, 1.0f });  // 7
+    m.pushVertex({ 0.5f, -0.5f, 0.5f }, color, { 0.0f, 0.0f, 1.0f });   // 6
 
-    m.pushVertex({ 0.5f, 0.5f, 0.5f }, color);    // 0
-    m.pushVertex({ 0.5f, 0.5f, -0.5f }, color);   // 5
-    m.pushVertex({ -0.5f, 0.5f, -0.5f }, color);  // 1
+    m.pushVertex({ 0.5f, 0.5f, 0.5f }, color, { 0.0f, 1.0f, 0.0f });    // 0
+    m.pushVertex({ 0.5f, 0.5f, -0.5f }, color, { 0.0f, 1.0f, 0.0f });   // 5
+    m.pushVertex({ -0.5f, 0.5f, -0.5f }, color, { 0.0f, 1.0f, 0.0f });  // 1
 
-    m.pushVertex({ -0.5f, 0.5f, -0.5f }, color);  // 1
-    m.pushVertex({ 0.5f, 0.5f, -0.5f }, color);   // 5
-    m.pushVertex({ 0.5f, -0.5f, -0.5f }, color);  // 3
+    m.pushVertex({ -0.5f, 0.5f, -0.5f }, color, { 0.0f, 0.0f, -1.0f });  // 1
+    m.pushVertex({ 0.5f, 0.5f, -0.5f }, color, { 0.0f, 0.0f, -1.0f });   // 5
+    m.pushVertex({ 0.5f, -0.5f, -0.5f }, color, { 0.0f, 0.0f, -1.0f });  // 3
 
-    m.pushVertex({ 0.5f, 0.5f, -0.5f }, color);   // 5
-    m.pushVertex({ 0.5f, 0.5f, 0.5f }, color);    // 0
-    m.pushVertex({ 0.5f, -0.5f, 0.5f }, color);   // 6
+    m.pushVertex({ 0.5f, 0.5f, -0.5f }, color, { 1.0f, 0.0f, 0.0f });   // 5
+    m.pushVertex({ 0.5f, 0.5f, 0.5f }, color, { 1.0f, 0.0f, 0.0f });    // 0
+    m.pushVertex({ 0.5f, -0.5f, 0.5f }, color, { 1.0f, 0.0f, 0.0f });   // 6
 
-    m.pushVertex({ -0.5f, -0.5f, 0.5f }, color);  // 7
-    m.pushVertex({ -0.5f, -0.5f, -0.5f }, color); // 4
-    m.pushVertex({ 0.5f, -0.5f, -0.5f }, color);  // 3
+    m.pushVertex({ -0.5f, -0.5f, 0.5f }, color, { 0.0f, -1.0f, 0.0f });  // 7
+    m.pushVertex({ -0.5f, -0.5f, -0.5f }, color, { 0.0f, -1.0f, 0.0f }); // 4
+    m.pushVertex({ 0.5f, -0.5f, -0.5f }, color, { 0.0f, -1.0f, 0.0f });  // 3
 
-    m.pushVertex({ -0.5f, 0.5f, 0.5f }, color);   // 2
-    m.pushVertex({ -0.5f, 0.5f, -0.5f }, color);  // 1
-    m.pushVertex({ -0.5f, -0.5f, -0.5f }, color); // 4
+    m.pushVertex({ -0.5f, 0.5f, 0.5f }, color, { -1.0f, 0.0f, 0.0f });   // 2
+    m.pushVertex({ -0.5f, 0.5f, -0.5f }, color, { -1.0f, 0.0f, 0.0f });  // 1
+    m.pushVertex({ -0.5f, -0.5f, -0.5f }, color, { -1.0f, 0.0f, 0.0f }); // 4
 
-    m.pushVertex({ 0.5f, 0.5f, 0.5f }, color);    // 0
-    m.pushVertex({ -0.5f, 0.5f, 0.5f }, color);   // 2
-    m.pushVertex({ -0.5f, -0.5f, 0.5f }, color);  // 7
+    m.pushVertex({ 0.5f, 0.5f, 0.5f }, color, { 0.0f, 0.0f, 1.0f });    // 0
+    m.pushVertex({ -0.5f, 0.5f, 0.5f }, color, { 0.0f, 0.0f, 1.0f });   // 2
+    m.pushVertex({ -0.5f, -0.5f, 0.5f }, color, { 0.0f, 0.0f, 1.0f });  // 7
     
     return m;
 }
