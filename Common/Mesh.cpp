@@ -154,7 +154,8 @@ void Mesh::debug_print_vertices() {
     cout << "Number of vertices * sizeof() first vertex = " << Mesh::getNumberVertices() * sizeof(this->mesh_vertices[0]) << endl;
     for (int i = 0; i < Mesh::getNumberVertices(); i++) {
         cout << "pos: { " << this->mesh_vertices[i].getPosition()[0] << " " << this->mesh_vertices[i].getPosition()[1] << " " << this->mesh_vertices[i].getPosition()[2] << " }  |  ";
-        cout << "color: { " << this->mesh_vertices[i].getColor()[0] << " " << this->mesh_vertices[i].getColor()[1] << " " << this->mesh_vertices[i].getColor()[2] << " }\n";
+        cout << "color: { " << this->mesh_vertices[i].getColor()[0] << " " << this->mesh_vertices[i].getColor()[1] << " " << this->mesh_vertices[i].getColor()[2] << " }  |  ";
+        cout << "normal: { " << this->mesh_vertices[i].getNormal()[0] << " " << this->mesh_vertices[i].getNormal()[1] << " " << this->mesh_vertices[i].getNormal()[2] << " }\n";
     }
 }
 
