@@ -19,4 +19,6 @@ public:
     Vector3f getNormal();
     void setColor(float r, float g, float b);
     void setColor(Vector3f new_color);
+    void setNormal(float nx, float ny, float nz);
+    void setNormal(Vector3f new_normal);
 };

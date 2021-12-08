@@ -68,3 +68,11 @@ void Vertex::setColor(float r, float g, float b) {
 void Vertex::setColor(Vector3f new_color) {
     this->color = new_color;
 }
+
+void Vertex::setNormal(float nx, float ny, float nz) {
+    this->normal = Vector3f(nx, ny, nz);
+}
+
+void Vertex::setNormal(Vector3f new_normal) {
+    this->normal = Vector3f(new_normal);
+}
