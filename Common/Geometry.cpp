@@ -517,16 +517,13 @@ Mesh createCubicBezierMesh(vector<Vertex> list_control_points, vector<unsigned i
         // adapted from https://github.com/rgalo-coder/ComputacaoGrafica/blob/master/ExercicioBase/BuleUtah.cpp
         for (int row = 0; row < subdiv; row++) {
             for (int col = 0; col < subdiv; col++) {
-                m.pushTriangleIndices(
-                    (subdiv + 1) * row + col + offset,
-                    (subdiv + 1) * row + col + 1 + offset,
-                    (subdiv + 1) * (row + 1) + col + offset
-                );
-                m.pushTriangleIndices(
-                    (subdiv + 1) * (row + 1) + col + 1 + offset,
-                    (subdiv + 1) * (row + 1) + col + offset,
-                    (subdiv + 1) * row + col + 1 + offset
-                );
+                unsigned int pos1 = (subdiv + 1) * row + col + offset;
+                unsigned int pos2 = (subdiv + 1) * row + col + 1 + offset;
+                unsigned int pos3 = (subdiv + 1) * (row + 1) + col + offset;
+                unsigned int pos4 = (subdiv + 1) * (row + 1) + col + 1 + offset;
+
+                m.pushTriangleIndices(pos1, pos2, pos3);
+                m.pushTriangleIndices(pos4, pos3, pos2);
             }
         }
         offset += vertices.size();
