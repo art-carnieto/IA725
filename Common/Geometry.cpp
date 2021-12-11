@@ -49,9 +49,9 @@ void subdivideTriangle(int num_triangle, Mesh &m) {
     unsigned int new_index_23 = (unsigned int) m.getNumberVertices() + 1;
     unsigned int new_index_31 = (unsigned int) m.getNumberVertices() + 2;
 
-    m.pushVertex(new_vertex_12, ver_1.getColor());
-    m.pushVertex(new_vertex_23, ver_2.getColor());
-    m.pushVertex(new_vertex_31, ver_3.getColor());
+    m.pushVertex(new_vertex_12, ver_1.getColor(), new_vertex_12);
+    m.pushVertex(new_vertex_23, ver_2.getColor(), new_vertex_23);
+    m.pushVertex(new_vertex_31, ver_3.getColor(), new_vertex_31);
 
     m.pushTriangleIndices(ind_a, new_index_12, new_index_31);
     m.pushTriangleIndices(ind_b, new_index_23, new_index_12);
@@ -271,18 +271,18 @@ Mesh createRegularIcosahedron(Vector3f color) {
     const float z = 0.850650808352039932f;
     const float y = 0.0f;
 
-    m.pushVertex({ -x, y, z }, color);
-    m.pushVertex({ x, y, z }, color);
-    m.pushVertex({ -x, y, -z }, color);
-    m.pushVertex({ x, y, -z }, color);
-    m.pushVertex({ y, z, x }, color);
-    m.pushVertex({ y, z, -x }, color);
-    m.pushVertex({ y, -z, x }, color);
-    m.pushVertex({ y, -z, -x }, color);
-    m.pushVertex({ z, x, y }, color);
-    m.pushVertex({ -z, x, y }, color);
-    m.pushVertex({ z, -x, y }, color);
-    m.pushVertex({ -z, -x, y }, color);
+    m.pushVertex({ -x, y, z }, color, { -x, y, z });
+    m.pushVertex({ x, y, z }, color, { x, y, z });
+    m.pushVertex({ -x, y, -z }, color, { -x, y, -z });
+    m.pushVertex({ x, y, -z }, color, { x, y, -z });
+    m.pushVertex({ y, z, x }, color, { y, z, x });
+    m.pushVertex({ y, z, -x }, color, { y, z, -x });
+    m.pushVertex({ y, -z, x }, color, { y, -z, x });
+    m.pushVertex({ y, -z, -x }, color, { y, -z, -x });
+    m.pushVertex({ z, x, y }, color, { z, x, y });
+    m.pushVertex({ -z, x, y }, color, { -z, x, y });
+    m.pushVertex({ z, -x, y }, color, { z, -x, y });
+    m.pushVertex({ -z, -x, y }, color, { -z, -x, y });
 
     m.pushTriangleIndices(4, 0, 1);
     m.pushTriangleIndices(9, 0, 4);
