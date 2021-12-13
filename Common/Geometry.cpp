@@ -93,13 +93,47 @@ Vertex BernsteinCurve(float u, Vertex points[4], Vector3f color) {
     return new_vertex;
 }
 
+// adapted from: https://coderedirect.com/questions/219593/getting-consistent-normals-from-a-3d-cubic-bezier-path
+Vector3f BernsteinDerivate(float u, Vertex points[4]) {
+    float a[3], b[3], c[3], d[3];  // 4 control points
+    float der[3];
+
+    for (int i = 0; i < 3; i++) {  // access the x, y and z dimensions
+        // calculate the derivate of the Bezier curve function        
+        a[i] = 3 * (points[1].getPosition()[i] - points[0].getPosition()[i]);  // 3 * (b - a)
+        b[i] = 3 * (points[2].getPosition()[i] - points[1].getPosition()[i]);  // 3 * (c - b)
+        c[i] = 3 * (points[3].getPosition()[i] - points[2].getPosition()[i]);  // 3 * (d - c)
+    }
+
+    for (int i = 0; i < 3; i++) {  // access the x, y and z dimensions
+        // calculate the derivate of the Bezier curve function
+        der[i] = a[i] * static_cast<float>(pow((1 - u), 2)) +
+            2 * b[i] * (1 - u) * u +
+            c[i] * static_cast<float>(pow(u, 2));
+    }
+
+    normalizeVertexPositions(der);
+
+    return Vector3f(der[0], der[1], der[2]);
+}
+
 // adapted from https://github.com/rgalo-coder/ComputacaoGrafica/blob/master/ExercicioBase/BuleUtah.cpp
 Vertex BernsteinSurface(float u, float v, Vertex patch_points[4][4], Vector3f color) {
     Vertex uCurve[4];
     for (int i = 0; i < 4; i++) {  // gets each column of the 4x4 grid separately
         uCurve[i] = BernsteinCurve(u, patch_points[i], color);
     }
-    return BernsteinCurve(v, uCurve, color);
+    // Normal calculation adapted from https://coderedirect.com/questions/219593/getting-consistent-normals-from-a-3d-cubic-bezier-path
+    Vector3f du = BernsteinDerivate(u, patch_points[3]);
+    Vector3f dv = BernsteinDerivate(v, uCurve);
+
+    Vector3f normal = du.Cross(dv);
+    normal.Rotate(90, { -1.0f, 0.0f, 0.0f });
+
+    Vertex new_vertex = BernsteinCurve(v, uCurve, color);
+    new_vertex.setNormal(normal);
+    
+    return new_vertex;
 }
 
 vector<Vertex> genPatchBezier(Vertex patch_points[4][4], int divs, Vector3f color) {
