@@ -127,8 +127,11 @@ Vertex BernsteinSurface(float u, float v, Vertex patch_points[4][4], Vector3f co
     Vector3f du = BernsteinDerivate(u, patch_points[3]);
     Vector3f dv = BernsteinDerivate(v, uCurve);
 
-    Vector3f normal = du.Cross(dv);
-    normal.Rotate(90, { -1.0f, 0.0f, 0.0f });
+    // manually invert du to opposite direction so that the cross product can have the correct orientation in the end
+    du.x = -du.x;
+    du.y = -du.y;
+    du.z = -du.z;
+    Vector3f normal = du.Cross(dv);  // it is like -du x dv
 
     Vertex new_vertex = BernsteinCurve(v, uCurve, color);
     new_vertex.setNormal(normal);

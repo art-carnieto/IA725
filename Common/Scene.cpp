@@ -8,6 +8,7 @@ Scene::Scene(Vector3f camera_pos, PersProjInfo pers_info, OrthoProjInfo ortho_in
 	this->World;
 	this->WVP;
 	this->FragPos;
+	this->Model;
 	this->pers_info = pers_info;
 	this->ortho_info = ortho_info;
 	this->Projection.SetZero();
@@ -97,7 +98,7 @@ void Scene::genIBO(int index, GLuint* IBO) {
 	getMesh(index).genIBO(IBO);
 }
 
-void Scene::drawMesh(int index, GLuint* VBO, GLuint* IBO, GLuint* gWVPLocation, GLuint* gFragPosLocation) {
+void Scene::drawMesh(int index, GLuint* VBO, GLuint* IBO, GLuint* gWVPLocation, GLuint* gFragPosLocation, GLuint* gModelLocation) {
 	glBindBuffer(GL_ARRAY_BUFFER, *VBO);
 	if (getMesh(index).getUsesIndices()) glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *IBO);
 
@@ -117,8 +118,10 @@ void Scene::drawMesh(int index, GLuint* VBO, GLuint* IBO, GLuint* gWVPLocation, 
 	for (int index_t = 0; index_t < getMesh(index).getNumberTransformations(); index_t++) {
 		WVP = getWVP() * getMesh(index).getTransformation(index_t).getFinalTransformation();
 		FragPos = this->World.getFinalTransformation() * getMesh(index).getTransformation(index_t).getFinalTransformation();
+		Model = getMesh(index).getTransformation(index_t).getFinalTransformation();
 		glUniformMatrix4fv(*gWVPLocation, 1, GL_TRUE, &WVP.m[0][0]);
 		glUniformMatrix4fv(*gFragPosLocation, 1, GL_TRUE, &FragPos.m[0][0]);
+		glUniformMatrix4fv(*gModelLocation, 1, GL_TRUE, &Model.m[0][0]);
 
 		if (getMesh(index).getUsesIndices())
 			glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(getMesh(index).getIndices().size()), GL_UNSIGNED_INT, 0);

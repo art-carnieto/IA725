@@ -17,7 +17,7 @@ in vec3 norm;
 in vec3 FragPos;
 in vec3 lightDir;
 in vec3 lightCol;
-in vec3 lightPos;
+//in vec3 lightPos;
 in vec4 glPos;
 
 out vec4 FragColor;
@@ -28,7 +28,7 @@ vec4 Phong()
     vec4 ambient = vec4(ka, 1);
     vec4 diffuse = vec4(kd * lambertian * lightCol, 1);
     float spec = 0.0;
-    vec3 viewDir = normalize(lightPos - vec3(FragPos));
+    vec3 viewDir = normalize(viewPos - vec3(FragPos));
     if(lambertian > 0.0) {
         vec3 vertPos = vec3(glPos);
         vec3 reflectDir = reflect(-viewDir, norm);      

@@ -9,6 +9,7 @@ uniform mat4 gWVP;
 uniform int shadingMode;
 uniform mat4 gFragPos;
 uniform vec3 gViewPos;
+uniform mat4 gModel;
 
 // ka = ambient; kd = diffuse; ks = specular
 vec3 ka = vec3(0.3, 0.3, 0.3);
@@ -17,8 +18,8 @@ vec3 ks = vec3(1.0, 1.0, 1.0);
 float specularStrength = 0.5;
 uniform int shininess = 32;
 
-uniform vec3 lightPosition = vec3(-2.0, 2.0, 0.5);
-uniform vec3 lightDirection = vec3(1.0, -1.0, 0.0);
+//uniform vec3 lightPosition = vec3(0.0, 2.0, 0.0);
+uniform vec3 lightDirection = vec3(0.0, -1.0, 0.0);
 uniform vec3 lightColor = vec3(1.0, 1.0, 1.0);
 
 out vec4 Color;  // color output
@@ -34,12 +35,12 @@ out vec4 glPos;
 void main()
 {
     gl_Position = gWVP * vec4(Position, 1.0);
-    norm = normalize(Normal);
+    norm = normalize(Normal * transpose(inverse(mat3(gModel))));
     FragPos = vec3(gFragPos);
     viewPos = gViewPos;
     lightDir = lightDirection;
     lightCol = lightColor;
-    lightPos = lightPosition;
+    //lightPos = lightPosition;
     glPos = gWVP * vec4(Position, 1.0);
 
     if(shadingMode == 0 || shadingMode == 1) {  // flat or Gourard shading
@@ -47,7 +48,7 @@ void main()
         vec4 ambient = vec4(ka, 1);
         vec4 diffuse = vec4(kd * lambertian * lightColor, 1);
         float spec = 0.0;
-        vec3 viewDir = normalize(lightPosition - vec3(gFragPos));
+        vec3 viewDir = normalize(gViewPos - vec3(gFragPos));
         if(lambertian > 0.0) {
             vec3 vertPos = vec3(gWVP * vec4(Position, 1.0));
             vec3 reflectDir = reflect(-viewDir, norm);      

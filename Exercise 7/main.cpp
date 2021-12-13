@@ -44,6 +44,7 @@ GLuint VBO[NUMBER_MESHES]; // VBO = Vertex Buffer Object
 GLuint IBO[NUMBER_MESHES - 1]; // IBO = Index Buffer Object
 // -1 because the table no longer use indices list, just vertices!
 GLuint gWVPLocation;
+GLuint gModelLocation;
 GLuint gShadingModeLocation;
 GLuint gFragPosLocation;
 GLuint gCameraPosLocation;
@@ -130,11 +131,11 @@ static void RenderSceneCB()
     scene.computeArcball();
 
     // Table IBO is NULL because it no longer uses indices list, just vertices!
-    scene.drawMesh(0, &VBO[0], NULL, &gWVPLocation, &gFragPosLocation);  // draw table
-    scene.drawMesh(1, &VBO[1], &IBO[0], &gWVPLocation, &gFragPosLocation);  // draw icosahedron
-    scene.drawMesh(2, &VBO[2], &IBO[1], &gWVPLocation, &gFragPosLocation);  // draw Utah teapot
-    scene.drawMesh(3, &VBO[3], &IBO[2], &gWVPLocation, &gFragPosLocation);  // draw cylinder
-    scene.drawMesh(4, &VBO[4], &IBO[3], &gWVPLocation, &gFragPosLocation);  // draw cone
+    scene.drawMesh(0, &VBO[0], NULL, &gWVPLocation, &gFragPosLocation, &gModelLocation);  // draw table
+    scene.drawMesh(1, &VBO[1], &IBO[0], &gWVPLocation, &gFragPosLocation, &gModelLocation);  // draw icosahedron
+    scene.drawMesh(2, &VBO[2], &IBO[1], &gWVPLocation, &gFragPosLocation, &gModelLocation);  // draw Utah teapot
+    scene.drawMesh(3, &VBO[3], &IBO[2], &gWVPLocation, &gFragPosLocation, &gModelLocation);  // draw cylinder
+    scene.drawMesh(4, &VBO[4], &IBO[3], &gWVPLocation, &gFragPosLocation, &gModelLocation);  // draw cone
 
     glUniform1i(gShadingModeLocation, type_shading);  // updates shading mode in vertex shader
     Vector3f camPos = scene.getCamera().getCameraPos();
@@ -218,6 +219,11 @@ static void CompileShaders()
     gWVPLocation = glGetUniformLocation(ShaderProgram, "gWVP");
     if (gWVPLocation == -1) {
         printf("Error getting uniform location of 'gWVP'\n");
+        exit(1);
+    }
+    gModelLocation = glGetUniformLocation(ShaderProgram, "gModel");
+    if (gModelLocation == -1) {
+        printf("Error getting uniform location of 'gModel'\n");
         exit(1);
     }
     gFragPosLocation = glGetUniformLocation(ShaderProgram, "gFragPos");
