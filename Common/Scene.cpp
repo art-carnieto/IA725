@@ -7,6 +7,7 @@ Scene::Scene(Vector3f camera_pos, PersProjInfo pers_info, OrthoProjInfo ortho_in
 	this->perspective = perspective;
 	this->World;
 	this->WVP;
+	this->FragPos;
 	this->pers_info = pers_info;
 	this->ortho_info = ortho_info;
 	this->Projection.SetZero();
@@ -96,7 +97,7 @@ void Scene::genIBO(int index, GLuint* IBO) {
 	getMesh(index).genIBO(IBO);
 }
 
-void Scene::drawMesh(int index, GLuint* VBO, GLuint* IBO, GLuint* gWVPLocation) {
+void Scene::drawMesh(int index, GLuint* VBO, GLuint* IBO, GLuint* gWVPLocation, GLuint* gFragPosLocation) {
 	glBindBuffer(GL_ARRAY_BUFFER, *VBO);
 	if (getMesh(index).getUsesIndices()) glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *IBO);
 
@@ -115,7 +116,9 @@ void Scene::drawMesh(int index, GLuint* VBO, GLuint* IBO, GLuint* gWVPLocation) 
 	// loop through all transformations of the Mesh and draw each one of them
 	for (int index_t = 0; index_t < getMesh(index).getNumberTransformations(); index_t++) {
 		WVP = getWVP() * getMesh(index).getTransformation(index_t).getFinalTransformation();
+		FragPos = this->World.getFinalTransformation() * getMesh(index).getTransformation(index_t).getFinalTransformation();
 		glUniformMatrix4fv(*gWVPLocation, 1, GL_TRUE, &WVP.m[0][0]);
+		glUniformMatrix4fv(*gFragPosLocation, 1, GL_TRUE, &FragPos.m[0][0]);
 
 		if (getMesh(index).getUsesIndices())
 			glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(getMesh(index).getIndices().size()), GL_UNSIGNED_INT, 0);
@@ -128,6 +131,7 @@ void Scene::drawMesh(int index, GLuint* VBO, GLuint* IBO, GLuint* gWVPLocation) 
 	glDisableVertexAttribArray(2);
 }
 
+/*
 void Scene::genAllVBOs(GLuint* VBO) {
 	for (int index_mesh = 0; index_mesh < this->meshes.size(); index_mesh++) {
 		getMesh(index_mesh).genVBO(VBO);
@@ -149,6 +153,7 @@ void Scene::drawAllMeshes(GLuint* VBO, GLuint* IBO, GLuint* gWVPLocation) {
 		IBO++;  // advances pointer position
 	}
 }
+*/
 
 void Scene::moveCameraUp(float amount) {
 	this->camera.moveUp(amount);

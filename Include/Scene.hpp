@@ -13,6 +13,7 @@ class Scene {
 	Camera camera;
 	Transformation World;
 	Matrix4f WVP;
+	Matrix4f FragPos;
 
 	PersProjInfo pers_info;
 	OrthoProjInfo ortho_info;
@@ -53,7 +54,7 @@ public:
 
 	void genVBO(int index, GLuint* VBO);
 	void genIBO(int index, GLuint* IBO);
-	void drawMesh(int index, GLuint* VBO, GLuint* IBO, GLuint* gWVPLocation);
+	void drawMesh(int index, GLuint* VBO, GLuint* IBO, GLuint* gWVPLocation, GLuint* gFragPosLocation);
 
 	void genAllVBOs(GLuint* VBO);
 	void genAllIBOs(GLuint* IBO);

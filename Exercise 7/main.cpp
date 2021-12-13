@@ -45,6 +45,8 @@ GLuint IBO[NUMBER_MESHES - 1]; // IBO = Index Buffer Object
 // -1 because the table no longer use indices list, just vertices!
 GLuint gWVPLocation;
 GLuint gShadingModeLocation;
+GLuint gFragPosLocation;
+GLuint gCameraPosLocation;
 
 Scene scene;
 float maximum_frustum_limit = 30.0f;  // maximum limit for the far clipping plane
@@ -128,13 +130,15 @@ static void RenderSceneCB()
     scene.computeArcball();
 
     // Table IBO is NULL because it no longer uses indices list, just vertices!
-    scene.drawMesh(0, &VBO[0], NULL, &gWVPLocation);  // draw table
-    scene.drawMesh(1, &VBO[1], &IBO[0], &gWVPLocation);  // draw icosahedron
-    scene.drawMesh(2, &VBO[2], &IBO[1], &gWVPLocation);  // draw Utah teapot
-    scene.drawMesh(3, &VBO[3], &IBO[2], &gWVPLocation);  // draw cylinder
-    scene.drawMesh(4, &VBO[4], &IBO[3], &gWVPLocation);  // draw cone
+    scene.drawMesh(0, &VBO[0], NULL, &gWVPLocation, &gFragPosLocation);  // draw table
+    scene.drawMesh(1, &VBO[1], &IBO[0], &gWVPLocation, &gFragPosLocation);  // draw icosahedron
+    scene.drawMesh(2, &VBO[2], &IBO[1], &gWVPLocation, &gFragPosLocation);  // draw Utah teapot
+    scene.drawMesh(3, &VBO[3], &IBO[2], &gWVPLocation, &gFragPosLocation);  // draw cylinder
+    scene.drawMesh(4, &VBO[4], &IBO[3], &gWVPLocation, &gFragPosLocation);  // draw cone
 
     glUniform1i(gShadingModeLocation, type_shading);  // updates shading mode in vertex shader
+    Vector3f camPos = scene.getCamera().getCameraPos();
+    glUniform3f(gCameraPosLocation, camPos[0], camPos[1], camPos[2]);
 
     glutPostRedisplay();
 
@@ -216,8 +220,17 @@ static void CompileShaders()
         printf("Error getting uniform location of 'gWVP'\n");
         exit(1);
     }
-
+    gFragPosLocation = glGetUniformLocation(ShaderProgram, "gFragPos");
+    if (gFragPosLocation == -1) {
+        printf("Error getting uniform location of 'gFragPosLocation'\n");
+        exit(1);
+    }
+    gCameraPosLocation = glGetUniformLocation(ShaderProgram, "gViewPos");
     gShadingModeLocation = glGetUniformLocation(ShaderProgram, "shadingMode");
+    if (gShadingModeLocation == -1) {
+        printf("Error getting uniform location of 'gShadingModeLocation'\n");
+        exit(1);
+    }
 
     glValidateProgram(ShaderProgram);
     glGetProgramiv(ShaderProgram, GL_VALIDATE_STATUS, &Success);
@@ -500,18 +513,18 @@ int main(int argc, char** argv)
     OrthoProjInfo ortho_info = { 2.0f, -2.0f, -2.0f,   2.0f,   1.0f,  10.0f };
     //              camera position | perspective infos | orthographic infos | is_perspective
     scene = Scene({ 0.0f, 0.0f, -3.0f }, pers_info, ortho_info, true);
-
+    
     //                             position        lenght height width 
     Mesh table = createTable({ 0.0f, 0.0f, 0.0f },  2.0f,  0.5f, 1.0f,
         // tabletop_thickness tableleg_length tableleg_width       color
                   0.1,              0.05,          0.2,      color_saddle_brown);
     scene.pushMesh(table);
-
+    
     table.genVBO(&VBO[0]);
     // the table cuboids do not use indices anymore, just vertices!
 
     // icosahedron subdivided by 3, as required by the exercise
-    icosahedron = createSubdividedIcosahedron(3, color_yellow);
+    icosahedron = createSubdividedIcosahedron(3, color_golden_rod);
     Transformation t1 = Transformation();
     t1.setScale({ 0.3f, 0.3f, 0.3f });  // scale icosahedron down
     t1.setTranslation({ 0.5f, 0.85f, 0.0f }); // moves icosahedron to the top of the table
@@ -521,7 +534,7 @@ int main(int argc, char** argv)
     icosahedron.genVBOdynamic(&VBO[1]);
     icosahedron.genIBOdynamic(&IBO[0]);
 
-    Mesh teapot = createUtahTeapot(10, color_blue);
+    Mesh teapot = createUtahTeapot(10, color_steel_blue);
     Transformation t = Transformation();
     t.setScale({ 0.15f, 0.15f, 0.15f });  // original teapot is too big! Resize it to be smaller
     t.setRotation({ -90.0f, 0.0f, 0.0f });  // rotates it to be in the correct upright position
