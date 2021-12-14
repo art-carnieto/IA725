@@ -11,6 +11,15 @@ Techs used:
 - IDE: Visual Studio 2019
 - All codes are being tested on a computer that has a NVIDIA GeForce 610M video card that supports OpenGL up to 4.6 (NVIDIA 388.73 driver).
 
+Example images:
+
+**Exercise 7 - Flat shading**
+![Exercise 7 flat shading example](/img/ex7_flat.png)
+
+**Exercise 7 - Phong shading**
+![Exercise 7 Phong shading example](/img/ex7_phong.png)
+
+
 Exercises:
 
 | Exercise | Description  | Status |
