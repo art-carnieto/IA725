@@ -49,9 +49,9 @@ void subdivideTriangle(int num_triangle, Mesh &m) {
     unsigned int new_index_23 = (unsigned int) m.getNumberVertices() + 1;
     unsigned int new_index_31 = (unsigned int) m.getNumberVertices() + 2;
 
-    m.pushVertex(new_vertex_12, ver_1.getColor());
-    m.pushVertex(new_vertex_23, ver_2.getColor());
-    m.pushVertex(new_vertex_31, ver_3.getColor());
+    m.pushVertex(new_vertex_12, ver_1.getColor(), new_vertex_12);
+    m.pushVertex(new_vertex_23, ver_2.getColor(), new_vertex_23);
+    m.pushVertex(new_vertex_31, ver_3.getColor(), new_vertex_31);
 
     m.pushTriangleIndices(ind_a, new_index_12, new_index_31);
     m.pushTriangleIndices(ind_b, new_index_23, new_index_12);
@@ -93,13 +93,50 @@ Vertex BernsteinCurve(float u, Vertex points[4], Vector3f color) {
     return new_vertex;
 }
 
+// adapted from: https://coderedirect.com/questions/219593/getting-consistent-normals-from-a-3d-cubic-bezier-path
+Vector3f BernsteinDerivate(float u, Vertex points[4]) {
+    float a[3], b[3], c[3], d[3];  // 4 control points
+    float der[3];
+
+    for (int i = 0; i < 3; i++) {  // access the x, y and z dimensions
+        // calculate the derivate of the Bezier curve function        
+        a[i] = 3 * (points[1].getPosition()[i] - points[0].getPosition()[i]);  // 3 * (b - a)
+        b[i] = 3 * (points[2].getPosition()[i] - points[1].getPosition()[i]);  // 3 * (c - b)
+        c[i] = 3 * (points[3].getPosition()[i] - points[2].getPosition()[i]);  // 3 * (d - c)
+    }
+
+    for (int i = 0; i < 3; i++) {  // access the x, y and z dimensions
+        // calculate the derivate of the Bezier curve function
+        der[i] = a[i] * static_cast<float>(pow((1 - u), 2)) +
+            2 * b[i] * (1 - u) * u +
+            c[i] * static_cast<float>(pow(u, 2));
+    }
+
+    normalizeVertexPositions(der);
+
+    return Vector3f(der[0], der[1], der[2]);
+}
+
 // adapted from https://github.com/rgalo-coder/ComputacaoGrafica/blob/master/ExercicioBase/BuleUtah.cpp
 Vertex BernsteinSurface(float u, float v, Vertex patch_points[4][4], Vector3f color) {
     Vertex uCurve[4];
     for (int i = 0; i < 4; i++) {  // gets each column of the 4x4 grid separately
         uCurve[i] = BernsteinCurve(u, patch_points[i], color);
     }
-    return BernsteinCurve(v, uCurve, color);
+    // Normal calculation adapted from https://coderedirect.com/questions/219593/getting-consistent-normals-from-a-3d-cubic-bezier-path
+    Vector3f du = BernsteinDerivate(u, patch_points[3]);
+    Vector3f dv = BernsteinDerivate(v, uCurve);
+
+    // manually invert du to opposite direction so that the cross product can have the correct orientation in the end
+    du.x = -du.x;
+    du.y = -du.y;
+    du.z = -du.z;
+    Vector3f normal = du.Cross(dv);  // it is like -du x dv
+
+    Vertex new_vertex = BernsteinCurve(v, uCurve, color);
+    new_vertex.setNormal(normal);
+    
+    return new_vertex;
 }
 
 vector<Vertex> genPatchBezier(Vertex patch_points[4][4], int divs, Vector3f color) {
@@ -170,28 +207,56 @@ vector<unsigned int> loadTeapotIndices() {
 
 Mesh createCube(Vector3f color) {
     Mesh m;
-    m.pushVertex({ 0.5f, 0.5f, 0.5f }, color);
-    m.pushVertex({ -0.5f, 0.5f, -0.5f }, color);
-    m.pushVertex({ -0.5f, 0.5f, 0.5f }, color);
-    m.pushVertex({ 0.5f, -0.5f, -0.5f }, color);
-    m.pushVertex({ -0.5f, -0.5f, -0.5f }, color);
-    m.pushVertex({ 0.5f, 0.5f, -0.5f }, color);
-    m.pushVertex({ 0.5f, -0.5f, 0.5f }, color);
-    m.pushVertex({ -0.5f, -0.5f, 0.5f }, color);
+    m.setUsesIndices(false);  // cube will not use indices to have correct normal vectors on each side
 
-    m.pushTriangleIndices(0, 1, 2);
-    m.pushTriangleIndices(1, 3, 4);
-    m.pushTriangleIndices(5, 6, 3);
-    m.pushTriangleIndices(7, 3, 6);
-    m.pushTriangleIndices(2, 4, 7);
-    m.pushTriangleIndices(0, 7, 6);
-    m.pushTriangleIndices(0, 5, 1);
-    m.pushTriangleIndices(1, 5, 3);
-    m.pushTriangleIndices(5, 0, 6);
-    m.pushTriangleIndices(7, 4, 3);
-    m.pushTriangleIndices(2, 1, 4);
-    m.pushTriangleIndices(0, 2, 7);
+    m.pushVertex({ 0.5f, 0.5f, 0.5f }, color, { 0.0f, 1.0f, 0.0f });    // 0
+    m.pushVertex({ -0.5f, 0.5f, -0.5f }, color, { 0.0f, 1.0f, 0.0f });  // 1
+    m.pushVertex({ -0.5f, 0.5f, 0.5f }, color, { 0.0f, 1.0f, 0.0f });   // 2
 
+    m.pushVertex({ -0.5f, 0.5f, -0.5f }, color, { 0.0f, 0.0f, -1.0f });  // 1
+    m.pushVertex({ 0.5f, -0.5f, -0.5f }, color, { 0.0f, 0.0f, -1.0f });  // 3
+    m.pushVertex({ -0.5f, -0.5f, -0.5f }, color, { 0.0f, 0.0f, -1.0f }); // 4
+
+    m.pushVertex({ 0.5f, 0.5f, -0.5f }, color, { 1.0f, 0.0f, 0.0f });   // 5
+    m.pushVertex({ 0.5f, -0.5f, 0.5f }, color, { 1.0f, 0.0f, 0.0f });   // 6
+    m.pushVertex({ 0.5f, -0.5f, -0.5f }, color, { 1.0f, 0.0f, 0.0f });  // 3
+        
+    m.pushVertex({ -0.5f, -0.5f, 0.5f }, color, { 0.0f, -1.0f, 0.0f });  // 7
+    m.pushVertex({ 0.5f, -0.5f, -0.5f }, color, { 0.0f, -1.0f, 0.0f });  // 3
+    m.pushVertex({ 0.5f, -0.5f, 0.5f }, color, { 0.0f, -1.0f, 0.0f });   // 6
+
+    m.pushVertex({ -0.5f, 0.5f, 0.5f }, color, { -1.0f, 0.0f, 0.0f });   // 2
+    m.pushVertex({ -0.5f, -0.5f, -0.5f }, color, { -1.0f, 0.0f, 0.0f }); // 4
+    m.pushVertex({ -0.5f, -0.5f, 0.5f }, color, { -1.0f, 0.0f, 0.0f });  // 7
+
+    m.pushVertex({ 0.5f, 0.5f, 0.5f }, color, { 0.0f, 0.0f, 1.0f });    // 0
+    m.pushVertex({ -0.5f, -0.5f, 0.5f }, color, { 0.0f, 0.0f, 1.0f });  // 7
+    m.pushVertex({ 0.5f, -0.5f, 0.5f }, color, { 0.0f, 0.0f, 1.0f });   // 6
+
+    m.pushVertex({ 0.5f, 0.5f, 0.5f }, color, { 0.0f, 1.0f, 0.0f });    // 0
+    m.pushVertex({ 0.5f, 0.5f, -0.5f }, color, { 0.0f, 1.0f, 0.0f });   // 5
+    m.pushVertex({ -0.5f, 0.5f, -0.5f }, color, { 0.0f, 1.0f, 0.0f });  // 1
+
+    m.pushVertex({ -0.5f, 0.5f, -0.5f }, color, { 0.0f, 0.0f, -1.0f });  // 1
+    m.pushVertex({ 0.5f, 0.5f, -0.5f }, color, { 0.0f, 0.0f, -1.0f });   // 5
+    m.pushVertex({ 0.5f, -0.5f, -0.5f }, color, { 0.0f, 0.0f, -1.0f });  // 3
+
+    m.pushVertex({ 0.5f, 0.5f, -0.5f }, color, { 1.0f, 0.0f, 0.0f });   // 5
+    m.pushVertex({ 0.5f, 0.5f, 0.5f }, color, { 1.0f, 0.0f, 0.0f });    // 0
+    m.pushVertex({ 0.5f, -0.5f, 0.5f }, color, { 1.0f, 0.0f, 0.0f });   // 6
+
+    m.pushVertex({ -0.5f, -0.5f, 0.5f }, color, { 0.0f, -1.0f, 0.0f });  // 7
+    m.pushVertex({ -0.5f, -0.5f, -0.5f }, color, { 0.0f, -1.0f, 0.0f }); // 4
+    m.pushVertex({ 0.5f, -0.5f, -0.5f }, color, { 0.0f, -1.0f, 0.0f });  // 3
+
+    m.pushVertex({ -0.5f, 0.5f, 0.5f }, color, { -1.0f, 0.0f, 0.0f });   // 2
+    m.pushVertex({ -0.5f, 0.5f, -0.5f }, color, { -1.0f, 0.0f, 0.0f });  // 1
+    m.pushVertex({ -0.5f, -0.5f, -0.5f }, color, { -1.0f, 0.0f, 0.0f }); // 4
+
+    m.pushVertex({ 0.5f, 0.5f, 0.5f }, color, { 0.0f, 0.0f, 1.0f });    // 0
+    m.pushVertex({ -0.5f, 0.5f, 0.5f }, color, { 0.0f, 0.0f, 1.0f });   // 2
+    m.pushVertex({ -0.5f, -0.5f, 0.5f }, color, { 0.0f, 0.0f, 1.0f });  // 7
+    
     return m;
 }
 
@@ -243,18 +308,18 @@ Mesh createRegularIcosahedron(Vector3f color) {
     const float z = 0.850650808352039932f;
     const float y = 0.0f;
 
-    m.pushVertex({ -x, y, z }, color);
-    m.pushVertex({ x, y, z }, color);
-    m.pushVertex({ -x, y, -z }, color);
-    m.pushVertex({ x, y, -z }, color);
-    m.pushVertex({ y, z, x }, color);
-    m.pushVertex({ y, z, -x }, color);
-    m.pushVertex({ y, -z, x }, color);
-    m.pushVertex({ y, -z, -x }, color);
-    m.pushVertex({ z, x, y }, color);
-    m.pushVertex({ -z, x, y }, color);
-    m.pushVertex({ z, -x, y }, color);
-    m.pushVertex({ -z, -x, y }, color);
+    m.pushVertex({ -x, y, z }, color, { -x, y, z });
+    m.pushVertex({ x, y, z }, color, { x, y, z });
+    m.pushVertex({ -x, y, -z }, color, { -x, y, -z });
+    m.pushVertex({ x, y, -z }, color, { x, y, -z });
+    m.pushVertex({ y, z, x }, color, { y, z, x });
+    m.pushVertex({ y, z, -x }, color, { y, z, -x });
+    m.pushVertex({ y, -z, x }, color, { y, -z, x });
+    m.pushVertex({ y, -z, -x }, color, { y, -z, -x });
+    m.pushVertex({ z, x, y }, color, { z, x, y });
+    m.pushVertex({ -z, x, y }, color, { -z, x, y });
+    m.pushVertex({ z, -x, y }, color, { z, -x, y });
+    m.pushVertex({ -z, -x, y }, color, { -z, -x, y });
 
     m.pushTriangleIndices(4, 0, 1);
     m.pushTriangleIndices(9, 0, 4);
@@ -489,16 +554,13 @@ Mesh createCubicBezierMesh(vector<Vertex> list_control_points, vector<unsigned i
         // adapted from https://github.com/rgalo-coder/ComputacaoGrafica/blob/master/ExercicioBase/BuleUtah.cpp
         for (int row = 0; row < subdiv; row++) {
             for (int col = 0; col < subdiv; col++) {
-                m.pushTriangleIndices(
-                    (subdiv + 1) * row + col + offset,
-                    (subdiv + 1) * row + col + 1 + offset,
-                    (subdiv + 1) * (row + 1) + col + offset
-                );
-                m.pushTriangleIndices(
-                    (subdiv + 1) * (row + 1) + col + 1 + offset,
-                    (subdiv + 1) * (row + 1) + col + offset,
-                    (subdiv + 1) * row + col + 1 + offset
-                );
+                unsigned int pos1 = (subdiv + 1) * row + col + offset;
+                unsigned int pos2 = (subdiv + 1) * row + col + 1 + offset;
+                unsigned int pos3 = (subdiv + 1) * (row + 1) + col + offset;
+                unsigned int pos4 = (subdiv + 1) * (row + 1) + col + 1 + offset;
+
+                m.pushTriangleIndices(pos1, pos2, pos3);
+                m.pushTriangleIndices(pos4, pos3, pos2);
             }
         }
         offset += vertices.size();

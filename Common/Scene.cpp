@@ -7,6 +7,8 @@ Scene::Scene(Vector3f camera_pos, PersProjInfo pers_info, OrthoProjInfo ortho_in
 	this->perspective = perspective;
 	this->World;
 	this->WVP;
+	this->FragPos;
+	this->Model;
 	this->pers_info = pers_info;
 	this->ortho_info = ortho_info;
 	this->Projection.SetZero();
@@ -96,9 +98,9 @@ void Scene::genIBO(int index, GLuint* IBO) {
 	getMesh(index).genIBO(IBO);
 }
 
-void Scene::drawMesh(int index, GLuint* VBO, GLuint* IBO, GLuint* gWVPLocation) {
+void Scene::drawMesh(int index, GLuint* VBO, GLuint* IBO, GLuint* gWVPLocation, GLuint* gFragPosLocation, GLuint* gModelLocation) {
 	glBindBuffer(GL_ARRAY_BUFFER, *VBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *IBO);
+	if (getMesh(index).getUsesIndices()) glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *IBO);
 
 	// position
 	glEnableVertexAttribArray(0);
@@ -108,18 +110,31 @@ void Scene::drawMesh(int index, GLuint* VBO, GLuint* IBO, GLuint* gWVPLocation) 
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(3 * sizeof(float)));
 
+	// normal
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(6 * sizeof(float)));
+
 	// loop through all transformations of the Mesh and draw each one of them
 	for (int index_t = 0; index_t < getMesh(index).getNumberTransformations(); index_t++) {
 		WVP = getWVP() * getMesh(index).getTransformation(index_t).getFinalTransformation();
+		FragPos = this->World.getFinalTransformation() * getMesh(index).getTransformation(index_t).getFinalTransformation();
+		Model = getMesh(index).getTransformation(index_t).getFinalTransformation();
 		glUniformMatrix4fv(*gWVPLocation, 1, GL_TRUE, &WVP.m[0][0]);
+		glUniformMatrix4fv(*gFragPosLocation, 1, GL_TRUE, &FragPos.m[0][0]);
+		glUniformMatrix4fv(*gModelLocation, 1, GL_TRUE, &Model.m[0][0]);
 
-		glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(getMesh(index).getIndices().size()), GL_UNSIGNED_INT, 0);
+		if (getMesh(index).getUsesIndices())
+			glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(getMesh(index).getIndices().size()), GL_UNSIGNED_INT, 0);
+		else
+			glDrawArrays(GL_TRIANGLES, 0, getMesh(index).getNumberVertices());
 	}
 
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
+	glDisableVertexAttribArray(2);
 }
 
+/*
 void Scene::genAllVBOs(GLuint* VBO) {
 	for (int index_mesh = 0; index_mesh < this->meshes.size(); index_mesh++) {
 		getMesh(index_mesh).genVBO(VBO);
@@ -141,6 +156,7 @@ void Scene::drawAllMeshes(GLuint* VBO, GLuint* IBO, GLuint* gWVPLocation) {
 		IBO++;  // advances pointer position
 	}
 }
+*/
 
 void Scene::moveCameraUp(float amount) {
 	this->camera.moveUp(amount);

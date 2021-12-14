@@ -1,7 +1,22 @@
 #include "Mesh.hpp"
 #include <iostream>
 
-Mesh::Mesh() { }
+Mesh::Mesh() {
+    this->mesh_vertices;
+    this->mesh_indices;
+    this->mesh_transformations;
+    this->Vertices = NULL;
+    this->Indices = NULL;
+    this->uses_indices = true;  // by default meshes use indices list and share their vertices between triangles
+}
+
+bool Mesh::getUsesIndices() {
+    return this->uses_indices;
+}
+
+void Mesh::setUsesIndices(bool set_uses_indices) {
+    this->uses_indices = set_uses_indices;
+}
 
 // Vertices
 vector<Vertex> Mesh::getVertices() {
@@ -22,6 +37,14 @@ void Mesh::pushVertex(float pos[3], float color[3]) {
 
 void Mesh::pushVertex(Vector3f pos, Vector3f color) {
     this->mesh_vertices.emplace_back(Vertex(pos[0], pos[1], pos[2], color[0], color[1], color[2]));
+}
+
+void Mesh::pushVertex(float pos[3], float color[3], float normal[3]) {
+    this->mesh_vertices.emplace_back(Vertex(pos[0], pos[1], pos[2], color[0], color[1], color[2], normal[0], normal[1], normal[2]));
+}
+
+void Mesh::pushVertex(Vector3f pos, Vector3f color, Vector3f normal) {
+    this->mesh_vertices.emplace_back(Vertex(pos[0], pos[1], pos[2], color[0], color[1], color[2], normal[0], normal[1], normal[2]));
 }
 
 void Mesh::deleteVertex(int index) {
@@ -82,21 +105,25 @@ void Mesh::genVBOdynamic(GLuint* VBO) {
 }
 
 void Mesh::genIBO(GLuint* IBO) {
-    assert(this->mesh_indices.size() > 0);
-    this->Indices = &mesh_indices[0];
+    if (this->uses_indices == true) {
+        assert(this->mesh_indices.size() > 0);
+        this->Indices = &mesh_indices[0];
 
-    glGenBuffers(1, IBO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *IBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, getIndices().size() * sizeof(this->Indices[0]), this->Indices, GL_STATIC_DRAW);
+        glGenBuffers(1, IBO);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *IBO);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, getIndices().size() * sizeof(this->Indices[0]), this->Indices, GL_STATIC_DRAW);
+    }
 }
 
 void Mesh::genIBOdynamic(GLuint* IBO) {
-    assert(this->mesh_indices.size() > 0);
-    this->Indices = &mesh_indices[0];
+    if (this->uses_indices == true) {
+        assert(this->mesh_indices.size() > 0);
+        this->Indices = &mesh_indices[0];
 
-    glGenBuffers(1, IBO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *IBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, getIndices().size() * sizeof(this->Indices[0]), this->Indices, GL_DYNAMIC_DRAW);
+        glGenBuffers(1, IBO);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *IBO);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, getIndices().size() * sizeof(this->Indices[0]), this->Indices, GL_DYNAMIC_DRAW);
+    }
 }
 
 void Mesh::updateVBO(GLuint* VBO) {
@@ -127,7 +154,8 @@ void Mesh::debug_print_vertices() {
     cout << "Number of vertices * sizeof() first vertex = " << Mesh::getNumberVertices() * sizeof(this->mesh_vertices[0]) << endl;
     for (int i = 0; i < Mesh::getNumberVertices(); i++) {
         cout << "pos: { " << this->mesh_vertices[i].getPosition()[0] << " " << this->mesh_vertices[i].getPosition()[1] << " " << this->mesh_vertices[i].getPosition()[2] << " }  |  ";
-        cout << "color: { " << this->mesh_vertices[i].getColor()[0] << " " << this->mesh_vertices[i].getColor()[1] << " " << this->mesh_vertices[i].getColor()[2] << " }\n";
+        cout << "color: { " << this->mesh_vertices[i].getColor()[0] << " " << this->mesh_vertices[i].getColor()[1] << " " << this->mesh_vertices[i].getColor()[2] << " }  |  ";
+        cout << "normal: { " << this->mesh_vertices[i].getNormal()[0] << " " << this->mesh_vertices[i].getNormal()[1] << " " << this->mesh_vertices[i].getNormal()[2] << " }\n";
     }
 }
 
